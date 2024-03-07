@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock title %}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='prjct_containers.css') }}">
+    </head>
+
+    <body>
+        <!--<a href="{{ url_for('pages.home')}}">İsmail Kağan Acar</a>-->
+        
+        
+        <div class="lines" style="overflow-y:auto;">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        {% block div %}{% endblock div %}
+        <!--{% include("_navigation.html")%}-->
+        <section>
+            <header>{% block header %}{% endblock header %}</header>
+            <main>{% block content %}<p></p>{% endblock content %}</main>
+        </section>
+    </body>
+
+</html>
