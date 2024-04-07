@@ -1,14 +1,12 @@
 try {
+
+try {
     if (typeof MatterWrap !== 'undefined') {
-        // either use by name from plugin registry (Browser global)
         Matter.use('matter-wrap');
     } else {
-        // or require and use the plugin directly (Node.js, Webpack etc.)
         Matter.use(require('matter-wrap'));
     }
-} catch (e) {
-    // could not require the plugin or install needed
-}
+} catch (e) {}
 
 
 const   Engine = Matter.Engine,
@@ -20,6 +18,7 @@ const   Engine = Matter.Engine,
         Common = Matter.Common,
         MouseConstraint = Matter.MouseConstraint,
         Mouse = Matter.Mouse;
+        Events = Matter.Events; 
 
 const   iEngine = Engine.create(),
         world = iEngine.world;
@@ -35,20 +34,16 @@ const iRender = Render.create({
     wireframes: false,
     background: 'transparent',
     wireframeBackground: 'transparent',
-    showAngleIndicator: true,
+    //showAngleIndicator: true,
   }
 });
-//x,y,width,height
-const boxA = Bodies.rectangle(400, 200, 80, 80);
-const ballA = Bodies.circle(380, 100, 40, 10);
-const ballB = Bodies.circle(460, 10, 40, 10);
 
 
-var stack = Composites.stack(0, 0, 30, 30, 1, 1, function(x, y) {
-    return Bodies.circle(x, y, Common.random(15, 30), { restitution: 0.6, friction: 0.1 });
-});
-
-
+function create_circles(x,y){
+    var circles = Bodies.circle(x,y,Common.random(1,5),{restitution: 0.6,friction: 0.1});
+    Composite.add(world,circles);
+    setTimeout(function(){Composite.remove(world,circles);},1000);
+};
 
 //const ground = Bodies.rectangle(window.innerWidth/2,window.innerHeight/1.1, window.innerWidth, window.innerHeight/10, { isStatic: true });
 const wall_bottom = Bodies.rectangle(window.innerWidth/2,window.innerHeight,window.innerWidth,10,{isStatic: true});
@@ -57,28 +52,17 @@ const wall_left = Bodies.rectangle(0,window.innerHeight/2,10,window.innerHeight,
 const wall_right = Bodies.rectangle(window.innerWidth,window.innerHeight/2,10,window.innerHeight,{isStatic: true});
 
 Composite.add(world, 
-   [boxA,stack,
-    ballA,ballB,
-    wall_bottom,wall_top,wall_left,wall_right,
-]);
+   [wall_bottom,wall_top,wall_left,wall_right]);
 
-var mouse = Mouse.create(iRender.canvas),
-    mouseConstraint = MouseConstraint.create(iEngine, {
-        mouse: mouse,
-        constraint: {
-            stiffness: 0.2,
-            render: {
-                visible: false
-        }
-    }
-});
+var mouse = Mouse.create(iRender.canvas);
 
-var allBodies = Composite.allBodies(world);
-
-
-
-Composite.add(world, mouseConstraint);
-iRender.mouse = mouse
+  Events.on(iEngine, 'afterUpdate', function () {
+    if (!mouse.position.x) return;
+    
+    create_circles(mouse.position.x,mouse.position.y);
+    //console.log(mouse.position.x);
+  });
 
 Render.run(iRender);
-Runner.run(iRunner, iEngine);
+Runner.run(iRunner, iEngine);}
+catch(e){console.log(e)}

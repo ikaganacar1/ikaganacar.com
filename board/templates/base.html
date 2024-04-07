@@ -4,24 +4,21 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock title %}</title>
+     
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='background.css')}}">
         <link rel="stylesheet" href="{{ url_for('static', filename='prjct_containers.css')}}">
         <link rel="stylesheet" href="{{ url_for('static', filename='main_container.css')}}">
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
 
     </head>
 
     <body>
 
-        <script src="{{ url_for('static', filename='scripts.js')}}"></script>
-        <!--<a href="{{ url_for('pages.home')}}">İsmail Kağan Acar</a>-->
-        
         <div class="container">
             {% block div %}{% endblock div %}
         </div>
-        
-        <!--{% include("_navigation.html")%}-->
+
+        <script src="{{ url_for('static', filename='scripts.js')}}"></script>
         
     </body>
 
