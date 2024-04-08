@@ -20,7 +20,7 @@ const   Engine = Matter.Engine,
         Mouse = Matter.Mouse;
         Events = Matter.Events; 
 
-const   iEngine = Engine.create(),
+const   iEngine = Engine.create({gravity: {y:1}}),
         world = iEngine.world;
 
 const iRunner = Runner.create();
@@ -40,7 +40,19 @@ const iRender = Render.create({
 
 
 function create_circles(x,y){
-    var circles = Bodies.circle(x,y,Common.random(1,5),{restitution: 0.6,friction: 0.1});
+  let gray = Common.random(0,255)
+    var circles = Bodies.circle(x+Common.random(-5,5),y+Common.random(-5,5),Common.random(5,20),
+      {
+        restitution: 0.8,
+        friction: 0.1,
+        render:{
+          fillStyle:`rgb(${gray},${gray},${gray})`,
+          strokeStyle:'white',
+          lineWidth:2
+        }
+      
+      });
+
     Composite.add(world,circles);
     setTimeout(function(){Composite.remove(world,circles);},1000);
 };
@@ -53,15 +65,56 @@ const wall_right = Bodies.rectangle(window.innerWidth,window.innerHeight/2,10,wi
 
 Composite.add(world, 
    [wall_bottom,wall_top,wall_left,wall_right]);
-
+   
 var mouse = Mouse.create(iRender.canvas);
+var mouseConstraint = Matter.MouseConstraint.create(iEngine, {
+  element: document.body,
+  constraint: {
+      render: {
+          visible: false
+      },
+      stiffness: 0.8
+  }
+});
 
-  Events.on(iEngine, 'afterUpdate', function () {
-    if (!mouse.position.x) return;
-    
-    create_circles(mouse.position.x,mouse.position.y);
-    //console.log(mouse.position.x);
-  });
+Matter.World.add(world, mouseConstraint);
+
+
+let check_if_on_box = true;
+let check_if_clicked = false;
+
+function onmouseenter_f(el) {
+    console.log("over")
+    check_if_on_box = false;
+};
+
+function onmouseleave_f(el) {
+    console.log("out")
+    check_if_on_box = true;
+};
+
+
+
+Events.on(mouseConstraint,'mousedown',function(event){
+  check_if_clicked=true
+});
+
+Events.on(mouseConstraint,'mouseup',function(event){
+  check_if_clicked=false
+});
+
+Events.on(iEngine, 'afterUpdate', function (event) {
+  
+  if (!mouse.position.x) return;
+  if(check_if_on_box){
+    if (check_if_clicked) {
+      create_circles(mouse.position.x,mouse.position.y);
+    }
+    }
+  
+});
+
+  
 
 Render.run(iRender);
 Runner.run(iRunner, iEngine);}

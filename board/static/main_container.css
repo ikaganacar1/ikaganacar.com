@@ -117,9 +117,9 @@
     background-color: #d62976;
     transition-duration: .3s;
   }
-  /* twitter*/
+  /* mail*/
   .containerTwo:hover {
-    background-color: #00acee;
+    background-color: #b2be0f;
     transition-duration: .3s;
   }
   /* linkdin*/
@@ -129,7 +129,7 @@
   }
   /* github*/
   .containerFour:hover {
-    background-color: #128C7E;
+    background-color: #6c22ad;
     transition-duration: .3s;
     
   }
