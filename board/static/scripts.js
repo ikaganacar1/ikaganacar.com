@@ -20,7 +20,7 @@ const   Engine = Matter.Engine,
         Mouse = Matter.Mouse;
         Events = Matter.Events; 
 
-const   iEngine = Engine.create({gravity: {y:1}}),
+const   iEngine = Engine.create({gravity: {y:0}}),
         world = iEngine.world;
 
 const iRunner = Runner.create();
@@ -38,10 +38,10 @@ const iRender = Render.create({
   }
 });
 
-
+var circle_array = [];
 function create_circles(x,y){
   let gray = Common.random(0,255)
-    var circles = Bodies.circle(x+Common.random(-5,5),y+Common.random(-5,5),Common.random(5,20),
+    var circles = Bodies.circle(x+Common.random(-5,5),y+Common.random(-5,5),Common.random(5,30),
       {
         restitution: 0.8,
         friction: 0.1,
@@ -54,7 +54,8 @@ function create_circles(x,y){
       });
 
     Composite.add(world,circles);
-    setTimeout(function(){Composite.remove(world,circles);},1000);
+    circle_array.push(circles);
+    //setTimeout(function(){Composite.remove(world,circles);},1000);
 };
 
 //const ground = Bodies.rectangle(window.innerWidth/2,window.innerHeight/1.1, window.innerWidth, window.innerHeight/10, { isStatic: true });
@@ -84,12 +85,12 @@ let check_if_on_box = true;
 let check_if_clicked = false;
 
 function onmouseenter_f(el) {
-    console.log("over")
+    /*console.log("over")*/
     check_if_on_box = false;
 };
 
 function onmouseleave_f(el) {
-    console.log("out")
+    /*console.log("out")*/
     check_if_on_box = true;
 };
 
@@ -104,17 +105,70 @@ Events.on(mouseConstraint,'mouseup',function(event){
 });
 
 Events.on(iEngine, 'afterUpdate', function (event) {
-  
+  if(check==1){
   if (!mouse.position.x) return;
   if(check_if_on_box){
     if (check_if_clicked) {
       create_circles(mouse.position.x,mouse.position.y);
     }
-    }
+    }}
   
 });
 
+function del_obj(el) {
+  console.log("obj. deleted")
+
+  for (let i = 0; i < circle_array.length; i++) {
+    
+   Composite.remove(iEngine.world,circle_array[i]);
+  }
   
+}
+
+function color_obj(el) {
+  console.log("obj. deleted")
+
+  for (let i = 0; i < circle_array.length; i++) {
+    circle_array[i].render.fillStyle=`rgb(${Common.random(0,255)},${Common.random(0,255)},${Common.random(0,255)})`;
+    
+  }
+  
+}
+let mode = 1;
+function gravity_obj(el) {
+
+  switch (mode) {
+    case 1:
+      iEngine.gravity.y = 1;
+      mode = 2;
+      break;
+
+    case 2:
+      iEngine.gravity.y = 0;
+      mode = 1;
+      break;
+
+    default:
+      break;
+  }
+  console.log(mode);
+}
+
+let check = 1;
+function close_obj(el) {
+  switch (check) {
+    case 1:
+      check = 0;
+      break;
+    case 0:
+      check = 1;
+      break;
+
+    default:
+      break;
+  }
+  
+}
 
 Render.run(iRender);
 Runner.run(iRunner, iEngine);}
