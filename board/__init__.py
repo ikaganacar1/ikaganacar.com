@@ -1,13 +1,15 @@
 #python -m flask --app board run --port 8000 --debug
 #Set-ExecutionPolicy Unrestricted -Scope Process             
 #./venv/Scripts/activate  
-
+#set FLASK_APP=app.py 
+#python -m flask run
 from flask import Flask
-from board import pages
+from flask import render_template
 
-def create_app():
-    app = Flask(__name__)
+app = Flask(__name__)
     
-    app.register_blueprint(pages.bp)
+application = app
 
-    return app
+@app.route("/")
+def home():
+    return render_template("pages/home.html")
