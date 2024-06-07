@@ -15,7 +15,10 @@
     <body>
         
         
-        <div class="container" onmouseenter="onmouseenter_f(this)" onmouseleave="onmouseleave_f(this)">
+        <div class="container"  ontouchstart="onmouseenter_f(this)"
+                                ontouchend  ="onmouseleave_f(this)"
+                                onmouseenter="onmouseenter_f(this)" 
+                                onmouseleave="onmouseleave_f(this)">
             
             {% block div %}{% endblock div %}
         </div>
