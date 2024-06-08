@@ -11,9 +11,13 @@ const   Engine = Matter.Engine,
         Body = Matter.Body,
         Composite = Matter.Composite,
         Composites = Matter.Composites,
+        Vector= Matter.Vector,
         Common = Matter.Common,
         MouseConstraint = Matter.MouseConstraint,
-        Mouse = Matter.Mouse;
+        Mouse = Matter.Mouse,
+        Svg = Matter.Svg,
+        World = Matter.World,
+        Vertices = Matter.Vertices,
         Events = Matter.Events; 
 
 const   iEngine = Engine.create({gravity: {y:0}}),
@@ -50,6 +54,7 @@ function create_circles(x,y,color,apply_force){
     {
       restitution: 0.8,
       friction: 0.1,
+      //url: '#',
       render:{
         fillStyle:curr_color,
         strokeStyle:'white',
@@ -101,11 +106,11 @@ function gravity_obj(el) {
 
 //function of party button
 var i = 1;
-function party(el) {
+function party_obj(el) { 
     setTimeout(() => {
-        create_circles(window.innerWidth/2,window.innerHeight/2,"_",1);
+        create_circles(Common.random(0,window.innerWidth),Common.random(0,window.innerHeight),"_",1);
         i++;
-        if(i<200){party()}
+        if(i<200){party_obj()}
         else{i = 1;}
     }, 10);
 } 
@@ -131,22 +136,122 @@ let mouseConstraint = Matter.MouseConstraint.create(iEngine, {
 Matter.World.add(world, mouseConstraint);
 Composite.add(world, [wall_bottom,wall_top,wall_left,wall_right]);
 
-//to prevent creating circles while clicking the container
-let check_if_on_box = true;
-function onmouseenter_f(el) {check_if_on_box = false;};
-function onmouseleave_f(el) {check_if_on_box = true;};
+//buttons
+var button_del_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+  isStatic: false,
+  url: "del_obj",
+  restitution: 0.8,
+  friction: 0.1,
+  render:{
+    lineWidth:2,
+    sprite:{
+      texture:"https://media.publit.io/file/trash-svgrepo-com-2.png",
+      xScale:0.2083,
+      yScale:0.2083
+    }   
+  }
+});World.add(world, [button_del_obj,])
+
+var button_color_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+  isStatic: false,
+  url: "color_obj",
+  restitution: 0.8,
+  friction: 0.1,
+  render:{
+    lineWidth:2,
+    sprite:{
+      texture:"https://media.publit.io/file/color-palette-svgrepo-com.png",
+      xScale:0.2083,
+      yScale:0.2083
+    }   
+  }
+});World.add(world, [button_color_obj,])
+
+var button_gravity_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+  isStatic: false,
+  url: "gravity_obj",
+  restitution: 0.8,
+  friction: 0.1,
+  render:{
+    lineWidth:2,
+    sprite:{
+      texture:"https://media.publit.io/file/gravity-svgrepo-com.png",
+      xScale:0.2083,
+      yScale:0.2083
+    }   
+  }
+});World.add(world, [button_gravity_obj,])
+
+var button_party_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+  isStatic: false,
+  url: "party_obj",
+  restitution: 0.8,
+  friction: 0.1,
+  render:{
+    lineWidth:2,
+    sprite:{
+      texture:"https://media.publit.io/file/party-horn-svgrepo-com.png",
+      xScale:0.2083,
+      yScale:0.2083
+    }   
+  }
+});World.add(world, [button_party_obj,])
+
 
 let check_if_clicked = false;
-Events.on(mouseConstraint,'mousedown',function(event){check_if_clicked=true});
-Events.on(mouseConstraint,'mouseup',  function(event){check_if_clicked=false});
+Events.on(mouseConstraint,'mousedown',function(event){
+  check_if_clicked=true;
+  var mc = event.source;
+  var bodies = world.bodies;
+
+  if (!mc.bodyB) {
+    for (i = 0; i < bodies.length; i++) { 
+      var body = bodies[i];
+      if (Matter.Bounds.contains(body.bounds, mc.mouse.position)) {
+        var bodyUrl = body.url;
+        console.log("Body.Url >> " + bodyUrl);
+        
+        if (bodyUrl == "del_obj") {
+          del_obj();
+          check_if_clicked=false;
+        }
+
+        else if (bodyUrl == "color_obj") {
+          color_obj();
+          check_if_clicked=false;
+        }
+
+        else if (bodyUrl == "gravity_obj") {
+          gravity_obj();
+          check_if_clicked=false;
+        }
+
+        else if (bodyUrl == "party_obj") {
+          party_obj();
+          check_if_clicked=false;
+        }
+
+        else if (bodyUrl != undefined) {
+          window.open(bodyUrl, '_blank');
+          console.log("Hyperlink was opened");
+        }
+        
+        break;
+      }
+    }
+  }
+});
+
+Events.on(mouseConstraint,'mouseup',  function(event){
+  check_if_clicked=false;
+});
 
 //if it is suitable create circles when clicked
 Events.on(iEngine, 'afterUpdate', function (event) {
     if (!mouse.position.x) return;
-    if(check_if_on_box){
-      if (check_if_clicked) {
-        create_circles(mouse.position.x,mouse.position.y,"gray",0);
-      }
+  
+    if (check_if_clicked) {
+      create_circles(mouse.position.x,mouse.position.y,"gray",0);
     }
 });
 

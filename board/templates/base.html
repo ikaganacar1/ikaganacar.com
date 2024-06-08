@@ -4,27 +4,18 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock title %}</title>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.18.0/matter.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.js"></script>
         
         <link rel="stylesheet" href="{{ url_for('static', filename='background.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='container.css')}}">
 
     </head>
 
     <body>
         
-        <div class="container"  ontouchstart="onmouseenter_f(this)"
-                                ontouchend  ="onmouseleave_f(this)"
-                                onmouseenter="onmouseenter_f(this)" 
-                                onmouseleave="onmouseleave_f(this)">
-            
-            {% block div %}{% endblock div %}
-        </div>
-        
-        
-        
+        {% block div %}{% endblock div %}
         <script src="{{ url_for('static', filename='scripts.js')}}"></script>
-        
         
     </body>
 
