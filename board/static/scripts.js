@@ -72,21 +72,18 @@ function create_circles(x,y,color,apply_force){
     //setTimeout(function(){Composite.remove(world,circles);},1000);
 };
 
-//function of delete button 
 function del_obj(el) {
     for (let i = 0; i < circle_array.length; i++) {
         Composite.remove(iEngine.world,circle_array[i]);
     }
 }
 
-//function of color palette button
 function color_obj(el) {
     for (let i = 0; i < circle_array.length; i++) {
       circle_array[i].render.fillStyle=`rgb(${Common.random(0,255)},${Common.random(0,255)},${Common.random(0,255)})`;
     } 
 }
 
-//function of gravity button
 let mode = 1;
 function gravity_obj(el) {
     switch (mode) {
@@ -104,7 +101,6 @@ function gravity_obj(el) {
     console.log(mode);
 }
 
-//function of party button
 var i = 1;
 function party_obj(el) { 
     setTimeout(() => {
@@ -115,11 +111,153 @@ function party_obj(el) {
     }, 10);
 } 
 
-//create walls
-const wall_bottom = Bodies.rectangle(window.innerWidth/2,window.innerHeight,window.innerWidth,10,{isStatic: true});
-const wall_top = Bodies.rectangle(window.innerWidth/2,0,window.innerWidth,10,{isStatic: true});
-const wall_left = Bodies.rectangle(0,window.innerHeight/2,10,window.innerHeight,{isStatic: true});
-const wall_right = Bodies.rectangle(window.innerWidth,window.innerHeight/2,10,window.innerHeight,{isStatic: true});
+function create_walls() {
+  const wall_bottom = Bodies.rectangle(window.innerWidth/2,window.innerHeight,window.innerWidth,10,{isStatic: true});
+  const wall_top = Bodies.rectangle(window.innerWidth/2,0,window.innerWidth,10,{isStatic: true});
+  const wall_left = Bodies.rectangle(0,window.innerHeight/2,10,window.innerHeight,{isStatic: true});
+  const wall_right = Bodies.rectangle(window.innerWidth,window.innerHeight/2,10,window.innerHeight,{isStatic: true});
+  Composite.add(world, [wall_bottom,wall_top,wall_left,wall_right]);
+}
+
+function create_env_interaction_buttons() {
+
+  var button_del_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "del_obj",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/trash-svgrepo-com-2.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_del_obj]);
+
+  var button_color_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "color_obj",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/color-palette-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_color_obj]);
+
+  var button_gravity_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "gravity_obj",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/gravity-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_gravity_obj]);
+
+  var button_party_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "party_obj",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/party-horn-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_party_obj]);
+}
+
+function create_social_buttons() {
+  var button_github = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "https://github.com/ikaganacar1",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/github-142-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_github]);
+
+  var button_instagram = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "https://www.instagram.com/ikaganacar/",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/instagram-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_instagram]);
+
+  var button_x = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "https://x.com/ikaganacar",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/twitter-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_x]);
+
+  var button_linkedin = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "https://www.linkedin.com/in/ismail-kağan-acar-24481b24b/",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/linkedin-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_linkedin]);
+
+  var button_mail = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
+    isStatic: false,
+    url: "mailto:acarismailkagan@gmail.com",
+    restitution: 0.8,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/mail-pencil-svgrepo-com.png",
+        xScale:0.2083,
+        yScale:0.2083
+      }   
+    }
+  });World.add(world, [button_mail])
+}
 
 //detect mouse
 let mouse = Mouse.create(iRender.canvas);
@@ -131,73 +269,9 @@ let mouseConstraint = Matter.MouseConstraint.create(iEngine, {
         },
         stiffness: 0.8
     }
-});
+});Matter.World.add(world, mouseConstraint);
 
-Matter.World.add(world, mouseConstraint);
-Composite.add(world, [wall_bottom,wall_top,wall_left,wall_right]);
-
-//buttons
-var button_del_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
-  isStatic: false,
-  url: "del_obj",
-  restitution: 0.8,
-  friction: 0.1,
-  render:{
-    lineWidth:2,
-    sprite:{
-      texture:"https://media.publit.io/file/trash-svgrepo-com-2.png",
-      xScale:0.2083,
-      yScale:0.2083
-    }   
-  }
-});World.add(world, [button_del_obj,])
-
-var button_color_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
-  isStatic: false,
-  url: "color_obj",
-  restitution: 0.8,
-  friction: 0.1,
-  render:{
-    lineWidth:2,
-    sprite:{
-      texture:"https://media.publit.io/file/color-palette-svgrepo-com.png",
-      xScale:0.2083,
-      yScale:0.2083
-    }   
-  }
-});World.add(world, [button_color_obj,])
-
-var button_gravity_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
-  isStatic: false,
-  url: "gravity_obj",
-  restitution: 0.8,
-  friction: 0.1,
-  render:{
-    lineWidth:2,
-    sprite:{
-      texture:"https://media.publit.io/file/gravity-svgrepo-com.png",
-      xScale:0.2083,
-      yScale:0.2083
-    }   
-  }
-});World.add(world, [button_gravity_obj,])
-
-var button_party_obj = Bodies.circle(window.innerWidth/2,window.innerHeight/2,30,{
-  isStatic: false,
-  url: "party_obj",
-  restitution: 0.8,
-  friction: 0.1,
-  render:{
-    lineWidth:2,
-    sprite:{
-      texture:"https://media.publit.io/file/party-horn-svgrepo-com.png",
-      xScale:0.2083,
-      yScale:0.2083
-    }   
-  }
-});World.add(world, [button_party_obj,])
-
-
+//event detections
 let check_if_clicked = false;
 Events.on(mouseConstraint,'mousedown',function(event){
   check_if_clicked=true;
@@ -232,7 +306,8 @@ Events.on(mouseConstraint,'mousedown',function(event){
         }
 
         else if (bodyUrl != undefined) {
-          window.open(bodyUrl, '_blank');
+          window.open(bodyUrl, '_self');
+          check_if_clicked=false;
           console.log("Hyperlink was opened");
         }
         
@@ -254,6 +329,10 @@ Events.on(iEngine, 'afterUpdate', function (event) {
       create_circles(mouse.position.x,mouse.position.y,"gray",0);
     }
 });
+
+create_walls();
+create_env_interaction_buttons();
+create_social_buttons();
 
 Render.run(iRender);
 Runner.run(iRunner, iEngine);}
