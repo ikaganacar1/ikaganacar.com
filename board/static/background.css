@@ -8,11 +8,13 @@
   body {
     font-size: 20px;
     text-align: center;
-    background-color: #171717;
-    color: #000;
+    /*background-color: #171717;*/
     line-height: 1.6;
     overflow: hidden;
-  
+    background-color: #e5e5f7;
+    opacity: 0.8;
+    background-image: radial-gradient(#000000 0.5px, #e5e5f7 0.5px);
+    background-size: 10px 10px;
   }
   
   main {
@@ -20,7 +22,7 @@
     margin: 0 auto;
   }
 
-  
+
 
   
   
