@@ -10,18 +10,18 @@ const   Engine = Matter.Engine,
         Bodies = Matter.Bodies,
         Body = Matter.Body,
         Composite = Matter.Composite,
-        Composites = Matter.Composites,
-        Vector= Matter.Vector,
+        //Composites = Matter.Composites,
+        //Vector= Matter.Vector,
         Common = Matter.Common,
-        MouseConstraint = Matter.MouseConstraint,
+        //MouseConstraint = Matter.MouseConstraint,
         Constraint = Matter.Constraint,
         Mouse = Matter.Mouse,
         Svg = Matter.Svg,
         World = Matter.World,
-        Vertices = Matter.Vertices,
+        //Vertices = Matter.Vertices,
         Events = Matter.Events; 
 
-const   iEngine = Engine.create({gravity: {y:1}}),
+const   iEngine = Engine.create({gravity: {y:0.8}}),
         world = iEngine.world;
 
 const   iRunner = Runner.create();
@@ -85,11 +85,11 @@ function color_obj(el) {
     } 
 }
 
-let mode = 1;
+let mode = 2;
 function gravity_obj(el) {
     switch (mode) {
         case 1:
-            iEngine.gravity.y = 1;
+            iEngine.gravity.y = 0.8;
             mode = 2;
             break;
         case 2:
@@ -234,6 +234,55 @@ function create_env_interaction_buttons() {
   World.add(world,[link0,link1,link2,link3]);
   World.add(world,[button_color_obj,button_del_obj,button_gravity_obj,button_party_obj])
 }
+
+function SVG_to_object() {
+  var vertexSets = [],
+  color = Common.choose(['#00ADB5']);
+
+  $('#svg').find('path').each(function(i, path){
+    console.log(i);
+    var v = Bodies.fromVertices(1, 1, Svg.pathToVertices(path, 15), {
+      url:"ika",
+      restitution:0.1,
+      //density:1,
+      //frictionAir:0.01,
+      render: {
+        fillStyle: color,
+        strokeStyle: color
+      }
+    }, true);
+    console.log(v)
+
+    //Body.setMass(v,1);
+    Body.set(v, "position", {x: window.innerWidth/2+((i)*80), y: window.innerHeight/2});
+    Body.scale(v,1.5,1.5);
+
+    vertexSets.push(v);
+  });
+
+  World.add(world, vertexSets);
+}
+
+const title_box = {
+  w: 140,
+  h: 80,
+  body: Matter.Bodies.rectangle(window.innerWidth-(window.innerWidth*0.1), window.innerHeight-(window.innerHeight*0.9), 100, 50,{isStatic:true}),//
+  elem: document.querySelector("#box"),
+  render() {
+    const {x, y} = this.body.position;
+    this.elem.style.top = `${y - this.h / 2}px`;
+    this.elem.style.left = `${x - this.w / 2}px`;
+    this.elem.style.transform = `rotate(${this.body.angle}rad)`;
+  },
+};
+
+//World.add(world,box.body); //Don't need to bo see the box beacuse i just want to show the text 
+
+(function rerender() {
+  title_box.render();
+  Matter.Engine.update(iEngine);
+  requestAnimationFrame(rerender);
+})();
 
 function create_social_buttons() {
   var button_github = Bodies.circle(50,50,30,{
@@ -423,6 +472,10 @@ Events.on(mouseConstraint,'mousedown',function(event){
           check_if_clicked=false;
         }
 
+        else if (bodyUrl == "ika") {
+          check_if_clicked=false;
+        }
+
         else if (bodyUrl != undefined) {
           window.open(bodyUrl, '_self');
           check_if_clicked=false;
@@ -448,6 +501,7 @@ Events.on(iEngine, 'afterUpdate', function (event) {
     }
 });
 
+SVG_to_object();
 create_walls();
 create_env_interaction_buttons();
 create_social_buttons();

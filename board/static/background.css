@@ -21,7 +21,21 @@
     width: 80%;
     margin: 0 auto;
   }
+  
 
+  #box {
+    position: absolute;
+    height: 80px;
+    width: 140px;
+    color: #7171716d ;
+    /*cursor: move;*/
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Arial";
+    
+  }
 
 
   
