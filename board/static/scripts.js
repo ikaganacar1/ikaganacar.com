@@ -43,9 +43,10 @@ var circle_array = [];
 function create_circles(x,y,color,apply_force){
 
   if (color =="gray") {
-    let gray = Common.random(0,255);
-    var curr_color = `rgb(${gray},${gray},${gray})`
-  
+    /*let gray = Common.random(0,255);
+    var curr_color = `rgb(${gray},${gray},${gray})`*/
+    colors = ["#D6E6F2","#B9D7EA","#769FCD"]; // Switched to the blue tones
+    var curr_color = Common.choose(colors);
   }else{
 
     var curr_color = `rgb(${Common.random(0,255)},${Common.random(0,255)},${Common.random(0,255)})`;
@@ -53,7 +54,7 @@ function create_circles(x,y,color,apply_force){
 
   var circles = Bodies.circle(x+Common.random(-5,5),y+Common.random(-5,5),Common.random(5,30),
     {
-      restitution: 0.8,
+      restitution: 0.25,
       friction: 0.1,
       //url: '#',
       render:{
@@ -63,7 +64,7 @@ function create_circles(x,y,color,apply_force){
       }});
   
   if(apply_force == 1){
-    Body.applyForce(circles, {x: circles.position.x, y: circles.position.y}, {x: Common.random(-0.05,0.05), y: Common.random(-0.05,0.05)})
+    Body.applyForce(circles, {x: circles.position.x, y: circles.position.y}, {x: Common.random(-0.03,0.03), y: Common.random(-0.03,0.03)})
   }
       
     
@@ -79,10 +80,14 @@ function del_obj(el) {
     }
 }
 
+var j = 0;
 function color_obj(el) {
-    for (let i = 0; i < circle_array.length; i++) {
-      circle_array[i].render.fillStyle=`rgb(${Common.random(0,255)},${Common.random(0,255)},${Common.random(0,255)})`;
-    } 
+  setTimeout(() => {
+    circle_array[j].render.fillStyle=`rgb(${Common.random(0,255)},${Common.random(0,255)},${Common.random(0,255)})`;
+    j++;
+    if(j<circle_array.length){color_obj()}
+    else{j = 0;}
+  }, 10); 
 }
 
 let mode = 2;
@@ -125,12 +130,12 @@ function create_env_interaction_buttons() {
   var button_del_obj = Bodies.circle(window.innerWidth*0.15,350,30,{
     isStatic: false,
     url: "del_obj",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/trash-svgrepo-com-2.png",
+        texture:"https://media.publit.io/file/trash-svgrepo-com.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -140,12 +145,12 @@ function create_env_interaction_buttons() {
   var button_color_obj = Bodies.circle(window.innerWidth*0.15,150,30,{
     isStatic: false,
     url: "color_obj",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/color-palette-svgrepo-com.png",
+        texture:"https://media.publit.io/file/color-palette-svgrepo-com-1.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -155,12 +160,12 @@ function create_env_interaction_buttons() {
   var button_gravity_obj = Bodies.circle(window.innerWidth*0.15,250,30,{
     isStatic: false,
     url: "gravity_obj",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/gravity-svgrepo-com.png",
+        texture:"https://media.publit.io/file/gravity-svgrepo-com-1.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -170,12 +175,12 @@ function create_env_interaction_buttons() {
   var button_party_obj = Bodies.circle(window.innerWidth*0.15,50,30,{
     isStatic: false,
     url: "party_obj",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/party-horn-svgrepo-com.png",
+        texture:"https://media.publit.io/file/party-horn-svgrepo-com-1.png",
         xScale:0.2083,
         yScale:0.2083,
       }   
@@ -237,7 +242,7 @@ function create_env_interaction_buttons() {
 
 function SVG_to_object() {
   var vertexSets = [],
-  color = Common.choose(['#00ADB5']);
+  color = Common.choose(['#222831']);
 
   $('#svg').find('path').each(function(i, path){
     console.log(i);
@@ -288,12 +293,12 @@ function create_social_buttons() {
   var button_github = Bodies.circle(50,50,30,{
     isStatic: false,
     url: "https://github.com/ikaganacar1",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/github-142-svgrepo-com.png",
+        texture:"https://media.publit.io/file/github-svgrepo-com.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -303,12 +308,12 @@ function create_social_buttons() {
   var button_instagram = Bodies.circle(50,150,30,{
     isStatic: false,
     url: "https://www.instagram.com/ikaganacar/",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/instagram-svgrepo-com.png",
+        texture:"https://media.publit.io/file/instagram-svgrepo-com-1.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -318,12 +323,12 @@ function create_social_buttons() {
   var button_x = Bodies.circle(50,250,30,{
     isStatic: false,
     url: "https://x.com/ikaganacar",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/twitter-svgrepo-com.png",
+        texture:"https://media.publit.io/file/twitter-svgrepo-com-1.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -333,12 +338,12 @@ function create_social_buttons() {
   var button_linkedin = Bodies.circle(50,350,30,{
     isStatic: false,
     url: "https://www.linkedin.com/in/ismail-kağan-acar-24481b24b/",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/linkedin-svgrepo-com.png",
+        texture:"https://media.publit.io/file/linkedin-svgrepo-com-1.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -348,12 +353,12 @@ function create_social_buttons() {
   var button_mail = Bodies.circle(50,450,30,{
     isStatic: false,
     url: "mailto:acarismailkagan@gmail.com",
-    restitution: 0.8,
+    restitution: 0.25,
     friction: 0.1,
     render:{
       lineWidth:2,
       sprite:{
-        texture:"https://media.publit.io/file/mail-pencil-svgrepo-com.png",
+        texture:"https://media.publit.io/file/mail-alt-3-svgrepo-com.png",
         xScale:0.2083,
         yScale:0.2083
       }   
@@ -509,3 +514,13 @@ create_social_buttons();
 Render.run(iRender);
 Runner.run(iRunner, iEngine);}
 catch(e){console.log(e)}//global try catch to see the errors
+
+
+/*
+top sınırı
+mobilde kasıyor 
+
+görsel iyileştirme
+
+
+*/

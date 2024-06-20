@@ -11,9 +11,9 @@
     /*background-color: #171717;*/
     line-height: 1.6;
     overflow: hidden;
-    background-color: #e5e5f7;
+    background-color: #e5e5f7;/*#e5e5f7*/
     opacity: 0.8;
-    background-image: radial-gradient(#000000 0.5px, #e5e5f7 0.5px);
+    background-image: radial-gradient(#769FCD 0.5px, #F7FBFC 0.5px);
     background-size: 10px 10px;
   }
   
