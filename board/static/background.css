@@ -27,13 +27,14 @@
     position: absolute;
     height: 80px;
     width: 140px;
-    color: #7171716d ;
-    /*cursor: move;*/
+    color: #272626 ;
+    font-size: 100px;
     user-select: none;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: "Arial";
+    font-style: inherit;
     
   }
 

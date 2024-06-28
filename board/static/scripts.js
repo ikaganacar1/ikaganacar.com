@@ -10,16 +10,16 @@ const   Engine = Matter.Engine,
         Bodies = Matter.Bodies,
         Body = Matter.Body,
         Composite = Matter.Composite,
-        //Composites = Matter.Composites,
-        //Vector= Matter.Vector,
         Common = Matter.Common,
-        //MouseConstraint = Matter.MouseConstraint,
         Constraint = Matter.Constraint,
         Mouse = Matter.Mouse,
         Svg = Matter.Svg,
         World = Matter.World,
-        //Vertices = Matter.Vertices,
-        Events = Matter.Events; 
+        Events = Matter.Events;
+        //Composites = Matter.Composites,
+        //Vector= Matter.Vector,
+        //Vertices = Matter.Vertices, 
+        //MouseConstraint = Matter.MouseConstraint,
 
 const   iEngine = Engine.create({gravity: {y:0.8}}),
         world = iEngine.world;
@@ -39,6 +39,13 @@ const   iRender = Render.create({
             }
         });
 
+var ratio = (1253376/(window.screen.availWidth*window.screen.availHeight));
+
+if (ratio<1) {
+  ratio = 1;
+} 
+console.log(ratio)
+
 var circle_array = [];
 function create_circles(x,y,color,apply_force){
 
@@ -52,8 +59,15 @@ function create_circles(x,y,color,apply_force){
     var curr_color = `rgb(${Common.random(0,255)},${Common.random(0,255)},${Common.random(0,255)})`;
   }
 
-  var circles = Bodies.circle(x+Common.random(-5,5),y+Common.random(-5,5),Common.random(5,30),
+  //ratio = 1;
+  var radius = (Math.sqrt(ratio))*Common.random(5,30);
+
+  //console.log(ratio,radius);
+  //console.log(window.innerWidth , window.screen.availWidth);
+
+  var circles = Bodies.circle(x+Common.random(-5,5),y+Common.random(-5,5),radius,
     {
+      density:0.0001,
       restitution: 0.25,
       friction: 0.1,
       //url: '#',
@@ -67,8 +81,6 @@ function create_circles(x,y,color,apply_force){
     Body.applyForce(circles, {x: circles.position.x, y: circles.position.y}, {x: Common.random(-0.03,0.03), y: Common.random(-0.03,0.03)})
   }
       
-    
-
     Composite.add(world,circles);
     circle_array.push(circles);
     //setTimeout(function(){Composite.remove(world,circles);},1000);
@@ -127,7 +139,14 @@ function create_walls() {
 
 function create_env_interaction_buttons() {
 
-  var button_del_obj = Bodies.circle(window.innerWidth*0.15,350,30,{
+  var button_ratio;
+  if (window.innerWidth > window.innerHeight) {
+    button_ratio = ratio;
+  } else {
+    button_ratio = ratio/2;
+  }
+
+  var button_del_obj = Bodies.circle(window.innerWidth*0.95,350*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "del_obj",
     restitution: 0.25,
@@ -136,13 +155,13 @@ function create_env_interaction_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/trash-svgrepo-com.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
 
-  var button_color_obj = Bodies.circle(window.innerWidth*0.15,150,30,{
+  var button_color_obj = Bodies.circle(window.innerWidth*0.95,150*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "color_obj",
     restitution: 0.25,
@@ -151,13 +170,13 @@ function create_env_interaction_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/color-palette-svgrepo-com-1.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
 
-  var button_gravity_obj = Bodies.circle(window.innerWidth*0.15,250,30,{
+  var button_gravity_obj = Bodies.circle(window.innerWidth*0.95,250*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "gravity_obj",
     restitution: 0.25,
@@ -166,13 +185,13 @@ function create_env_interaction_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/gravity-svgrepo-com-1.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
 
-  var button_party_obj = Bodies.circle(window.innerWidth*0.15,50,30,{
+  var button_party_obj = Bodies.circle(window.innerWidth*0.95,50*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "party_obj",
     restitution: 0.25,
@@ -181,17 +200,17 @@ function create_env_interaction_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/party-horn-svgrepo-com-1.png",
-        xScale:0.2083,
-        yScale:0.2083,
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio,
       }   
     }
   });
 
   link0 = Constraint.create({
-    pointA: {x:window.innerWidth*0.20, y:0},
+    pointA: {x:window.innerWidth*0.90, y:0},
     bodyB: button_party_obj,
     stiffness: 0.1,
-    length:50,
+    length:50*button_ratio,
     render:{
       lineWidth:1,
       type: 'line',
@@ -245,7 +264,7 @@ function SVG_to_object() {
   color = Common.choose(['#222831']);
 
   $('#svg').find('path').each(function(i, path){
-    console.log(i);
+    //console.log(i);
     var v = Bodies.fromVertices(1, 1, Svg.pathToVertices(path, 15), {
       url:"ika",
       restitution:0.1,
@@ -259,8 +278,20 @@ function SVG_to_object() {
     console.log(v)
 
     //Body.setMass(v,1);
-    Body.set(v, "position", {x: window.innerWidth/2+((i)*80), y: window.innerHeight/2});
-    Body.scale(v,1.5,1.5);
+    if (i == 2) {
+      Body.set(v, "position", {x: window.innerWidth/2+((i)*150), y: window.innerHeight/2});
+    } else {
+      Body.set(v, "position", {x: window.innerWidth/2+((i)*80), y: window.innerHeight/2});
+
+    }
+    
+
+    var svg_ratio = ratio;
+    if (window.innerWidth > window.innerHeight) {
+      svg_ratio = ratio*2
+    }
+
+    Body.scale(v,svg_ratio,svg_ratio);
 
     vertexSets.push(v);
   });
@@ -271,7 +302,7 @@ function SVG_to_object() {
 const title_box = {
   w: 140,
   h: 80,
-  body: Matter.Bodies.rectangle(window.innerWidth-(window.innerWidth*0.1), window.innerHeight-(window.innerHeight*0.9), 100, 50,{isStatic:true}),//
+  body: Matter.Bodies.rectangle(window.innerWidth-(window.innerWidth*0.5), window.innerHeight-(window.innerHeight*0.5), 5, 5,{isStatic:true}),//
   elem: document.querySelector("#box"),
   render() {
     const {x, y} = this.body.position;
@@ -280,8 +311,7 @@ const title_box = {
     this.elem.style.transform = `rotate(${this.body.angle}rad)`;
   },
 };
-
-//World.add(world,box.body); //Don't need to bo see the box beacuse i just want to show the text 
+//World.add(world,box.body); //Don't need to see the box beacuse i just want to show the text 
 
 (function rerender() {
   title_box.render();
@@ -290,7 +320,14 @@ const title_box = {
 })();
 
 function create_social_buttons() {
-  var button_github = Bodies.circle(50,50,30,{
+  var button_ratio;
+  if (window.innerWidth > window.innerHeight) {
+    button_ratio = ratio;
+  } else {
+    button_ratio = ratio/2;
+  }
+
+  var button_github = Bodies.circle(50,50*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "https://github.com/ikaganacar1",
     restitution: 0.25,
@@ -299,13 +336,13 @@ function create_social_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/github-svgrepo-com.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
 
-  var button_instagram = Bodies.circle(50,150,30,{
+  var button_instagram = Bodies.circle(50,150*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "https://www.instagram.com/ikaganacar/",
     restitution: 0.25,
@@ -314,13 +351,13 @@ function create_social_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/instagram-svgrepo-com-1.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
 
-  var button_x = Bodies.circle(50,250,30,{
+  var button_x = Bodies.circle(50,250*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "https://x.com/ikaganacar",
     restitution: 0.25,
@@ -329,13 +366,13 @@ function create_social_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/twitter-svgrepo-com-1.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
 
-  var button_linkedin = Bodies.circle(50,350,30,{
+  var button_linkedin = Bodies.circle(50,350*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "https://www.linkedin.com/in/ismail-kağan-acar-24481b24b/",
     restitution: 0.25,
@@ -344,13 +381,13 @@ function create_social_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/linkedin-svgrepo-com-1.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
 
-  var button_mail = Bodies.circle(50,450,30,{
+  var button_mail = Bodies.circle(50,450*button_ratio,30*button_ratio,{
     isStatic: false,
     url: "mailto:acarismailkagan@gmail.com",
     restitution: 0.25,
@@ -359,8 +396,8 @@ function create_social_buttons() {
       lineWidth:2,
       sprite:{
         texture:"https://media.publit.io/file/mail-alt-3-svgrepo-com.png",
-        xScale:0.2083,
-        yScale:0.2083
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio
       }   
     }
   });
@@ -369,7 +406,7 @@ function create_social_buttons() {
     pointA: {x:window.innerWidth*0.1, y:0},
     bodyB: button_github,
     stiffness: 0.1,
-    length:50,
+    length:50*button_ratio,
     render:{
       lineWidth:1,
       type: 'line',
@@ -446,6 +483,8 @@ let mouseConstraint = Matter.MouseConstraint.create(iEngine, {
 //event detections
 let check_if_clicked = false;
 Events.on(mouseConstraint,'mousedown',function(event){
+
+  Body.set(title_box.body, "position",{x:-1000});
   check_if_clicked=true;
   var mc = event.source;
   var bodies = world.bodies;
@@ -514,13 +553,3 @@ create_social_buttons();
 Render.run(iRender);
 Runner.run(iRunner, iEngine);}
 catch(e){console.log(e)}//global try catch to see the errors
-
-
-/*
-top sınırı
-mobilde kasıyor 
-
-görsel iyileştirme
-
-
-*/
