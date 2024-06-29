@@ -129,6 +129,10 @@ function party_obj(el) {
     }, 10);
 } 
 
+function refresh_page(el) {
+  window.location.reload()
+}
+
 function create_walls() {
   const wall_bottom = Bodies.rectangle(window.innerWidth/2,window.innerHeight,window.innerWidth,10,{isStatic: true,density:10});
   const wall_top = Bodies.rectangle(window.innerWidth/2,-10,window.innerWidth,10,{isStatic: true,density:10});
@@ -187,6 +191,21 @@ function create_env_interaction_buttons() {
         texture:"https://media.publit.io/file/gravity-svgrepo-com-1.png",
         xScale:0.2083*button_ratio,
         yScale:0.2083*button_ratio
+      }   
+    }
+  });
+
+  var button_refresh_page = Bodies.circle(window.innerWidth*0.95,450*button_ratio,30*button_ratio,{
+    isStatic: false,
+    url: "refresh_page",
+    restitution: 0.25,
+    friction: 0.1,
+    render:{
+      lineWidth:2,
+      sprite:{
+        texture:"https://media.publit.io/file/refresh-cw-alt-4-svgrepo-com.png",
+        xScale:0.2083*button_ratio,
+        yScale:0.2083*button_ratio,
       }   
     }
   });
@@ -255,8 +274,20 @@ function create_env_interaction_buttons() {
     }
   });
 
-  World.add(world,[link0,link1,link2,link3]);
-  World.add(world,[button_color_obj,button_del_obj,button_gravity_obj,button_party_obj])
+  link4 = Constraint.create({
+    bodyA: button_del_obj,
+    bodyB: button_refresh_page,
+    stiffness: 0.1,
+    render:{
+      lineWidth:1,
+      type: 'line',
+      anchors: false,
+      strokeStyle: '#393E46'
+    }
+  });
+
+  World.add(world,[link0,link1,link2,link3,link4]);
+  World.add(world,[button_color_obj,button_del_obj,button_gravity_obj,button_party_obj,button_refresh_page])
 }
 
 function SVG_to_object() {
@@ -513,6 +544,11 @@ Events.on(mouseConstraint,'mousedown',function(event){
 
         else if (bodyUrl == "party_obj") {
           party_obj();
+          check_if_clicked=false;
+        }
+
+        else if (bodyUrl == "refresh_page") {
+          refresh_page();
           check_if_clicked=false;
         }
 
