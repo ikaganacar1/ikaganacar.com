@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h2>{% block title %}{% endblock title %}</h2>
+{% endblock header %}
+
+{% block div %}
+
+
+<div class="wrapper">
+  <input type="text" name="text" id="input_" class="input" placeholder="Type here...">
+
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='hearts8.css')}}">
+
+<script type="module" src="{{ url_for('static', filename='script_for_hearts8.js')}}"></script>
+
+{% endblock div %}

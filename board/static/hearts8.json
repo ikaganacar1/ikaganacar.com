@@ -1,0 +1,221 @@
+{
+    "hearts": {
+        "1": {
+            "code": "MP0SXH",
+            "link": ""
+        },
+        "2": {
+            "code": "LSOIS2",
+            "link": ""
+        },
+        "3": {
+            "code": "7MMWGN",
+            "link": ""
+        },
+        "4": {
+            "code": "V5QTAR",
+            "link": ""
+        },
+        "5": {
+            "code": "W7RK89",
+            "link": ""
+        },
+        "6": {
+            "code": "J33G1K",
+            "link": ""
+        },
+        "7": {
+            "code": "NTZUVV",
+            "link": ""
+        },
+        "8": {
+            "code": "000000",
+            "link": ""
+        },
+        "9": {
+            "code": "FWNSZ0",
+            "link": ""
+        },
+        "10": {
+            "code": "FTAUUW",
+            "link": ""
+        },
+        "J": {
+            "code": "JMSPCL",
+            "link": ""
+        },
+        "Q": {
+            "code": "JJTPGO",
+            "link": ""
+        },
+        "K": {
+            "code": "DARJYJ",
+            "link": ""
+        }
+    },
+    
+    "diamonds": {
+        "1": {
+            "code": "KF7MBT",
+            "link": ""
+        },
+        "2": {
+            "code": "KZCFE2",
+            "link": ""
+        },
+        "3": {
+            "code": "FN6X3J",
+            "link": ""
+        },
+        "4": {
+            "code": "OPIXGL",
+            "link": ""
+        },
+        "5": {
+            "code": "VAWDO1",
+            "link": ""
+        },
+        "6": {
+            "code": "5VL00C",
+            "link": ""
+        },
+        "7": {
+            "code": "CBOMCT",
+            "link": ""
+        },
+        "8": {
+            "code": "FQ9PUX",
+            "link": ""
+        },
+        "9": {
+            "code": "G9JBMU",
+            "link": ""
+        },
+        "10": {
+            "code": "LMMMVB",
+            "link": ""
+        },
+        "J": {
+            "code": "JXYPZU",
+            "link": ""
+        },
+        "Q": {
+            "code": "37GYW6",
+            "link": ""
+        },
+        "K": {
+            "code": "FKLME3",
+            "link": ""
+        }
+    },
+
+    "clubs": {
+        "1": {
+            "code": "THJ4DU",
+            "link": ""
+        },
+        "2": {
+            "code": "TNFBYJ",
+            "link": ""
+        },
+        "3": {
+            "code": "ADMLPG",
+            "link": ""
+        },
+        "4": {
+            "code": "K78QU4",
+            "link": ""
+        },
+        "5": {
+            "code": "0SJ2D6",
+            "link": ""
+        },
+        "6": {
+            "code": "GKXBAZ",
+            "link": ""
+        },
+        "7": {
+            "code": "NSK2NI",
+            "link": ""
+        },
+        "8": {
+            "code": "YD5KCG",
+            "link": ""
+        },
+        "9": {
+            "code": "ZM7A7O",
+            "link": ""
+        },
+        "10": {
+            "code": "XE9CSY",
+            "link": ""
+        },
+        "J": {
+            "code": "KC9W8S",
+            "link": ""
+        },
+        "Q": {
+            "code": "OZ1CN6",
+            "link": ""
+        },
+        "K": {
+            "code": "MVEAB6",
+            "link": ""
+        }
+    },
+
+    "spades": {
+        "1": {
+            "code": "VSLVMG",
+            "link": ""
+        },
+        "2": {
+            "code": "UABXAL",
+            "link": ""
+        },
+        "3": {
+            "code": "Z7NE2P",
+            "link": ""
+        },
+        "4": {
+            "code": "CMRC5V",
+            "link": ""
+        },
+        "5": {
+            "code": "IVBXNN",
+            "link": ""
+        },
+        "6": {
+            "code": "QUKDIC",
+            "link": ""
+        },
+        "7": {
+            "code": "CK9QKA",
+            "link": ""
+        },
+        "8": {
+            "code": "SBQRQJ",
+            "link": ""
+        },
+        "9": {
+            "code": "9LPLOY",
+            "link": ""
+        },
+        "10": {
+            "code": "SPNPRX",
+            "link": ""
+        },
+        "J": {
+            "code": "CND1P4",
+            "link": ""
+        },
+        "Q": {
+            "code": "EWOHVY",
+            "link": ""
+        },
+        "K": {
+            "code": "RYZYOP",
+            "link": ""
+        }
+    }
+}

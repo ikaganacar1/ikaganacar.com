@@ -13,3 +13,7 @@ application = app
 @app.route("/")
 def home():
     return render_template("pages/home.html")
+
+@app.route("/hearts8")
+def hearts8():
+    return render_template("pages/hearts8.html")
