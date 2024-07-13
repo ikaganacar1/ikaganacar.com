@@ -17,3 +17,8 @@ def home():
 @app.route("/hearts8")
 def hearts8():
     return render_template("pages/hearts8.html")
+
+@app.route("/1025438697")
+def _1025438697():
+    return render_template("pages/1025438697.html")
+
