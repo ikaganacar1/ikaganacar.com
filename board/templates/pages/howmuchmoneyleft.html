@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h2>{% block title %}{% endblock title %}</h2>
+{% endblock header %}
+
+{% block div %}
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+<div class="table center">
+  <div class="monitor-wrapper center">
+    <div class="monitor center">
+      <p id="info_p">149. Gün 6000TL Para Ödülün Kaldı.</p>
+    </div>
+  </div>
+</div>
+
+
+<link rel="stylesheet" href="{{ url_for('static', filename='howmuchmoneyleft.css')}}">
+
+<script type="module" src="{{ url_for('static', filename='script_for_howmuchmoneyleft.js')}}"></script>
+
+
+{% endblock div %}
+
+
+

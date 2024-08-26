@@ -22,3 +22,11 @@ def hearts8():
 def _1025438697():
     return render_template("pages/1025438697.html")
 
+@app.route("/_")
+def _():
+    return render_template("pages/_.html")
+
+@app.route("/howmuchmoneyleft")
+def howmuchmoneyleft():
+    return render_template("pages/howmuchmoneyleft.html")
+
