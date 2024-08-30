@@ -1,0 +1,2 @@
+[flask.commands]
+fmd = flask_monitoringdashboard.cli:fmd

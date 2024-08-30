@@ -4,10 +4,14 @@
 #set FLASK_APP=app.py 
 #python -m flask run
 from flask import Flask
-from flask import render_template
+from flask import render_template, send_from_directory
+import os
+import flask_monitoringdashboard as dashboard
 
 app = Flask(__name__)
-    
+
+dashboard.config.init_from(file='board/config.cfg')
+
 application = app
 
 @app.route("/")
@@ -30,3 +34,8 @@ def _():
 def howmuchmoneyleft():
     return render_template("pages/howmuchmoneyleft.html")
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static/image'),'favicon.ico',mimetype='image/vnd.microsoft.icon')
+
+dashboard.bind(app) 

@@ -6,7 +6,6 @@
 
 {% block div %}
 
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -20,12 +19,8 @@
 </div>
 
 
-<link rel="stylesheet" href="{{ url_for('static', filename='howmuchmoneyleft.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='howmuchmoneyleft/howmuchmoneyleft.css')}}">
 
-<script type="module" src="{{ url_for('static', filename='script_for_howmuchmoneyleft.js')}}"></script>
-
+<script type="module" src="{{ url_for('static', filename='howmuchmoneyleft/script_for_howmuchmoneyleft.js')}}"></script>
 
 {% endblock div %}
-
-
-
