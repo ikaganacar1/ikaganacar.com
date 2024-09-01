@@ -1,43 +1,64 @@
-* 
-{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
-  html, body
-  {height: 100%;}
 
-  body {
-    font-size: 20px;
-    text-align: center;
-    /*background-color: #171717;*/
-    line-height: 1.6;
-    overflow: hidden;
-    background-color: #e5e5f7;/*#e5e5f7*/
-    opacity: 0.8;
-    background-image: radial-gradient(#769FCD 0.5px, #F7FBFC 0.5px);
-    background-size: 10px 10px;
-  }
-  
-  main {
-    width: 80%;
-    margin: 0 auto;
-  }
-  
+html,
+body {
+  height: 100%;
+}
 
-  #box {
-    position: absolute;
-    height: 80px;
-    width: 140px;
-    color: #272626 ;
-    font-size: 100px;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Arial";
-    font-style: inherit;
-    
-  }
+body {
+  font-size: 20px;
+  text-align: center;
+  /*background-color: #171717;*/
+  line-height: 1.6;
+  overflow: hidden;
+  background-color: #e5e5f7;
+  /*#e5e5f7*/
+  opacity: 0.8;
+  background-image: radial-gradient(#769FCD 0.5px, #F7FBFC 0.5px);
+  background-size: 10px 10px;
+}
+
+main {
+  width: 80%;
+  margin: 0 auto;
+}
 
 
-  
-  
+#box {
+  position: absolute;
+  height: 80px;
+  width: 140px;
+  color: #272626;
+  font-size: 100px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Arial";
+  font-style: inherit;
+
+}
+
+#link_button {
+  position: absolute;
+  color: #272626;
+  font-size: 40px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+}
+
+#link_button p {
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove any padding that could affect centering */
+  line-height: 1; /* Keep line-height to ensure vertical centering */
+  text-align: center; /* Center text horizontally */
+  width: 100%; /* Ensure the <p> element spans the full width */
+}

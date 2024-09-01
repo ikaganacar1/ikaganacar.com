@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>{% block title %}{% endblock title %}</h2>
+{% endblock header %}
+
+{% block div %}
+<link rel="stylesheet" href="{{ url_for('static', filename='useless_projects/useless_projects/background.css')}}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pathseg@1.2.1/pathseg.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/poly-decomp@0.3.0/build/decomp.min.js"></script>
+
+
+<div id="sign1">
+  <div class="table center">
+    <div class="monitor-wrapper center">
+      <div class="monitor center">
+        <p id="sign_p">How Much Money Left</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="link_button1">
+  <p id="link_p">link</p>
+</div>
+
+<div id="scissors_button">
+  <p id="cut_p">Cut</p>
+</div>
+
+<script src="{{ url_for('static', filename='useless_projects/useless_projects/scripts.js')}}"></script>
+
+{% endblock div %}

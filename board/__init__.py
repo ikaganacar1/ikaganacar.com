@@ -30,12 +30,20 @@ def _1025438697():
 def _():
     return render_template("pages/_.html")
 
-@app.route("/howmuchmoneyleft")
-def howmuchmoneyleft():
-    return render_template("pages/howmuchmoneyleft.html")
-
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static/image'),'favicon.ico',mimetype='image/vnd.microsoft.icon')
+
+#?______________________________________________________________________
+
+@app.route("/useless_projects")
+def useless_projects():
+    return render_template("useless_projects/useless_projects.html")
+
+@app.route("/useless_projects/howmuchmoneyleft")
+def howmuchmoneyleft():
+    return render_template("useless_projects/howmuchmoneyleft.html")
+
+
 
 dashboard.bind(app) 
