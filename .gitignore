@@ -1,2 +1,4 @@
-config.cfg
-flask_monitoringdashboard.db
+ignored
+venv
+site.db
+secret_key.txt

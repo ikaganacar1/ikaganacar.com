@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block div %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='admin/admin.css')}}">
+<form class="form" action="{{ url_for('admin')}}" method="POST">
+    <div class="control">
+        <h1>
+            Admin Panel
+        </h1>
+    </div>
+    <div class="control block-cube block-input">
+        <input name="username" placeholder="Username" type="text">
+        <div class="bg-top">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg-right">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg">
+            <div class="bg-inner"></div>
+        </div>
+    </div>
+    <div class="control block-cube block-input">
+        <input name="password" placeholder="Password" type="password">
+        <div class="bg-top">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg-right">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg">
+            <div class="bg-inner"></div>
+        </div>
+    </div>
+    <button class="btn block-cube block-cube-hover" type="submit">
+        <div class="bg-top">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg-right">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="text">
+            Log In
+        </div>
+    </button>
+
+</form>
+
+
+
+{% endblock %}

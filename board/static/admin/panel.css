@@ -1,0 +1,136 @@
+ /* Universal box-sizing for better control */
+ *,
+ ::after,
+ ::before {
+     box-sizing: border-box;
+ }
+
+ /* Base body styles */
+ body {
+     background-color: #212121;
+     color: #fff;
+     font-family: monospace, serif;
+     letter-spacing: 0.05em;
+     margin: 0;
+     padding: 20px;
+ }
+
+ /* Heading styles */
+ h1 {
+     font-size: 23px;
+     text-align: center;
+     margin-bottom: 20px;
+ }
+
+ /* Table styling */
+ table {
+     width: 100%;
+     border-collapse: collapse;
+     margin: 0 auto;
+     table-layout: fixed;
+     background-color: #333;
+     border-radius: 8px;
+     overflow: hidden;
+ }
+
+ /* Table header styling */
+ thead th {
+     position: sticky;
+     top: 0;
+     background: #212121;
+     color: #fff;
+     text-align: left;
+     padding: 12px;
+     font-size: 16px;
+     border-bottom: 2px solid #444;
+ }
+
+ /* Table body styling */
+ tbody tr {
+     background-color: #2b2b2b;
+     transition: background-color 0.2s ease-in-out;
+ }
+
+ tbody tr:hover {
+     background-color: #383838;
+ }
+
+ tbody td {
+     padding: 12px;
+     border-bottom: 1px solid #444;
+     vertical-align: top;
+     font-size: 14px;
+ }
+
+ tbody tr td:first-child {
+     position: sticky;
+     left: 0;
+     background-color: #212121;
+     z-index: 1;
+     max-width: 150px;
+     word-wrap: break-word;
+ }
+
+ /* Styling for visit list */
+ ul {
+     list-style-type: none;
+     padding-left: 0;
+     margin: 0;
+     max-height: 150px;
+     overflow-y: auto;
+     background-color: #292929;
+     border: 1px solid #444;
+     border-radius: 4px;
+     padding: 8px;
+ }
+
+ ul li {
+     padding: 6px;
+     border-bottom: 1px dotted #555;
+ }
+
+ ul li:last-child {
+     border-bottom: none;
+ }
+
+ /* Collapse toggle styling */
+ .collapse-toggle {
+     cursor: pointer;
+     color: #00d4ff;
+     text-decoration: underline;
+     font-weight: bold;
+ }
+
+ .collapse-toggle::after {
+     content: ' ▼';
+ }
+
+ .collapsed .collapse-toggle::after {
+     content: ' ▶';
+ }
+
+ .collapsed ul {
+     display: none;
+ }
+
+ /* Responsive adjustments */
+ @media (pointer: none),
+ (pointer: coarse) {
+     h1 {
+         font-size: 30px;
+     }
+
+     thead th,
+     tbody td {
+         padding: 16px;
+         font-size: 15px;
+     }
+
+     ul {
+         max-height: 200px;
+     }
+
+     .collapse-toggle {
+         font-size: 15px;
+     }
+ }

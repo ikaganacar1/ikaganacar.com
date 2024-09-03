@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/panel.css')}}">
+    
+    <script>
+        function toggleCollapse(element) {
+            const parentTr = element.closest('tr');
+            parentTr.classList.toggle('collapsed');
+        }
+    </script>
+</head>
+<body>
+
+<h1>Page History</h1>
+<table border="1">
+    <thead>
+        <tr>
+            <th>Page Name</th>
+            <th>Visit Count</th>
+            <th>Visits</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for history in histories %}
+        <tr class="collapsed">
+            <td>{{ history.page_name }}</td>
+            <td>{{ history.visit_count }}</td>
+            <td>
+                <span class="collapse-toggle" onclick="toggleCollapse(this)">Show/Hide Visits</span>
+                <ul>
+                    {% for visit in history.visits %}
+                    <li>{{ visit.date }} - {{ visit.ip_address }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
