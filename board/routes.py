@@ -89,3 +89,8 @@ def useless_projects():
 def howmuchmoneyleft():
     track_visit("useless_projects/howmuchmoneyleft")
     return render_template("useless_projects/howmuchmoneyleft.html")
+
+@app.route("/useless_projects/ika")
+def ika():
+    track_visit("useless_projects/ika")
+    return render_template("useless_projects/ika.html")

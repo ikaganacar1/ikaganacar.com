@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>{% block title %}{% endblock title %}</h2>
+{% endblock header %}
+
+{% block div %}
+<link rel="stylesheet" href="{{ url_for('static', filename='useless_projects/ika/ika.css')}}">
+
+<section>
+  <h1>İsmail Kağan Acar's</h1>
+
+  <details open>
+    <summary>Age</summary>
+    <div>
+      <p id="years"></p>
+      <p id="days"></p>
+      <p id="hours"></p>
+      <p id="minutes"></p>
+      <p id="seconds"></p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Next Birthday</summary>
+    <div>
+      <p id="next"></p>
+      <p id="left"></p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Weird Facts</summary>
+    <div>
+      <p>Went to France: No</p>
+      <p>Read Dostoevsky: No</p>
+      <p>Committed Suicide: 0</p>
+      <p>Born in China: No</p>
+      <p>Loves Pudding: Yes</p>
+      <p>Ever owned a iPhone: No</p>
+      <p>Ate Bat: No</p>
+      <p>Started a Pandemic: No</p>
+      <p>Loves HDMI cable: Yes</p>
+    </div>
+  </details>
+
+</section>
+
+
+
+<script type="module" src="{{ url_for('static', filename='useless_projects/ika/ika.js')}}"></script>
+
+{% endblock div %}
