@@ -90,8 +90,12 @@ def favicon():
 @app.route("/useless_projects")
 def useless_projects():
     track_visit("useless_projects")
-    return render_template("useless_projects/useless_projects.html")
+    return render_template("useless_projects/useless_home_page.html")
 
+@app.route("/useless_projects/balloons")
+def balloons():
+    track_visit("useless_projects/balloons")
+    return render_template("useless_projects/balloons.html")
 
 @app.route("/useless_projects/howmuchmoneyleft")
 def howmuchmoneyleft():

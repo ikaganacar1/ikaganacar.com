@@ -1,0 +1,257 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  /* Ensure no margin around the body */
+}
+
+body {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.6;
+  overflow: hidden;
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-image: radial-gradient(#769FCD 1px, #F7FBFC 1px);
+  background-size: 10px 10px;
+}
+@media (hover: none) {
+  body {
+      background-image: radial-gradient(#769fcd8e 3px, #F7FBFC 3px);
+      background-size: 12px 12px;
+
+  }
+}
+@import url("https://fonts.googleapis.com/css?family=Karla|Space+Mono");
+
+#howmuchmoneyleft_sign {
+  position: absolute;
+  color: #272626;
+  font-size: 25px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+}
+
+#balloon_sign {
+  position: absolute;
+  color: #272626;
+  font-size: 25px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Permanent Marker", cursive;
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+}
+
+#ika_sign {
+  position: absolute;
+  color: #272626;
+  font-size: 25px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Space Mono", monospace;
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+}
+
+.table {
+  width: 100%;
+  /* Ensure it fills the parent (#sign1) */
+  height: 100%;
+  /* Ensure it fills the parent (#sign1) */
+  background-color: #d4e5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.monitor-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #050321;
+  box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.monitor {
+  width: 90%;
+  height: 90%;
+  background-color: #344151;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: inset 0px 5px 10px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.monitor p {
+  font-size: 50px;
+  position: absolute;
+  animation: move 10s infinite linear;
+  color: #EBB55F;
+  white-space: nowrap;
+}
+
+@keyframes move {
+  from {
+    left: 100%;
+  }
+
+  to {
+    left: -100%;
+  }
+}
+
+#howmuchmoneyleft_link {
+  position: absolute;
+
+  color: #272626;
+  font-size: 25px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+
+}
+
+#balloon_link {
+  position: absolute;
+
+  color: #272626;
+  font-size: 25px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+
+}
+
+#ika_link {
+  position: absolute;
+
+  color: #272626;
+  font-size: 25px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+
+}
+
+.b_table {
+  width: 100%;
+  /* Ensure it fills the parent (#sign1) */
+  height: 100%;
+  /* Ensure it fills the parent (#sign1) */
+  background-color: #6256CA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.b_monitor-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #86D293;
+  box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.b_monitor {
+  width: 90%;
+  height: 90%;
+  background-color: #C1E2A4;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: inset 0px 5px 10px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.b_monitor p {
+  font-size: 50px;
+  position: absolute;
+  /*animation: move 10s infinite linear;*/
+  color: #6256CA;
+  white-space: nowrap;
+}
+
+/*-------------*/
+
+
+.i_table {
+  width: 100%;
+  /* Ensure it fills the parent (#sign1) */
+  height: 100%;
+  /* Ensure it fills the parent (#sign1) */
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.i_monitor-wrapper {
+  width: 100%;
+  height: 100%;
+  background: #272727;
+  box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.i_monitor {
+  width: 90%;
+  height: 90%;
+  background-color: #b8001f98;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: inset 0px 5px 10px 2px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.i_monitor p {
+  font-size: 50px;
+  position: absolute;
+  /*animation: move 10s infinite linear;*/
+  color: #ffffff;
+  white-space: nowrap;
+}

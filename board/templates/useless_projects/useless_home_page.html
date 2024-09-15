@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>{% block title %}{% endblock title %}</h2>
+{% endblock header %}
+
+{% block div %}
+<link rel="stylesheet" href="{{ url_for('static', filename='useless_projects/useless_home_page/background.css')}}">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pathseg@1.2.1/pathseg.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/poly-decomp@0.3.0/build/decomp.min.js"></script>
+
+
+
+<div id="howmuchmoneyleft_sign">
+  <div class="table center">
+    <div class="monitor-wrapper center">
+      <div class="monitor center">
+        <p id="howmuchmoneyleft_sign_p">How Much Money Left</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="howmuchmoneyleft_link">
+  <p id="howmuchmoneyleft_link_p">link</p>
+</div>
+
+
+<div id="balloon_sign">
+  <div class="b_table center">
+    <div class="b_monitor-wrapper center">
+      <div class="b_monitor center">
+        <p id="balloon_sign_p">balloons</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="balloon_link">
+  <p id="balloon_link_p">link</p>
+</div>
+
+
+<div id="ika_sign">
+  <div class="i_table center">
+    <div class="i_monitor-wrapper center">
+      <div class="i_monitor center">
+        <p id="ika_sign_p">ika's stats</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="ika_link">
+  <p id="ika_link_p">link</p>
+</div>
+
+<script src="{{ url_for('static', filename='useless_projects/useless_home_page/scripts.js')}}"></script>
+
+{% endblock div %}

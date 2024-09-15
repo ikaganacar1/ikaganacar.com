@@ -5,7 +5,7 @@
 {% endblock header %}
 
 {% block div %}
-<link rel="stylesheet" href="{{ url_for('static', filename='useless_projects/useless_projects/background.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='useless_projects/balloons/background.css')}}">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,24 +15,12 @@
 <script src="https://cdn.jsdelivr.net/npm/poly-decomp@0.3.0/build/decomp.min.js"></script>
 
 
-<div id="sign1">
-  <div class="table center">
-    <div class="monitor-wrapper center">
-      <div class="monitor center">
-        <p id="sign_p">How Much Money Left</p>
-      </div>
-    </div>
-  </div>
+
+
+<div id="pull_down_button">
+  <p id="cut_p">Pull Down</p>
 </div>
 
-<div id="link_button1">
-  <p id="link_p">link</p>
-</div>
-
-<div id="scissors_button">
-  <p id="cut_p">Cut</p>
-</div>
-
-<script src="{{ url_for('static', filename='useless_projects/useless_projects/scripts.js')}}"></script>
+<script src="{{ url_for('static', filename='useless_projects/balloons/scripts.js')}}"></script>
 
 {% endblock div %}
