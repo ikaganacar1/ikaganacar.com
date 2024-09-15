@@ -561,10 +561,11 @@ try {
       render: {
         visible: false
       },
-      stiffness: 0.8
+      stiffness: 0.2
     }
   }); Matter.World.add(world, mouseConstraint);
-
+  iRender.mouse = mouse;
+  
   //event detections
   let check_if_clicked = false;
   Events.on(mouseConstraint, 'mousedown', function (event) {
