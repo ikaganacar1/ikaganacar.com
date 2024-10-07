@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+
+{% block div %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/admin_panel.css') }}">
+<nav class="navbar navbar-inverse visible-xs">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Apartmanım</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Apartman Sakinleri</a></li>
+                <li><a href="#">Gelir/Gider</a></li>
+                <li><a href="#">Duyurular</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h2>Apartmanım</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Apartman Sakinleri</a></li>
+                <li><a href="#section3">Aidat Kaydı</a></li>
+                <li><a href="#section4">Gider Ekleme</a></li>
+            </ul>
+            <br>
+        </div>
+
+        <div class="col-sm-9 main-content">
+            <div class="dashboard-header">
+                <h4>Kontrol Paneli</h4>
+                <a href="#">Çıkış</a>
+            </div>
+            <div class="well">
+                <p>Yönetici Kontrol Paneline Hoşgeldin!</p>
+            </div>
+            
+            
+            <div class="row dashboard-stats">
+                <div class="col-sm-3 col-xs-6">
+                    <div class="well">
+                        <h4>Toplam Alacak Borç</h4>
+                        <p>--</p>
+                    </div>
+                </div>
+            
+                <!--
+                <div class="col-sm-3 col-xs-6">
+                    <div class="well">
+                        <h4>Sessions</h4>
+                        <p>10 Million</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 col-xs-6">
+                    <div class="well">
+                        <h4>Bounce</h4>
+                        <p>30%</p>
+                    </div>
+                </div>
+                -->
+
+            </div>
+
+            
+            <div class="row">
+                <div class="col-sm-4 col-xs-12">
+                    <div class="card">
+                        <h5>Daire Ekleme</h5>
+                        <!--<p>Buradan Daire profili oluşturabilirsiniz.</p>-->
+                        <a href="#" class="btn btn-custom">Devam Et</a>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="card">
+                        <h5>Aidat Kaydı</h5>
+                        <!--<p>Buradan Aidat kaydı tutabilirsin.</p>-->
+                        <a href="#" class="btn btn-custom">Devam Et</a>
+                    </div>
+                </div>
+                
+                <div class="col-sm-4 col-xs-12">
+                    <div class="card">
+                        <h5>Gider Ekleme</h5>
+                        
+                        <a href="#" class="btn btn-custom">Devam et</a>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Data must come from database -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="well">
+                        <h4>Apartman Sakinleri</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Kapı No</th>
+                                    <th>İsim Soyisim</th>
+                                    <th>Telefon</th>
+                                    <th>Borç</th>
+                                    <th>Son Ödeme</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for resident in residents %}
+                                <tr>
+                                    <td>{{resident.door_number}}</td>
+                                    <td>{{resident.name}} {{resident.surname}}</td>
+                                    <td>{{resident.phone_number}}</td>
+                                    <td>{{resident.debt}} ay</td>
+                                    <td>{{resident.last_payment_date}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="row"><!--
+                <div class="col-sm-8 col-xs-12">
+                    <div class="well">
+                        <h4>Additional Information</h4>
+                        <p>Detailed content goes here.</p>
+                    </div>
+                </div>-->
+                <div class="col-sm-4 col-xs-12">
+                    <div class="well">
+                        <h4>Kaynak Kodu</h4>
+                        <ul>
+                            <li><a href="https://github.com/ikaganacar1/ikaganacar.com">Github</a></li>
+                            <!--<li><a href="#">Link Two</a></li>
+                            <li><a href="#">Link Three</a></li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

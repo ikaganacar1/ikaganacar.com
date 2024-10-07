@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+
+
+{% block div %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/admin_panel.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
+<nav class="navbar navbar-inverse visible-xs">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Apartmanım</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li class="active"><a href="#">Daire Ekleme/Çıkarma</a></li>
+                <li><a href="#">Aidat Kaydı</a></li>
+                <li><a href="#">Gider Ekleme</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h2>Apartmanım</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li class="active"><a href="#section2">Daire Ekleme/Çıkarma</a></li>
+                <li><a href="#section3">Aidat Kaydı</a></li>
+                <li><a href="#section4">Gider Ekleme</a></li>
+            </ul>
+            <br>
+        </div>
+
+        <div class="col-sm-9 main-content">
+            <div class="dashboard-header">
+                <h4>Daire Ekleme/Çıkarma</h4>
+                <a href="#">Çıkış</a>
+            </div>
+
+            <div class="row dashboard-stats">
+                <!--
+                <div class="col-sm-3 col-xs-6">
+                    <div class="well">
+                        <h4>Toplam Alacak Borç</h4>
+                        <p>--</p>
+                    </div>
+                </div>
+                -->
+
+            </div>
+
+
+            <div class="row">
+
+                <form class="form" action="{{ url_for('add_user')}}" method="POST">
+                    <!--
+                    <p class="title">Daire Ekleme</p>
+                    <p class="message">Signup now and get full access to our app. </p>
+                    <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
+                    -->
+                    <div class="flex">
+                        <label>
+                            <input name="name" required="" placeholder="" type="text" class="input">
+                            <span>İsim</span>
+                        </label>
+
+                        <label>
+                            <input name="surname" required="" placeholder="" type="text" class="input">
+                            <span>Soyisim</span>
+                        </label>
+                    </div>
+
+                    <div class="flex">
+                        <label>
+                            <input name="door_number" required="" placeholder="" type="text" class="input">
+                            <span>Daire No</span>
+                        </label>
+
+                        <label>
+                            <input name="phone_number" required="" placeholder="" type="text" class="input">
+                            <span>Telefon No</span>
+                        </label>
+                    </div>
+
+                    <button class="submit" type="submit">Ekle</button>
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="well">
+                        <h4>Apartman Sakinleri</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Kapı No</th>
+                                    <th>İsim Soyisim</th>
+                                    <th>Telefon</th>
+                                    <th>Borç</th>
+                                    <th>Son Ödeme</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for resident in residents %}
+                                <tr>
+                                    <td>{{resident.door_number}}</td>
+                                    <td>{{resident.name}} {{resident.surname}}</td>
+                                    <td>{{resident.phone_number}}</td>
+                                    <td>{{resident.debt}} ay</td>
+                                    <td>{{resident.last_payment_date}}</td>
+                                    <td>
+                                        <form action="{{ url_for('delete_user', resident_id = resident.id) }}" method="POST">
+                                            <button class="delete-btn" type="submit">
+                                                <i class="fas fa-trash"></i> <!-- Font Awesome trash icon -->
+                                            </button>
+                                        </form>
+                                    </td>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block div %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/login_page.css')}}">
+<form class="form" action="{{ url_for('apartmanım_login')}}" method="POST">
+    <div class="control">
+        <h1>
+            Apartmanım
+        </h1>
+        <h3>
+            Kullanıcı Girişi
+        </h3>
+    </div>
+    <div class="control block-cube block-input">
+        <input name="username" placeholder="Kullanıcı Adı" type="text">
+        <div class="bg-top">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg-right">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg">
+            <div class="bg-inner"></div>
+        </div>
+    </div>
+    <div class="control block-cube block-input">
+        <input name="password" placeholder="Şifre" type="password">
+        <div class="bg-top">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg-right">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg">
+            <div class="bg-inner"></div>
+        </div>
+    </div>
+    <button class="btn block-cube block-cube-hover" type="submit">
+        <div class="bg-top">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg-right">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="bg">
+            <div class="bg-inner"></div>
+        </div>
+        <div class="text">
+            Giriş Yap
+        </div>
+    </button>
+    <div class="control">
+        <p>
+            Bu program yapımını ve sürdürülebilirliğini <br>İsmail Kağan Acar'a borçludur.
+        </p>
+    </div>
+</form>
+
+
+
+{% endblock %}

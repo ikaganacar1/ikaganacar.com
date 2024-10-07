@@ -1,7 +1,7 @@
-from flask import render_template, send_from_directory, url_for, request, flash, redirect
+from flask import render_template, send_from_directory, url_for, request, flash, redirect, abort, current_app
 from board import app, db, bcrypt, login_manager
-from board.models import History, Visit, User
-from flask_login import login_user, login_required
+from board.models import History, Visit, User, Payment, Resident
+from flask_login import login_user,current_user
 import os
 
 
@@ -36,16 +36,35 @@ def admin():
         password = request.form.get('password')
         
         user = User.query.filter_by(username=username).first()
-        if user and bcrypt.check_password_hash(user.password, password):
-            login_user(user)
-            return redirect(url_for('panel'))
-        else:
-            flash('Wrong user name or password!')
-    
+        if user.role == 'ika':
+            if user and bcrypt.check_password_hash(user.password, password):
+                login_user(user)
+                return redirect(url_for('panel'))
+            else:
+                flash('Wrong user name or password!') #! not working 06/10/2024
+
+
+        
     return render_template("pages/admin.html")
 
+
+
+from functools import wraps
+def login_required(role="ANY"):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_view(*args, **kwargs):
+            if not current_user.is_authenticated:
+              return login_manager.unauthorized()
+            if ((current_user.role != role) and (role != "ANY")):
+                abort(403)
+                return login_manager.unauthorized()
+            return fn(*args, **kwargs)
+        return decorated_view
+    return wrapper
+
 @app.route('/admin/panel')
-@login_required
+@login_required(role='ika')
 def panel():
     histories = History.query.all()
     return render_template('pages/panel.html', histories=histories)
@@ -106,3 +125,79 @@ def howmuchmoneyleft():
 def ika():
     track_visit("useless_projects/ika")
     return render_template("useless_projects/ika.html")
+# ?______________________________________________________________________
+
+@app.route("/apartmanım",methods=['GET','POST'])
+def apartmanım_login():
+    track_visit("apartmanım/login")
+    
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        user = User.query.filter_by(username=username).first()
+        if user.role == 'admin':
+            if user and bcrypt.check_password_hash(user.password, password):
+                login_user(user)
+                return redirect('/apartmanım/admin_panel')
+            
+        if user.role == 'user':
+            if user and bcrypt.check_password_hash(user.password, password):
+                login_user(user)
+                return redirect("/apartmanım/user_panel")
+        
+    return render_template("apartmanım/login_page.html")
+
+
+#* apartment administrator control panel
+@app.route('/apartmanım/admin_panel')
+@login_required(role='admin')
+def admin_panel():
+    residents = Resident.query.all()
+    return render_template('apartmanım/admin_panel.html',residents=residents)
+
+
+@app.route('/apartmanım/admin_panel/add_user',methods=['GET','POST'])
+@login_required(role='admin')
+def add_user():
+    residents = Resident.query.all()
+    
+    if request.method == "POST":
+        name = request.form.get('name')
+        surname = request.form.get('surname')
+        door_number = request.form.get('door_number')
+        phone_number = request.form.get('phone_number')
+        
+        resident = Resident(name=name,surname=surname,door_number=door_number,phone_number=phone_number)
+        db.session.add(resident)
+        db.session.commit()
+        return redirect(url_for('add_user'))
+        
+        
+    return render_template('apartmanım/add_user.html',residents=residents)
+
+@app.route('/apartmanım/admin_panel/delete_user/<int:resident_id>',methods=['POST'])
+@login_required(role='admin')
+def delete_user(resident_id):
+    
+    
+    resident = Resident.query.get(resident_id)
+    if resident.total_payment == 0:
+        db.session.delete(resident)
+        db.session.commit()
+    else:
+        for p in resident.payments:#? p's are payment objects
+            print(p) #! first delete payments then delete resident otherwise gives error
+    
+    return redirect(url_for('add_user'))
+    
+    
+
+#?-----------------------------------------------
+#* apartment resident info page
+@app.route('/apartmanım/user_panel')
+@login_required(role='user')
+def user_panel():
+
+    return render_template('apartmanım/user_panel.html')
+
