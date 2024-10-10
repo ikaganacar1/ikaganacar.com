@@ -14,6 +14,35 @@
 </head>
 <body>
 
+    <form class="form" action="{{ url_for('panel')}}" method="POST">
+        
+        <p class="title">Add Admin</p>
+        <!--<p class="message">Signup now and get full access to our app. </p>
+        <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
+        -->
+        <div class="flex">
+            <label>
+                <input name="username" required="" placeholder="" type="text" class="input">
+                <span>Username</span>
+            </label>
+
+            <label>
+                <input name="password" required="" placeholder="" type="text" class="input">
+                <span>Password</span>
+            </label>
+        </div>
+
+        <div class="flex">
+            <label>
+                <input name="apartment_name" required="" placeholder="" type="text" class="input">
+                <span>Apartment Name</span>
+            </label>
+
+        </div>
+
+        <button class="submit" type="submit">Ekle</button>
+    </form>
+
 <h1>Page History</h1>
 <table border="1">
     <thead>

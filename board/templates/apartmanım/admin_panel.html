@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
 <link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/admin_panel.css') }}">
+
 <nav class="navbar navbar-inverse visible-xs">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -20,9 +23,9 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
-                <li><a href="{{url_for('add_user')}}">Apartman Sakinleri</a></li>
-                <li><a href="#">Gelir/Gider</a></li>
-                <li><a href="#">Duyurular</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+                
             </ul>
         </div>
     </div>
@@ -34,9 +37,9 @@
             <h2>Apartmanım</h2>
             <ul class="nav nav-pills nav-stacked">
                 <li class="active"><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
-                <li><a href="{{url_for('add_user')}}">Apartman Sakinleri</a></li>
-                <li><a href="#section3">Aidat Kaydı</a></li>
-                <li><a href="#section4">Gider Ekleme</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+
             </ul>
             <br>
         </div>
@@ -44,21 +47,21 @@
         <div class="col-sm-9 main-content">
             <div class="dashboard-header">
                 <h4>Kontrol Paneli</h4>
-                <a href="#">Çıkış</a>
+                <a href="{{url_for('logout')}}">Çıkış</a>
             </div>
             <div class="well">
                 <p>Yönetici Kontrol Paneline Hoşgeldin!</p>
             </div>
-            
-            
+
+
             <div class="row dashboard-stats">
                 <div class="col-sm-3 col-xs-6">
                     <div class="well">
                         <h4>Toplam Alacak Borç</h4>
-                        <p>--</p>
+                        <p>{{total_debt}} ay</p>
                     </div>
                 </div>
-            
+
                 <!--
                 <div class="col-sm-3 col-xs-6">
                     <div class="well">
@@ -77,31 +80,31 @@
 
             </div>
 
-            
+
             <div class="row">
                 <div class="col-sm-4 col-xs-12">
                     <div class="card">
                         <h5>Daire Ekleme</h5>
                         <!--<p>Buradan Daire profili oluşturabilirsiniz.</p>-->
-                        <a href="#" class="btn btn-custom">Devam Et</a>
+                        <a href="{{url_for('add_user')}}" class="btn btn-custom">Devam Et</a>
                     </div>
                 </div>
                 <div class="col-sm-4 col-xs-12">
                     <div class="card">
                         <h5>Aidat Kaydı</h5>
                         <!--<p>Buradan Aidat kaydı tutabilirsin.</p>-->
-                        <a href="#" class="btn btn-custom">Devam Et</a>
+                        <a href="{{url_for('payment_record')}}" class="btn btn-custom">Devam Et</a>
                     </div>
                 </div>
-                
+
                 <div class="col-sm-4 col-xs-12">
                     <div class="card">
                         <h5>Gider Ekleme</h5>
-                        
-                        <a href="#" class="btn btn-custom">Devam et</a>
+
+                        <a href="" class="btn btn-custom">Devam et</a>
                     </div>
                 </div>
-                
+
             </div>
 
             <!-- Data must come from database -->
@@ -122,11 +125,17 @@
                             <tbody>
                                 {% for resident in residents %}
                                 <tr>
-                                    <td>{{resident.door_number}}</td>
-                                    <td>{{resident.name}} {{resident.surname}}</td>
-                                    <td>{{resident.phone_number}}</td>
-                                    <td>{{resident.debt}} ay</td>
-                                    <td>{{resident.last_payment_date}}</td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.door_number}}</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.name}} {{resident.surname}}</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.phone_number}}</a></td>
+
+                                    {% if resident.last_payment_month %}
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.debt}} ay</a></td>
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.last_payment_month}}</a></td>
+                                    {% else %}
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">0 ay</a></td>
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">--</a></td>
+                                    {% endif %}
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -135,7 +144,7 @@
                 </div>
             </div>
 
-            
+
             <div class="row"><!--
                 <div class="col-sm-8 col-xs-12">
                     <div class="well">

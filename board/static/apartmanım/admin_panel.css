@@ -532,3 +532,8 @@ a:focus {
   color: #ffffff;  /* Change icon color on hover */
   outline: none;
 }
+td a { 
+  display: block; 
+  border: 1px solid black;
+  padding: 16px; 
+}

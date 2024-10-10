@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+
+
+{% block div %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/admin_panel.css') }}">
+
+
+<nav class="navbar navbar-inverse visible-xs">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Apartmanım</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
+                <li class="active"><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h2>Apartmanım</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
+                <li class="active"><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+
+            </ul>
+            <br>
+        </div>
+
+        <div class="col-sm-9 main-content">
+            <div class="dashboard-header">
+                <h4>Aidat Kaydı</h4>
+                <a href="{{url_for('logout')}}">Çıkış</a>
+            </div>
+
+            <div class="row dashboard-stats">
+
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+                <script>
+                    $(document).on('click', '.close', function () {
+                        $(this).closest('.alert').fadeOut();
+                    });
+                </script>
+                {%endfor%}
+
+            </div>
+
+
+            <div class="row">
+                <form class="form" action="{{ url_for('payment_record')}}" method="POST">
+
+                    <div class="flex">
+                        <label>
+                            <input name="door_number" required="" placeholder="" type="number" class="input">
+                            <span>Daire No</span>
+                        </label>
+
+                        <label>
+                            <input name="amount" required="" placeholder="" type="number" class="input">
+                            <span>Miktar</span>
+                        </label>
+
+                        <label>
+                            <input name="date" required="" placeholder="" type="month" class="input">
+                            <span>Tarih</span>
+                        </label>
+                    </div>
+
+                    <button class="submit" type="submit">Ekle</button>
+                </form>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="well">
+                        <h4>Apartman Sakinleri</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Kapı No</th>
+                                    <th>İsim Soyisim</th>
+
+                                    <th>Borç</th>
+                                    <th>Son Ödeme</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for resident in residents %}
+                                <tr>
+                                    <td><a
+                                            href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.door_number}}</a>
+                                    </td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.name}}
+                                            {{resident.surname}}</a></td>
+
+
+                                    {% if resident.last_payment_month %}
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.debt}}
+                                            ay</a></td>
+                                    <td><a
+                                            href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.last_payment_month}}</a>
+                                    </td>
+                                    {% else %}
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">0 ay</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">--</a></td>
+                                    {% endif %}
+                                    <!--
+                                    <td>
+                                        <form action="{{ url_for('delete_user', resident_id = resident.id) }}" method="POST">
+                                            <button class="delete-btn" type="submit">
+                                                <i class="fas fa-trash"></i> 
+                                            </button>
+                                        </form>
+                                    </td>-->
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

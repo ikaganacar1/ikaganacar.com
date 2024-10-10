@@ -26,8 +26,8 @@
             <ul class="nav navbar-nav">
                 <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
                 <li class="active"><a href="#">Daire Ekleme/Çıkarma</a></li>
-                <li><a href="#">Aidat Kaydı</a></li>
-                <li><a href="#">Gider Ekleme</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+
             </ul>
         </div>
     </div>
@@ -40,8 +40,8 @@
             <ul class="nav nav-pills nav-stacked">
                 <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
                 <li class="active"><a href="#section2">Daire Ekleme/Çıkarma</a></li>
-                <li><a href="#section3">Aidat Kaydı</a></li>
-                <li><a href="#section4">Gider Ekleme</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+
             </ul>
             <br>
         </div>
@@ -49,7 +49,7 @@
         <div class="col-sm-9 main-content">
             <div class="dashboard-header">
                 <h4>Daire Ekleme/Çıkarma</h4>
-                <a href="#">Çıkış</a>
+                <a href="{{url_for('logout')}}">Çıkış</a>
             </div>
 
             <div class="row dashboard-stats">
@@ -87,7 +87,7 @@
 
                     <div class="flex">
                         <label>
-                            <input name="door_number" required="" placeholder="" type="text" class="input">
+                            <input name="door_number" required="" placeholder="" type="number" class="input">
                             <span>Daire No</span>
                         </label>
 
@@ -118,13 +118,19 @@
                             <tbody>
                                 {% for resident in residents %}
                                 <tr>
-                                    <td>{{resident.door_number}}</td>
-                                    <td>{{resident.name}} {{resident.surname}}</td>
-                                    <td>{{resident.phone_number}}</td>
-                                    <td>{{resident.debt}} ay</td>
-                                    <td>{{resident.last_payment_date}}</td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.door_number}}</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.name}} {{resident.surname}}</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.phone_number}}</a></td>
+
+                                    {% if resident.last_payment_month %}
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.debt}} ay</a></td>
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.last_payment_month}}</a></td>
+                                    {% else %}
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">0 ay</a></td>
+                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">--</a></td>
+                                    {% endif %}
                                     <td>
-                                        <form action="{{ url_for('delete_user', resident_id = resident.id) }}" method="POST">
+                                        <form action="{{ url_for('delete_user', resident_id = resident.id) }}" method="POST" onsubmit="return confirm('Bu kullanıcı kalıcı olarak silinecektir. Emin Misiniz?');">
                                             <button class="delete-btn" type="submit">
                                                 <i class="fas fa-trash"></i> <!-- Font Awesome trash icon -->
                                             </button>

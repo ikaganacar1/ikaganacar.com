@@ -1,15 +1,29 @@
 {% extends "base.html" %}
 {% block div %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/login_page.css')}}">
+{% for message in get_flashed_messages() %}
+                <div class="alert alert-warning alert-dismissible fade in" role="alert">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{ message }}
+                </div>
+                <script>
+                    $(document).on('click', '.close', function () {
+                        $(this).closest('.alert').fadeOut();
+                    });
+                </script>
+        {%endfor%}
 <form class="form" action="{{ url_for('apartmanım_login')}}" method="POST">
     <div class="control">
+        
         <h1>
             Apartmanım
         </h1>
-        <h3>
+        <h5>
             Kullanıcı Girişi
-        </h3>
+        </h5>
     </div>
     <div class="control block-cube block-input">
         <input name="username" placeholder="Kullanıcı Adı" type="text">
@@ -50,6 +64,7 @@
         </div>
     </button>
     <div class="control">
+        <br>
         <p>
             Bu program yapımını ve sürdürülebilirliğini <br>İsmail Kağan Acar'a borçludur.
         </p>

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+
+{% block div %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/admin_panel.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+<nav class="navbar navbar-inverse visible-xs">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Apartmanım</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h2>Apartmanım</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+
+            </ul>
+            <br>
+        </div>
+
+        <div class="col-sm-9 main-content">
+            <div class="dashboard-header">
+                <h4>Aidat Kaydı</h4>
+                <a href="{{url_for('logout')}}">Çıkış</a>
+            </div>
+
+            <div class="row dashboard-stats">
+                <!--
+                <div class="col-sm-3 col-xs-6">
+                    <div class="well">
+                        <h4>Toplam Alacak Borç</h4>
+                        <p>--</p>
+                    </div>
+                </div>
+                -->
+            </div>
+
+            <div class="row">
+                <div class="well">
+                    <h3>{{resident.name}} {{resident.surname}}</h3>
+                    <br>
+                    <h4>Daire No: {{resident.door_number}}</h6>
+                    <h4>Tel: {{resident.phone_number}}</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Miktar</th>
+                                <th>Tarih</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for payment in resident.payments %}
+                            <tr>
+                                <td>{{payment.id}}</td>
+                                <td>{{payment.amount}}</td>
+                                <td>{{payment.date}}</td>
+
+                                <td>
+                                    <form action="{{ url_for('delete_payment', payment_id = payment.id) }}" method="POST" onsubmit="return confirm('Bu ödeme kalıcı olarak silinecektir. Emin Misiniz?');">
+                                        <button class="delete-btn" type="submit">
+                                            <i class="fas fa-trash"></i> 
+                                        </button>
+                                    </form>
+                                </td>
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
