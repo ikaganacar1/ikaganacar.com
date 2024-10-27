@@ -6,9 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanim/admin_panel.css') }}">
 
-<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/admin_panel.css') }}">
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <nav class="navbar navbar-inverse visible-xs">
     <div class="container-fluid">
@@ -66,31 +67,37 @@
 
             </div>
 
-
             <div class="row">
-                <form class="form" action="{{ url_for('payment_record')}}" method="POST">
-
+                <form class="form" action="{{ url_for('payment_record') }}" method="POST">
                     <div class="flex">
                         <label>
                             <input name="door_number" required="" placeholder="" type="number" class="input">
                             <span>Daire No</span>
                         </label>
-
                         <label>
                             <input name="amount" required="" placeholder="" type="number" class="input">
                             <span>Miktar</span>
                         </label>
-
                         <label>
                             <input name="date" required="" placeholder="" type="month" class="input">
                             <span>Tarih</span>
                         </label>
                     </div>
 
-                    <button class="submit" type="submit">Ekle</button>
-                </form>
+                    <div class="custom-checkbox">
+                        <input name="makbuz" type="checkbox" id="customCheckbox" />
+                        <label for="customCheckbox">
+                            Makbuz Oluştur
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
 
+                    <div class="flex align-items-center">
+                        <button class="submit" type="submit">Ekle</button>
+                    </div>
+                </form>
             </div>
+
 
             <div class="row">
                 <div class="col-sm-12">
@@ -126,14 +133,6 @@
                                     <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">0 ay</a></td>
                                     <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">--</a></td>
                                     {% endif %}
-                                    <!--
-                                    <td>
-                                        <form action="{{ url_for('delete_user', resident_id = resident.id) }}" method="POST">
-                                            <button class="delete-btn" type="submit">
-                                                <i class="fas fa-trash"></i> 
-                                            </button>
-                                        </form>
-                                    </td>-->
 
                                 </tr>
                                 {% endfor %}
@@ -145,6 +144,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}

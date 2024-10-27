@@ -7,6 +7,7 @@ from flask import (
     redirect,
     abort,
     current_app,
+    send_file,
 )
 from board import app, db, bcrypt, login_manager, bcrypt
 from board.models import (
@@ -70,6 +71,8 @@ def admin():
 
 
 from functools import wraps
+
+
 def login_required(role="ANY"):
     def wrapper(fn):
         @wraps(fn)
@@ -132,13 +135,16 @@ def error_404(e):
 def error_500(e):
     return render_template("errors/500.html"), 500
 
+
 @app.errorhandler(401)
 def error_401(e):
     return render_template("errors/401.html"), 401
 
+
 @app.route("/invalid_user")
 def error_invalid_user():
     return render_template("errors/invalid_user.html")
+
 
 # ?______________________________________________________________________
 @app.route("/hearts8")
@@ -196,9 +202,9 @@ def ika():
 # ?______________________________________________________________________
 
 
-@app.route("/apartmanım", methods=["GET", "POST"])
-def apartmanım_login():
-    track_visit("apartmanım/login")
+@app.route("/apartmanim", methods=["GET", "POST"])
+def apartmanim_login():
+    track_visit("apartmanim/login")
 
     if request.method == "POST":
         username = request.form.get("username")
@@ -209,43 +215,51 @@ def apartmanım_login():
             if user.role == "apartment_admin":
                 if user and bcrypt.check_password_hash(user.password, password):
                     login_user(user)
-                    return redirect("/apartmanım/admin_panel")
+                    return redirect("/apartmanim/admin_panel")
                 else:
                     flash("Hatalı Şifre!")
-                    
 
-            if (user.role == "apartment_user"):  # ? i will come here later. i am building admin panel first.
+            if (
+                user.role == "apartment_user"
+            ):  # ? i will come here later. i am building admin panel first.
                 if user and bcrypt.check_password_hash(user.password, password):
                     login_user(user)
-                    return redirect("/apartmanım/user_panel")
+                    return redirect("/apartmanim/user_panel")
         except AttributeError:
-            return redirect(url_for("error_invalid_user"))  
-        
+            return redirect(url_for("error_invalid_user"))
 
-    return render_template("apartmanım/login_page.html")
+    return render_template("apartmanim/login_page.html")
 
-login_manager.login_view= 'apartmanım_login'
-@app.route("/apartmanım/logout")
+
+login_manager.login_view = "apartmanim_login"
+
+
+@app.route("/apartmanim/logout")
 def logout():
     logout_user()
-    return redirect("/apartmanım")
+    return redirect("/apartmanim")
 
 
 # * apartment administrator control panel
-@app.route("/apartmanım/admin_panel")
+@app.route("/apartmanim/admin_panel")
 @login_required(role="apartment_admin")
 def admin_panel():
     apartment_id = current_user.apartment_id
     residents = Apartment.query.get(apartment_id).residents
-    
+
     tmp = 0
-    for i in residents:
-        tmp += i.debt
-    
-    return render_template("apartmanım/admin_panel.html", residents=residents, total_debt = tmp)
+    try:
+        for i in residents:
+            tmp += i.debt
+    except:
+        pass
+
+    return render_template(
+        "apartmanim/admin_panel.html", residents=residents, total_debt=tmp
+    )
 
 
-@app.route("/apartmanım/admin_panel/add_user", methods=["GET", "POST"])
+@app.route("/apartmanim/admin_panel/add_user", methods=["GET", "POST"])
 @login_required(role="apartment_admin")
 def add_user():
     apartment_id = current_user.apartment_id
@@ -268,10 +282,10 @@ def add_user():
         db.session.commit()
         return redirect(url_for("add_user"))
 
-    return render_template("apartmanım/add_user.html", residents=residents)
+    return render_template("apartmanim/add_user.html", residents=residents)
 
 
-@app.route("/apartmanım/admin_panel/delete_user/<int:resident_id>", methods=["POST"])
+@app.route("/apartmanim/admin_panel/delete_user/<int:resident_id>", methods=["POST"])
 @login_required(role="apartment_admin")
 def delete_user(resident_id):
 
@@ -285,25 +299,27 @@ def delete_user(resident_id):
             db.session.delete(p)
         db.session.delete(resident)
         db.session.commit()
-        
-            
+
     return redirect(url_for("add_user"))
 
-@app.route("/apartmanım/admin_panel/resident_page/<int:resident_id>")
+
+@app.route("/apartmanim/admin_panel/resident_page/<int:resident_id>")
 @login_required(role="apartment_admin")
 def resident_page(resident_id):
     resident = Resident.query.get(resident_id)
-    print(resident.payments) 
-    return render_template("apartmanım/resident_page.html",resident=resident)    
+    print(resident.payments)
+    return render_template("apartmanim/resident_page.html", resident=resident)
 
 
-@app.route("/apartmanım/admin_panel/payment_record", methods=["GET", "POST"])
+@app.route("/apartmanim/admin_panel/payment_record", methods=["GET", "POST"])
 @login_required(role="apartment_admin")
 def payment_record():
     apartment_id = current_user.apartment_id
     residents = Apartment.query.get(apartment_id).residents
 
-    if request.method == "POST":#! it doesn't make payment accuracy check! Look here later.
+    if (
+        request.method == "POST"
+    ):  #! it doesn't make payment accuracy check! Look here later.
 
         door_number = request.form.get("door_number")
         amount = request.form.get("amount")
@@ -313,46 +329,69 @@ def payment_record():
         date = datetime.date(dt.year, dt.month, dt.day)
 
         resident = Resident.query.filter_by(door_number=int(door_number)).first_or_404()
-        
-        
+
+        def makbuz(makbuz_no):
+            from board.receipt import create_aidat_makbuzu
+            from board.int2str import int2str
+
+            if request.form.get("makbuz"):
+                print("Makbuz Oluşturuluyor..")
+                now = datetime.datetime.today().strftime("%d/%m/%Y")
+
+                create_aidat_makbuzu(
+                    daire_no=str(door_number),
+                    ay_yil=f"{dt.month}/{dt.year}",
+                    tarih=str(now),
+                    makbuz_no=makbuz_no,
+                    tutar=amount,
+                    yazi_ile=int2str(f"{amount}"),
+                    alan_ad=f"{resident.name} {resident.surname}",
+                    veren_ad=" ",
+                    masraflar_list=[(" ", " ")],
+                )
+            # send_file()
+
         try:
             if resident.last_payment_date.month == dt.month:
-                
                 flash(f"Daire {door_number} bu ay zaten aidat verdi!")
             else:
                 payment = Payment(resident_id=resident.id, amount=amount, date=date)
-                print(payment)
                 db.session.add(payment)
                 db.session.commit()
                 
+                payment_id = Payment.query.filter_by(resident_id=resident.id).order_by(Payment.id.desc()).first().id
+                makbuz(payment_id)
+                
                 return redirect(url_for("payment_record"))
+
         except Exception as e:
-            #? first payment gives error because last_payment_date is null
-            
+            # ? first payment gives error because last_payment_date is null
+
             payment = Payment(resident_id=resident.id, amount=amount, date=date)
-            print(payment)
             db.session.add(payment)
             db.session.commit()
+            
+            
             return redirect(url_for("payment_record"))
 
-    return render_template("apartmanım/payment_record.html", residents=residents)
+    return render_template("apartmanim/payment_record.html", residents=residents)
 
 
-@app.route("/apartmanım/admin_panel/delete_payment/<int:payment_id>", methods=["POST"])
+@app.route("/apartmanim/admin_panel/delete_payment/<int:payment_id>", methods=["POST"])
 @login_required(role="apartment_admin")
 def delete_payment(payment_id):
 
     payment = Payment.query.get(payment_id)
     db.session.delete(payment)
     db.session.commit()
-    
-    return redirect(url_for("resident_page",resident_id=payment.resident_id)) 
+
+    return redirect(url_for("resident_page", resident_id=payment.resident_id))
 
 
 # ?-----------------------------------------------
 # * apartment resident info page
-@app.route("/apartmanım/user_panel")
+@app.route("/apartmanim/user_panel")
 @login_required(role="apartment_user")
 def user_panel():
 
-    return render_template("apartmanım/user_panel.html")
+    return render_template("apartmanim/user_panel.html")

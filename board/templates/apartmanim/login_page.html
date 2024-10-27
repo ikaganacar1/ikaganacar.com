@@ -3,7 +3,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/login_page.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanim/login_page.css')}}">
 {% for message in get_flashed_messages() %}
                 <div class="alert alert-warning alert-dismissible fade in" role="alert">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -15,7 +15,7 @@
                     });
                 </script>
         {%endfor%}
-<form class="form" action="{{ url_for('apartmanım_login')}}" method="POST">
+<form class="form" action="{{ url_for('apartmanim_login')}}" method="POST">
     <div class="control">
         
         <h1>

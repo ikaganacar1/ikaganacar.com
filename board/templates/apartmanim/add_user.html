@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 
-
-
 {% block div %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='apartmanım/admin_panel.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanim/admin_panel.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
 
 <nav class="navbar navbar-inverse visible-xs">
     <div class="container-fluid">
@@ -25,7 +21,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
-                <li class="active"><a href="#">Daire Ekleme/Çıkarma</a></li>
+                <li class="active"><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
                 <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
 
             </ul>
@@ -39,7 +35,7 @@
             <h2>Apartmanım</h2>
             <ul class="nav nav-pills nav-stacked">
                 <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
-                <li class="active"><a href="#section2">Daire Ekleme/Çıkarma</a></li>
+                <li class="active"><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
                 <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
 
             </ul>
@@ -53,26 +49,14 @@
             </div>
 
             <div class="row dashboard-stats">
-                <!--
-                <div class="col-sm-3 col-xs-6">
-                    <div class="well">
-                        <h4>Toplam Alacak Borç</h4>
-                        <p>--</p>
-                    </div>
-                </div>
-                -->
-
+                <!--* pass -->
             </div>
 
 
             <div class="row">
 
                 <form class="form" action="{{ url_for('add_user')}}" method="POST">
-                    <!--
-                    <p class="title">Daire Ekleme</p>
-                    <p class="message">Signup now and get full access to our app. </p>
-                    <p class="signin">Already have an acount ? <a href="#">Signin</a> </p>
-                    -->
+
                     <div class="flex">
                         <label>
                             <input name="name" required="" placeholder="" type="text" class="input">
@@ -118,25 +102,35 @@
                             <tbody>
                                 {% for resident in residents %}
                                 <tr>
-                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.door_number}}</a></td>
-                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.name}} {{resident.surname}}</a></td>
-                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.phone_number}}</a></td>
+                                    <td><a
+                                            href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.door_number}}</a>
+                                    </td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.name}}
+                                            {{resident.surname}}</a></td>
+                                    <td><a
+                                            href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.phone_number}}</a>
+                                    </td>
 
                                     {% if resident.last_payment_month %}
-                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.debt}} ay</a></td>
-                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.last_payment_month}}</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.debt}}
+                                            ay</a></td>
+                                    <td><a
+                                            href="{{url_for('resident_page',resident_id=resident.id)}}">{{resident.last_payment_month}}</a>
+                                    </td>
                                     {% else %}
-                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">0 ay</a></td>
-                                        <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">--</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">0 ay</a></td>
+                                    <td><a href="{{url_for('resident_page',resident_id=resident.id)}}">--</a></td>
                                     {% endif %}
                                     <td>
-                                        <form action="{{ url_for('delete_user', resident_id = resident.id) }}" method="POST" onsubmit="return confirm('Bu kullanıcı kalıcı olarak silinecektir. Emin Misiniz?');">
+                                        <form action="{{ url_for('delete_user', resident_id = resident.id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Bu kullanıcı kalıcı olarak silinecektir. Emin Misiniz?');">
                                             <button class="delete-btn" type="submit">
                                                 <i class="fas fa-trash"></i> <!-- Font Awesome trash icon -->
                                             </button>
                                         </form>
                                     </td>
-                                    
+
                                 </tr>
                                 {% endfor %}
                             </tbody>
