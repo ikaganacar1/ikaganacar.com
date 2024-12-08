@@ -147,14 +147,41 @@ class Payment(db.Model):
     def __repr__(self) -> str:
         return f"Payment({self.resident_id}, {self.amount}, {self.date})"
 
+class Expenditure(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    apartment_id = db.Column(db.Integer, db.ForeignKey('apartment.id'), nullable=False, index=True)
+
+    name = db.Column(db.String(50),  nullable=True, default="-")
+    amount = db.Column(db.Integer,  nullable=True)
+    
+    start_date = db.Column(db.Date, nullable=False, default=date.today(), index=True)
+    end_date = db.Column(db.Date, nullable=True, index=True)
+    paid_over_time = db.Column(db.Boolean, nullable=False)
+    
+    @property
+    def installments(self):
+        if self.paid_over_time and self.start_date and self.end_date and self.amount:
+            today = date.today()
+            
+            if self.start_date <= today <= self.end_date:
+                months_diff = (self.end_date.year - self.start_date.year) * 12 + (self.end_date.month - self.start_date.month)
+                months_diff = max(1, months_diff + 1)       
+                return self.amount // months_diff
+        
+        return None   
 
 class Apartment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     name = db.Column(db.String(30),  nullable=True, default="-")
+    dues = db.Column(db.Integer,  nullable=True)
+    
     
     admins = db.relationship('Apartment_user', backref='apartment', lazy=True)
     residents = db.relationship('Resident', backref='apartment', lazy=True)
+    expenditures = db.relationship('Expenditure', backref='apartment',lazy=True)
+    
+    
     
     @property
     def total_debt(self):

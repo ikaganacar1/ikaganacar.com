@@ -1,6 +1,6 @@
 from flask import (
     render_template,
-    send_from_directory,
+    send_from_directory,    
     url_for,
     request,
     flash,
@@ -386,6 +386,18 @@ def delete_payment(payment_id):
     db.session.commit()
 
     return redirect(url_for("resident_page", resident_id=payment.resident_id))
+
+
+
+
+@app.route("/apartmanim/admin_panel/financial", methods=["GET", "POST"])
+@login_required(role="apartment_admin")
+def financial():
+    
+    if request.method == "POST":
+        pass
+    
+    return render_template("apartmanim/financial.html")
 
 
 # ?-----------------------------------------------

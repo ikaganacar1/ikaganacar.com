@@ -3,4 +3,5 @@ sqlalchemy
 flask-bcrypt
 flask-login
 flask-sqlalchemy
+flask-Migrate
 python-dateutil
