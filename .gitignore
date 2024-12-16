@@ -1,4 +1,5 @@
 ignored
+receipts
 venv
 site.db
 secret_key.txt
