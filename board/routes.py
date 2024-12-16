@@ -24,7 +24,7 @@ from board.models import (
 from flask_login import login_user, current_user, logout_user
 import os, datetime
 from dateutil import parser
-
+from time import sleep
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -303,11 +303,34 @@ def delete_user(resident_id):
     return redirect(url_for("add_user"))
 
 
+# TODO: Makbuz no
+def makbuz(makbuz_no, door_number, month, year, amount, resident_name, resident_surname):
+    from board.receipt import create_aidat_makbuzu
+    from board.int2str import int2str
+
+    print("Makbuz Oluşturuluyor..")
+    now = datetime.datetime.today().strftime("%d/%m/%Y")
+
+    create_aidat_makbuzu(
+        daire_no=str(door_number),
+        ay_yil=f"{month}/{year}",
+        tarih=str(now),
+        makbuz_no=makbuz_no,
+        tutar=amount,
+        yazi_ile=int2str(f"{amount}"),
+        alan_ad=f"{resident_name} {resident_surname}",
+        veren_ad=" ",
+        masraflar_list=[(" ", " ")],
+    )
+
+
 @app.route("/apartmanim/admin_panel/resident_page/<int:resident_id>")
 @login_required(role="apartment_admin")
 def resident_page(resident_id):
     resident = Resident.query.get(resident_id)
-    print(resident.payments)
+
+    
+
     return render_template("apartmanim/resident_page.html", resident=resident)
 
 
@@ -317,9 +340,7 @@ def payment_record():
     apartment_id = current_user.apartment_id
     residents = Apartment.query.get(apartment_id).residents
 
-    if (
-        request.method == "POST"
-    ):  #! it doesn't make payment accuracy check! Look here later.
+    if (request.method == "POST"):  #! it doesn't make payment accuracy check! Look here later.
 
         door_number = request.form.get("door_number")
         amount = request.form.get("amount")
@@ -330,27 +351,6 @@ def payment_record():
 
         resident = Resident.query.filter_by(door_number=int(door_number)).first_or_404()
 
-        def makbuz(makbuz_no):
-            from board.receipt import create_aidat_makbuzu
-            from board.int2str import int2str
-
-            if request.form.get("makbuz"):
-                print("Makbuz Oluşturuluyor..")
-                now = datetime.datetime.today().strftime("%d/%m/%Y")
-
-                create_aidat_makbuzu(
-                    daire_no=str(door_number),
-                    ay_yil=f"{dt.month}/{dt.year}",
-                    tarih=str(now),
-                    makbuz_no=makbuz_no,
-                    tutar=amount,
-                    yazi_ile=int2str(f"{amount}"),
-                    alan_ad=f"{resident.name} {resident.surname}",
-                    veren_ad=" ",
-                    masraflar_list=[(" ", " ")],
-                )
-            # send_file()
-
         try:
             if resident.last_payment_date.month == dt.month:
                 flash(f"Daire {door_number} bu ay zaten aidat verdi!")
@@ -358,10 +358,19 @@ def payment_record():
                 payment = Payment(resident_id=resident.id, amount=amount, date=date)
                 db.session.add(payment)
                 db.session.commit()
-                
+
                 payment_id = Payment.query.filter_by(resident_id=resident.id).order_by(Payment.id.desc()).first().id
-                makbuz(payment_id)
-                
+                if request.form.get("makbuz"):
+                    makbuz(
+                        makbuz_no=payment_id,
+                        door_number=door_number,
+                        month=dt.month,
+                        year=dt.year,
+                        amount=amount,
+                        resident_name=resident.name,
+                        resident_surname=resident.surname
+                    )
+
                 return redirect(url_for("payment_record"))
 
         except Exception as e:
@@ -370,8 +379,7 @@ def payment_record():
             payment = Payment(resident_id=resident.id, amount=amount, date=date)
             db.session.add(payment)
             db.session.commit()
-            
-            
+
             return redirect(url_for("payment_record"))
 
     return render_template("apartmanim/payment_record.html", residents=residents)
@@ -387,8 +395,28 @@ def delete_payment(payment_id):
 
     return redirect(url_for("resident_page", resident_id=payment.resident_id))
 
+@app.route("/apartmanim/admin_panel/create_receipt/<int:payment_id>", methods=["POST"])
+@login_required(role="apartment_admin")
+def create_receipt(payment_id):
+    
+    payment = Payment.query.get(payment_id)
+    resident = Resident.query.get(payment.resident_id)
+    
+    makbuz(
+        makbuz_no=payment_id,
+        door_number=resident.door_number,
+        month=payment.date.month,
+        year=payment.date.year,
+        amount=payment.amount,
+        resident_name=resident.name,
+        resident_surname=resident.surname,
+    )
+    sleep(2)
+    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "receipts", f"receipt_{resident.door_number}_{payment_id}.pdf")
+    file_path = os.path.abspath(file_path)
 
-
+    return send_file(file_path) 
+       
 
 @app.route("/apartmanim/admin_panel/financial", methods=["GET", "POST"])
 @login_required(role="apartment_admin")

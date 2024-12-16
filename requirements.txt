@@ -5,3 +5,4 @@ flask-login
 flask-sqlalchemy
 flask-Migrate
 python-dateutil
+reportlab

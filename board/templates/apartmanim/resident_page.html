@@ -25,6 +25,7 @@
                 <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
                 <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
                 <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+                <li><a href="{{url_for('financial')}}">Gelir/Gider</a></li>
 
             </ul>
         </div>
@@ -39,6 +40,7 @@
                 <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
                 <li><a href="{{url_for('add_user')}}">Daire Ekleme/Çıkarma</a></li>
                 <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+                <li><a href="{{url_for('financial')}}">Gelir/Gider</a></li>
 
             </ul>
             <br>
@@ -86,6 +88,14 @@
                                     <form action="{{ url_for('delete_payment', payment_id = payment.id) }}" method="POST" onsubmit="return confirm('Bu ödeme kalıcı olarak silinecektir. Emin Misiniz?');">
                                         <button class="delete-btn" type="submit">
                                             <i class="fas fa-trash"></i> 
+                                        </button>
+                                    </form>
+                                </td>
+
+                                <td>
+                                    <form action="{{ url_for('create_receipt', payment_id = payment.id) }}" method="POST" onsubmit="return confirm('Bu ödeme için makbuz oluşturulacak. Emin Misiniz?');">
+                                        <button class="delete-btn" type="submit">
+                                            <i class="fa-solid fa-print"></i>
                                         </button>
                                     </form>
                                 </td>
