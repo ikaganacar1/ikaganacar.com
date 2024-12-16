@@ -5,7 +5,6 @@ from sqlalchemy import create_engine, MetaData
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flask_migrate import Migrate
 
 import os
 
@@ -20,6 +19,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(basedir, "si
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-migrate = Migrate(app, db)
 
 from board import routes
+
+from flask_migrate import Migrate
+migrate = Migrate(app, db)
