@@ -422,10 +422,14 @@ def create_receipt(payment_id):
 @login_required(role="apartment_admin")
 def financial():
     
-    if request.method == "POST":
-        pass
-    
     return render_template("apartmanim/financial.html")
+
+@app.route("/apartmanim/admin_panel/financial/monthly_expanditures", methods=["GET", "POST"])
+@login_required(role="apartment_admin")
+def monthly_expanditures():
+    
+    return render_template("apartmanim/monthly_expanditures.html")
+
 
 
 # ?-----------------------------------------------

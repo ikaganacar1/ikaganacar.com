@@ -23,6 +23,9 @@
             </button>
             <a class="navbar-brand" href="#">Apartmanım</a>
         </div>
+        
+        
+
 
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
@@ -34,6 +37,8 @@
         </div>
 
     </div>
+
+    
 </nav>
 
 
@@ -57,11 +62,64 @@
                 <a href="{{url_for('logout')}}">Çıkış</a>
             </div>
 
+            <div class="row">
+                    <div class="card">
+                        <h3>Apartman Kasası</h3>
+                        <a href="{{url_for('add_user')}}" class="btn btn-custom">Devam Et</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>Aylık Harcamalar</h3>
+                        <p>Faturalar, Asansör, vb.</p>
+                        <a href="{{url_for('monthly_expanditures')}}" class="btn btn-custom">Devam Et</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>Tek Seferlik Harcamalar</h3>
+                        <p>Boya, Bakım, vb.</p>
+                        <a href="{{url_for('add_user')}}" class="btn btn-custom">Devam Et</a>
+                    </div>
+                </div>
+                
 
 
-           
+                <!--<form class="form" action="{{ url_for('payment_record') }}" method="POST">
+                    <h3>Tek Seferlik Harcama</h3>
+                    <div class="flex">
+                        <label>
+                            <input name="door_number" required="" placeholder="" type="number" class="input">
+                            <span>Gider ismi:</span>
+                        </label>
+
+                        <label>
+                            <input name="amount" required="" placeholder="" type="number" class="input">
+                            <span>Miktar</span>
+                        </label>
+                        
+                    </div>
+                    
+                    <div>
+                        <label>
+                            <input name="date" required="" placeholder="" type="date" class="input">
+                            <span>Tarih</span>
+                        </label>
+
+                    </div> 
+
+
+                    <div class="flex align-items-center">
+                        <button class="submit" type="submit">Ekle</button>
+                    </div>
+                </form>-->
+
+                
+            </div>
         </div>
+
+
     </div>
+
+    
 </div>
 
 
