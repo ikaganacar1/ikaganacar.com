@@ -9,7 +9,6 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='apartmanim/admin_panel.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="stylesheet" href="{{ url_for('static', filename='apartmanim/admin_panel.css') }}">
 
@@ -23,8 +22,8 @@
             </button>
             <a class="navbar-brand" href="#">Apartmanım</a>
         </div>
-        
-        
+
+
 
 
         <div class="collapse navbar-collapse" id="myNavbar">
@@ -38,7 +37,7 @@
 
     </div>
 
-    
+
 </nav>
 
 
@@ -63,63 +62,31 @@
             </div>
 
             <div class="row">
-                    <div class="card">
-                        <h3>Apartman Kasası</h3>
-                        <a href="{{url_for('add_user')}}" class="btn btn-custom">Devam Et</a>
-                    </div>
-
-                    <div class="card">
-                        <h3>Aylık Harcamalar</h3>
-                        <p>Faturalar, Asansör, vb.</p>
-                        <a href="{{url_for('monthly_expanditures')}}" class="btn btn-custom">Devam Et</a>
-                    </div>
-
-                    <div class="card">
-                        <h3>Tek Seferlik Harcamalar</h3>
-                        <p>Boya, Bakım, vb.</p>
-                        <a href="{{url_for('add_user')}}" class="btn btn-custom">Devam Et</a>
-                    </div>
+                <div class="card">
+                    <h3>Apartman Kasası</h3>
+                    <a href="{{url_for('apartment_safe')}}" class="btn btn-custom">Devam Et</a>
                 </div>
-                
 
+                <div class="card">
+                    <h3>Aylık Harcamalar</h3>
+                    <p>Faturalar, Asansör, vb.</p>
+                    <a href="{{url_for('monthly_expanditures')}}" class="btn btn-custom">Devam Et</a>
+                </div>
 
-                <!--<form class="form" action="{{ url_for('payment_record') }}" method="POST">
-                    <h3>Tek Seferlik Harcama</h3>
-                    <div class="flex">
-                        <label>
-                            <input name="door_number" required="" placeholder="" type="number" class="input">
-                            <span>Gider ismi:</span>
-                        </label>
-
-                        <label>
-                            <input name="amount" required="" placeholder="" type="number" class="input">
-                            <span>Miktar</span>
-                        </label>
-                        
-                    </div>
-                    
-                    <div>
-                        <label>
-                            <input name="date" required="" placeholder="" type="date" class="input">
-                            <span>Tarih</span>
-                        </label>
-
-                    </div> 
-
-
-                    <div class="flex align-items-center">
-                        <button class="submit" type="submit">Ekle</button>
-                    </div>
-                </form>-->
-
-                
+                <div class="card">
+                    <h3>Tek Seferlik Harcamalar</h3>
+                    <p>Boya, Bakım, vb.</p>
+                    <a href="{{url_for('onetime_expanditures')}}" class="btn btn-custom">Devam Et</a>
+                </div>
             </div>
+
         </div>
-
-
     </div>
 
-    
+
+</div>
+
+
 </div>
 
 

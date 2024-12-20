@@ -424,13 +424,24 @@ def financial():
     
     return render_template("apartmanim/financial.html")
 
+
 @app.route("/apartmanim/admin_panel/financial/monthly_expanditures", methods=["GET", "POST"])
 @login_required(role="apartment_admin")
 def monthly_expanditures():
     
     return render_template("apartmanim/monthly_expanditures.html")
 
+@app.route("/apartmanim/admin_panel/financial/apartment_safe", methods=["GET", "POST"])
+@login_required(role="apartment_admin")
+def apartment_safe():
+    
+    return render_template("apartmanim/apartment_safe.html")
 
+@app.route("/apartmanim/admin_panel/financial/onetime_expanditures", methods=["GET", "POST"])
+@login_required(role="apartment_admin")
+def onetime_expanditures():
+    
+    return render_template("apartmanim/onetime_expanditures.html")
 
 # ?-----------------------------------------------
 # * apartment resident info page
