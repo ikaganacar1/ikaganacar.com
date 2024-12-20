@@ -1,5 +1,3 @@
-# python -m flask --app board run --port 8000 --debug
-
 from flask import Flask
 from sqlalchemy import create_engine, MetaData
 from flask_sqlalchemy import SQLAlchemy
