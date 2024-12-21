@@ -60,7 +60,7 @@
                 <div class="col-sm-4 col-xs-12">
                     <div class="well">
                         <h4>Aylık Toplam Gelir</h4>
-                        <h2 style="color: greenyellow;"> +99.999 TL</h2>
+                        <h2 style="color: greenyellow;"> +{{num_of_residents * dues}} TL</h2>
                     </div>
                 </div>
 
@@ -68,14 +68,18 @@
                 <div class="col-sm-4 col-xs-12">
                     <div class="well">
                         <h4>Aylık Toplam Gider</h4>
-                        <h2 style="color:red"> -99.999 TL</h2>
+                        <h2 style="color:red"> -{{tot_expenditure}} TL</h2>
                     </div>
                 </div>
 
                 <div class="col-sm-4 col-xs-12">
                     <div class="well">
                         <h4>Aylık Değişim</h4>
-                        <h2> +5000 TL</h2>
+                        {% if (num_of_residents * dues)-tot_expenditure > 0%}
+                        <h2 style="color: greenyellow;">+ {{(num_of_residents * dues)-tot_expenditure}} TL</h2>
+                        {% else %}
+                        <h2 style="color: red;">{{(num_of_residents * dues)-tot_expenditure}} TL</h2>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -86,9 +90,9 @@
             <div class="row">
 
                 <div class="">
-                    <form class="form" action="{{ url_for('payment_record') }}" method="POST">
+                    <form class="form" action="{{ url_for('apartment_safe') }}" method="POST">
                         <p>Güncel Aidat Miktarı</p>
-                        <h3>200 TL</h3>
+                        <h2>{{dues}} TL</h2>
                         <br><br>
 
                         <div class="flex">

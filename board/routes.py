@@ -25,6 +25,7 @@ from board.models import (
 from flask_login import login_user, current_user, logout_user
 import os, datetime
 from dateutil import parser
+from datetime import date
 from time import sleep
 
 
@@ -315,6 +316,31 @@ def makbuz(
     print("Makbuz Oluşturuluyor..")
     now = datetime.datetime.today().strftime("%d/%m/%Y")
 
+    apartment_id = current_user.apartment_id
+    apartment = Apartment.query.get(apartment_id)
+
+    today = date.today()
+    current_month = today.month
+    current_year = today.year
+
+    expenditures = [
+        ex
+        for ex in apartment.expenditures
+        if (
+            ex.start_date
+            and ex.start_date.month == current_month
+            and ex.start_date.year == current_year
+        )
+        or (ex.end_date and ex.end_date >= today)
+    ]
+    the_list = []
+
+    for ex in expenditures:
+        if ex.paid_over_time:
+            the_list.append((f"{ex.name}", f"{ex.installments}"))
+        else:
+            the_list.append((f"{ex.name}", f"{ex.amount}"))
+    
     create_aidat_makbuzu(
         daire_no=str(door_number),
         ay_yil=f"{month}/{year}",
@@ -324,7 +350,7 @@ def makbuz(
         yazi_ile=int2str(f"{amount}"),
         alan_ad=f"{resident_name} {resident_surname}",
         veren_ad=" ",
-        masraflar_list=[(" ", " ")],
+        masraflar_list=[the_list],
     )
 
 
@@ -472,15 +498,15 @@ def expenditures():
             amount = request.form.get("amount")
             name = request.form.get("name")
             date1 = request.form.get("date1")
-            
+
             dt = parser.parse(date1)
             date1 = datetime.date(dt.year, dt.month, dt.day)
-            
+
             if request.form.get("taksit"):
                 date2 = request.form.get("date2")
                 dt = parser.parse(date2)
                 date2 = datetime.date(dt.year, dt.month, dt.day)
-            
+
                 temp = Expenditure(
                     apartment_id=apartment_id,
                     name=name,
@@ -521,7 +547,42 @@ def delete_expenditure(expenditure_id):
 @login_required(role="apartment_admin")
 def apartment_safe():
 
-    return render_template("apartmanim/apartment_safe.html")
+    apartment_id = current_user.apartment_id
+    apartment = Apartment.query.get(apartment_id)
+
+    today = date.today()
+    current_month = today.month
+    current_year = today.year
+
+    expenditures = [
+        ex
+        for ex in apartment.expenditures
+        if (
+            ex.start_date
+            and ex.start_date.month == current_month
+            and ex.start_date.year == current_year
+        )
+        or (ex.end_date and ex.end_date >= today)
+    ]
+
+    tot = 0
+    for ex in expenditures:
+        if ex.paid_over_time:
+            tot += ex.installments
+        else:
+            tot += ex.amount
+
+    if request.method == "POST":
+        new_dues = request.form.get("amount")
+        apartment.dues = new_dues
+        db.session.commit()
+
+    return render_template(
+        "apartmanim/apartment_safe.html",
+        dues=apartment.dues,
+        num_of_residents=len(apartment.residents),
+        tot_expenditure=tot,
+    )
 
 
 # ?-----------------------------------------------

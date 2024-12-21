@@ -64,8 +64,8 @@ def create_aidat_makbuzu(
     c.drawString(x_position + 130, y_position, f"Alınan Aidat:")
 
     y_position -= 30
-    c.rect(x_position + 135, y_position, 80, 25)
-    c.drawString(x_position + 145, y_position + 5, f"{tutar} TL")
+    c.rect(x_position + 135, y_position, 100, 25)
+    c.drawString(x_position + 145, y_position + 5, f"-{tutar}- TL")
 
     y_position -= 25
     c.drawString(x_position + 30, y_position, f"Yazı ile: {yazi_ile} Türk Lirası")
