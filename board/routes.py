@@ -1,6 +1,6 @@
 from flask import (
     render_template,
-    send_from_directory,    
+    send_from_directory,
     url_for,
     request,
     flash,
@@ -20,11 +20,13 @@ from board.models import (
     Apartment_user,
     Apartment_admin,
     ika,
+    Expenditure,
 )
 from flask_login import login_user, current_user, logout_user
 import os, datetime
 from dateutil import parser
 from time import sleep
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -304,7 +306,9 @@ def delete_user(resident_id):
 
 
 # TODO: Makbuz no
-def makbuz(makbuz_no, door_number, month, year, amount, resident_name, resident_surname):
+def makbuz(
+    makbuz_no, door_number, month, year, amount, resident_name, resident_surname
+):
     from board.receipt import create_aidat_makbuzu
     from board.int2str import int2str
 
@@ -329,8 +333,6 @@ def makbuz(makbuz_no, door_number, month, year, amount, resident_name, resident_
 def resident_page(resident_id):
     resident = Resident.query.get(resident_id)
 
-    
-
     return render_template("apartmanim/resident_page.html", resident=resident)
 
 
@@ -340,7 +342,9 @@ def payment_record():
     apartment_id = current_user.apartment_id
     residents = Apartment.query.get(apartment_id).residents
 
-    if (request.method == "POST"):  #! it doesn't make payment accuracy check! Look here later.
+    if (
+        request.method == "POST"
+    ):  #! it doesn't make payment accuracy check! Look here later.
 
         door_number = request.form.get("door_number")
         amount = request.form.get("amount")
@@ -359,7 +363,12 @@ def payment_record():
                 db.session.add(payment)
                 db.session.commit()
 
-                payment_id = Payment.query.filter_by(resident_id=resident.id).order_by(Payment.id.desc()).first().id
+                payment_id = (
+                    Payment.query.filter_by(resident_id=resident.id)
+                    .order_by(Payment.id.desc())
+                    .first()
+                    .id
+                )
                 if request.form.get("makbuz"):
                     makbuz(
                         makbuz_no=payment_id,
@@ -368,7 +377,7 @@ def payment_record():
                         year=dt.year,
                         amount=amount,
                         resident_name=resident.name,
-                        resident_surname=resident.surname
+                        resident_surname=resident.surname,
                     )
 
                 return redirect(url_for("payment_record"))
@@ -395,13 +404,14 @@ def delete_payment(payment_id):
 
     return redirect(url_for("resident_page", resident_id=payment.resident_id))
 
+
 @app.route("/apartmanim/admin_panel/create_receipt/<int:payment_id>", methods=["POST"])
 @login_required(role="apartment_admin")
 def create_receipt(payment_id):
-    
+
     payment = Payment.query.get(payment_id)
     resident = Resident.query.get(payment.resident_id)
-    
+
     makbuz(
         makbuz_no=payment_id,
         door_number=resident.door_number,
@@ -412,36 +422,107 @@ def create_receipt(payment_id):
         resident_surname=resident.surname,
     )
     sleep(2)
-    file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "receipts", f"receipt_{resident.door_number}_{payment_id}.pdf")
+    file_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "..",
+        "receipts",
+        f"receipt_{resident.door_number}_{payment_id}.pdf",
+    )
     file_path = os.path.abspath(file_path)
 
-    return send_file(file_path) 
-       
+    return send_file(file_path)
+
 
 @app.route("/apartmanim/admin_panel/financial", methods=["GET", "POST"])
 @login_required(role="apartment_admin")
 def financial():
-    
+
     return render_template("apartmanim/financial.html")
 
 
-@app.route("/apartmanim/admin_panel/financial/monthly_expanditures", methods=["GET", "POST"])
+@app.route("/apartmanim/admin_panel/financial/expenditures", methods=["GET", "POST"])
 @login_required(role="apartment_admin")
-def monthly_expanditures():
-    
-    return render_template("apartmanim/monthly_expanditures.html")
+def expenditures():
+    apartment_id = current_user.apartment_id
+    expenditure = Apartment.query.get(apartment_id).expenditures
+
+    if request.method == "POST":
+        if request.form["submit"] == "rutin":
+            dropdown_value = request.form.get("dropdown_value")
+            amount = request.form.get("amount")
+            date = request.form.get("date")
+
+            dt = parser.parse(date)
+            date = datetime.date(dt.year, dt.month, dt.day)
+
+            temp = Expenditure(
+                apartment_id=apartment_id,
+                name=dropdown_value,
+                amount=amount,
+                start_date=date,
+                paid_over_time=False,
+            )
+
+            db.session.add(temp)
+            db.session.commit()
+
+            return redirect(url_for("expenditures"))
+
+        elif request.form["submit"] == "onetime":
+            amount = request.form.get("amount")
+            name = request.form.get("name")
+            date1 = request.form.get("date1")
+            
+            dt = parser.parse(date1)
+            date1 = datetime.date(dt.year, dt.month, dt.day)
+            
+            if request.form.get("taksit"):
+                date2 = request.form.get("date2")
+                dt = parser.parse(date2)
+                date2 = datetime.date(dt.year, dt.month, dt.day)
+            
+                temp = Expenditure(
+                    apartment_id=apartment_id,
+                    name=name,
+                    amount=amount,
+                    start_date=date1,
+                    end_date=date2,
+                    paid_over_time=True,
+                )
+            else:
+                temp = Expenditure(
+                    apartment_id=apartment_id,
+                    name=name,
+                    amount=amount,
+                    start_date=date1,
+                    paid_over_time=False,
+                )
+            db.session.add(temp)
+            db.session.commit()
+            return redirect(url_for("expenditures"))
+
+    return render_template("apartmanim/expenditures.html", expenditure=expenditure)
+
+
+@app.route(
+    "/apartmanim/admin_panel/delete_expenditure/<int:expenditure_id>", methods=["POST"]
+)
+@login_required(role="apartment_admin")
+def delete_expenditure(expenditure_id):
+
+    temp = Expenditure.query.get(expenditure_id)
+    db.session.delete(temp)
+    db.session.commit()
+
+    return redirect(url_for("expenditures"))
+
 
 @app.route("/apartmanim/admin_panel/financial/apartment_safe", methods=["GET", "POST"])
 @login_required(role="apartment_admin")
 def apartment_safe():
-    
+
     return render_template("apartmanim/apartment_safe.html")
 
-@app.route("/apartmanim/admin_panel/financial/onetime_expanditures", methods=["GET", "POST"])
-@login_required(role="apartment_admin")
-def onetime_expanditures():
-    
-    return render_template("apartmanim/onetime_expanditures.html")
 
 # ?-----------------------------------------------
 # * apartment resident info page

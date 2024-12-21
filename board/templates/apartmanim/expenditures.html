@@ -1,0 +1,242 @@
+{% extends "base.html" %} {% block div %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='apartmanim/admin_panel.css') }}">
+
+<nav class="navbar navbar-inverse visible-xs">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Apartmanım</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire
+                        Ekleme/Çıkarma</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+                <li class="active"><a href="{{url_for('financial')}}">Gelir/Gider</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h2>Apartmanım</h2>
+
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="{{url_for('admin_panel')}}">Kontrol Paneli</a></li>
+                <li><a href="{{url_for('add_user')}}">Daire
+                        Ekleme/Çıkarma</a></li>
+                <li><a href="{{url_for('payment_record')}}">Aidat Kaydı</a></li>
+                <li class="active"><a href="{{url_for('financial')}}">Gelir/Gider</a></li>
+            </ul>
+            <br>
+        </div>
+
+        <div class="col-sm-9 main-content">
+            <div class="dashboard-header">
+                <h4>Gelir/Gider</h4>
+
+                <a href="{{url_for('logout')}}">Çıkış</a>
+            </div>
+            <h4>Giderler</h4>
+
+            <div class="row">
+                <div class="col-sm-12 col-xs-12">
+
+                    <form class="form" action="{{ url_for('expenditures') }}" method="POST">
+                        <h4>Rutin Harcamalar</h4>
+
+                        <div class="custom-dropdown">
+                            <div class="dropdown-selected">Seçenekler</div>
+                            <ul class="dropdown-options">
+                                <li data-value="Elektirik Faturası">Elektirik Faturası</li>
+                                <li data-value="Su Faturası">Su Faturası</li>
+                                <li data-value="Asansör Masrafı">Asansör Masrafı</li>
+                                <li data-value="Temizlik Masrafı">Temizlik Masrafı</li>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="dropdown_value" id="dropdown_value" value="">
+
+                        <br><br>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                                const dropdown = document.querySelector('.custom-dropdown');
+                                const selected = dropdown.querySelector('.dropdown-selected');
+                                const options = dropdown.querySelector('.dropdown-options');
+                                const hiddenInput = document.querySelector('#dropdown_value'); // Hidden input to store the value
+
+                                selected.addEventListener('click', () => {
+                                    dropdown.classList.toggle('active');
+                                });
+
+                                options.addEventListener('click', (e) => {
+                                    if (e.target.tagName === 'LI') {
+                                        selected.textContent = e.target.textContent;
+                                        hiddenInput.value = e.target.getAttribute('data-value'); // Set hidden input value
+                                        dropdown.classList.remove('active');
+                                    }
+                                });
+
+                                // Close dropdown if clicked outside
+                                document.addEventListener('click', (e) => {
+                                    if (!dropdown.contains(e.target)) {
+                                        dropdown.classList.remove('active');
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <div class="flex">
+
+                            <label>
+                                <input name="amount"  type="number" class="input">
+                                <span>Miktar</span>
+                            </label>
+
+                        </div>
+
+                        <div>
+                            <label>
+                                <input name="date" required  type="month" class="input">
+                                <span>Tarih</span>
+                            </label>
+
+                        </div>
+
+                        <div class="flex align-items-center">
+                            <button name="submit" class="submit" value="rutin" type="submit">Ekle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-12 col-xs-12">
+
+                    <form class="form" action="{{ url_for('expenditures') }}" method="POST">
+                        <h4>Tek Seferlik Harcamalar</h4>
+                        <br>
+                        <div class="flex">
+                            <label>
+                                <input name="name" required type="text" class="input">
+                                <span>Harcama Adı</span>
+                            </label>
+                            <label>
+                                <input name="amount" required type="number" class="input">
+                                <span>Miktar</span>
+                            </label>
+
+                        </div>
+
+                        <div class="flex">
+
+                            <label>
+                                <input name="date1"   type="month" class="input">
+                                <span id="name1">Tarih</span>
+                            </label>
+
+                            <label id="end_date">
+                                <input name="date2"   type="month" class="input">
+                                <span>Bitiş Tarihi</span>
+                            </label>
+
+                        </div>
+
+                        <div class="custom-checkbox">
+                            <input name="taksit" id="taksit" type="checkbox" />
+                            <label for="taksit">
+                                Taksit
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <script>
+                            $(document).ready(function() {
+                                $('#end_date').hide();
+                                $('#taksit').on('change', function() {
+                                    if ($(this).is(':checked')) {
+                                        $('#end_date').show();
+                                        document.getElementById("name1").innerText = "Başlangıç Tarihi"
+                                    } else {
+                                        $('#end_date').hide();
+                                        document.getElementById("name1").innerText = "Tarih"
+
+                                    }
+                                });
+                            });
+                        </script>
+
+
+                        <div class="flex align-items-center">
+                            <button name="submit" class="submit" value="onetime" type="submit">Ekle</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+            <table class="table">
+                <h4>Harcama Geçmişi</h4>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>İsim</th>
+                        <th>Miktar</th>
+                        <th>Başlangıç Tarihi</th>
+                        <th>Bitiş Tarihi</th>
+                        <th>Taksitler</th>
+                        <th>Sil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for element in expenditure %}
+                    <tr>
+                        <td>{{element.id}}</td>
+                        <td>{{element.name}}</td>
+                        <td>{{element.amount}} TL </td>
+                        <td>{{element.start_date.strftime('%m-%Y')}}</td>
+
+                        {% if element.end_date == none %}
+                        <td> -- </td>
+                        <td> -- </td>
+                        {% else %}
+                        <td>{{element.end_date.strftime('%m-%Y')}}</td>
+                        <td>{{element.installments}} TL</td>
+                        {% endif %}
+
+                        <td>
+                            <form action="{{ url_for('delete_expenditure', expenditure_id = element.id) }}" method="POST" onsubmit="return confirm('Bu ödeme kalıcı olarak silinecektir. Emin Misiniz?');">
+                                <button class="delete-btn" type="submit">
+                                    <i class="fas fa-trash"></i> 
+                                </button>
+                            </form>
+                        </td>
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
