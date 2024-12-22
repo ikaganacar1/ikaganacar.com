@@ -51,8 +51,14 @@
             <div class="dashboard-header">
                 <h4>Gelir/Gider</h4>
 
-                <a href="{{url_for('logout')}}">Çıkış</a>
-            </div>
+                <div class="header-buttons">
+                    <a href="javascript:history.back()" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <a href="{{url_for('logout')}}" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>            </div>
             <h4>Giderler</h4>
 
             <div class="row">

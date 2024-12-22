@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block div %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='donation.css') }}">
+
+<div class="donation-page">
+    <h3>İsmail Kağan Acar</h3>
+    <p class="subtitle">Projemi geliştirmemde bana yardımcı olduğunuz için çok teşekkür ederim.</p>
+
+    <div class="donation-item">
+        <h2>Crypto Address</h2>
+        <div class="btn block-cube block-cube-hover" onclick="copyToClipboard('crypto-address')">
+            <div class="bg-top">
+                <div class="bg-inner"></div>
+            </div>
+            <div class="bg-right">
+                <div class="bg-inner"></div>
+            </div>
+            <div class="bg">
+                <div class="bg-inner"></div>
+            </div>
+            <div class="text" id="crypto-address">0xFabA0Dc56Ce5c5f88b328b2f342eb0871480b398</div>
+        </div>
+    </div>
+
+    <div class="donation-item">
+        <h2>IBAN</h2>
+        <div class="btn block-cube block-cube-hover" onclick="copyToClipboard('iban-address')">
+            <div class="bg-top">
+                <div class="bg-inner"></div>
+            </div>
+            <div class="bg-right">
+                <div class="bg-inner"></div>
+            </div>
+            <div class="bg">
+                <div class="bg-inner"></div>
+            </div>
+            <div class="text" id="iban-address">TR46 0004 6000 0588 8000 5407 10</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard(elementId) {
+        const textToCopy = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert('Copied to clipboard: ' + textToCopy);
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+</script>
+
+{% endblock %}

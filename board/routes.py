@@ -176,6 +176,10 @@ def favicon():
         mimetype="image/vnd.microsoft.icon",
     )
 
+@app.route("/donation")
+def donation():
+    track_visit("useless_projects/ika")
+    return render_template("pages/donation.html")
 
 # ?______________________________________________________________________
 @app.route("/useless_projects")
@@ -200,6 +204,7 @@ def howmuchmoneyleft():
 def ika():
     track_visit("useless_projects/ika")
     return render_template("useless_projects/ika.html")
+
 
 
 # ?______________________________________________________________________
@@ -249,11 +254,13 @@ def logout():
 def admin_panel():
     apartment_id = current_user.apartment_id
     residents = Apartment.query.get(apartment_id).residents
-
+    dues= Apartment.query.get(apartment_id).dues
+    
     tmp = 0
     try:
         for i in residents:
             tmp += i.debt
+            tmp*=dues
     except:
         pass
 

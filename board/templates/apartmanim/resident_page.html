@@ -49,8 +49,14 @@
         <div class="col-sm-9 main-content">
             <div class="dashboard-header">
                 <h4>Aidat Kaydı</h4>
-                <a href="{{url_for('logout')}}">Çıkış</a>
-            </div>
+                <div class="header-buttons">
+                    <a href="javascript:history.back()" class="btn-back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                    <a href="{{url_for('logout')}}" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                </div>            </div>
 
             <div class="row dashboard-stats">
                 <!--
@@ -75,6 +81,8 @@
                                 <th>#</th>
                                 <th>Miktar</th>
                                 <th>Tarih</th>
+                                <th>Sil</th>
+                                <th>Yazdır</th>
                             </tr>
                         </thead>
                         <tbody>

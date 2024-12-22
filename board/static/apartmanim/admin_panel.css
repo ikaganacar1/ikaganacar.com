@@ -743,3 +743,33 @@ select:focus {
 .custom-dropdown.active .dropdown-options {
     display: block;
 }
+
+.dashboard-header .header-buttons {
+    display: flex;
+    gap: 20px; /* Space between buttons */
+}
+
+.dashboard-header .header-buttons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Make the icons appear circular */
+    background-color: #2c2c2c; /* Icon background */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dashboard-header .header-buttons a i {
+    color: #00d4ff;
+    font-size: 1.5em; /* Increase icon size */
+}
+
+.dashboard-header .header-buttons a:hover {
+    background-color: #00d4ff; /* Background on hover */
+}
+
+.dashboard-header .header-buttons a:hover i {
+    color: #212121; /* Icon color on hover */
+}
+
