@@ -18,7 +18,7 @@ def create_aidat_makbuzu(
 
     c = canvas.Canvas(f"receipts/receipt_{daire_no}_{makbuz_no}.pdf", pagesize=landscape(A5))
     width, height = landscape(A5)
-
+    
     pdfmetrics.registerFont(TTFont("Vera", "Vera.ttf"))
     pdfmetrics.registerFont(TTFont("VeraBd", "VeraBd.ttf"))
     c.setFont("Vera", 10)
@@ -48,8 +48,9 @@ def create_aidat_makbuzu(
             c.drawString(140, y_position + 5, miktar)
             y_position -= 20
 
-            toplam += miktar
-    except:
+            toplam += int(miktar)
+    except Exception as e:
+        print(e)
         toplam = 0
 
     c.rect(25, y_position, 100, 20)

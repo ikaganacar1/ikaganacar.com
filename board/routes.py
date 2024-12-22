@@ -255,6 +255,9 @@ def admin_panel():
     apartment_id = current_user.apartment_id
     residents = Apartment.query.get(apartment_id).residents
     dues= Apartment.query.get(apartment_id).dues
+    if not dues:
+        Apartment.query.get(apartment_id).dues = 0
+        
     
     tmp = 0
     try:
@@ -325,7 +328,8 @@ def makbuz(
 
     apartment_id = current_user.apartment_id
     apartment = Apartment.query.get(apartment_id)
-
+    resident_count = len(apartment.residents)
+    
     today = date.today()
     current_month = today.month
     current_year = today.year
@@ -344,9 +348,10 @@ def makbuz(
 
     for ex in expenditures:
         if ex.paid_over_time:
-            the_list.append((f"{ex.name}", f"{ex.installments}"))
+            the_list.append((f"{ex.name}", f"{int(ex.installments/resident_count)}"))
         else:
-            the_list.append((f"{ex.name}", f"{ex.amount}"))
+            the_list.append((f"{ex.name}", f"{int(ex.amount/resident_count)}"))
+            
     
     create_aidat_makbuzu(
         daire_no=str(door_number),
@@ -357,7 +362,7 @@ def makbuz(
         yazi_ile=int2str(f"{amount}"),
         alan_ad=f"{resident_name} {resident_surname}",
         veren_ad=" ",
-        masraflar_list=[the_list],
+        masraflar_list=the_list,
     )
 
 
