@@ -68,7 +68,7 @@ try {
     }
     console.log(ratio)
 
-    function create_page_sign(sign_tag, link_tag, link, sign_x, sign_y, link_x, link_y, isLinked = true) {
+    function create_page_sign(sign_tag, link_tag, link, sign_x, sign_y, link_x, link_y, isLinked = true,sign_ratio=1) {
 
 
         if (ratio > 1) {
@@ -82,9 +82,10 @@ try {
             var link_h2 = window.innerHeight * 0.03;
 
             var length = 200;
-
+            if (sign_ratio == 1){
             document.getElementById(`${link_tag}_p`).style.fontSize = "70px";
-            document.getElementById(`${sign_tag}_p`).style.fontSize = "100px";
+            document.getElementById(`${sign_tag}_p`).style.fontSize = "95px";
+        }
 
         } else {
             var sign_w = window.innerWidth * 0.3;
@@ -99,7 +100,14 @@ try {
             var length = 100;
 
         }
-
+        
+        sign_w = sign_w*sign_ratio;
+        sign_h = sign_h *sign_ratio;
+        link_w1 = link_w1 *(sign_ratio+0.4);
+        link_h1 =link_h1*(sign_ratio+0.4);
+        link_w2 =link_w2 *(sign_ratio+0.4);
+        link_h2 =link_h2 *(sign_ratio+0.4);
+        
         var signElem = document.querySelector(`#${sign_tag}`);
         var linkElem = document.querySelector(`#${link_tag}`);
 
@@ -204,9 +212,7 @@ try {
             }));
         }
 
-
         return [sign, link_button];
-
     }
 
     money = create_page_sign(//how much money left sign
@@ -246,7 +252,20 @@ try {
 
     );
 
-    console.log(balloon);
+    donation = create_page_sign(
+        sign_tag = "donation_sign",
+        link_tag = "donation_link",
+        link = "donation",
+        
+        sign_x = (window.innerWidth -100 ),
+        sign_y = (window.innerHeight * 0.5),
+        link_x = (window.innerWidth  -50),
+        link_y = (window.innerHeight * 0.47),
+        isLinked = true,
+        sign_ratio= 0.4
+
+    );
+
     (function rerender() {
 
         money[0].render();
@@ -254,14 +273,18 @@ try {
 
         balloon[0].render();
         balloon[1].render();
-
+        
         ika[0].render();
         ika[1].render();
+
+        donation[0].render();
+        donation[1].render();
 
         Matter.Engine.update(iEngine);
         requestAnimationFrame(rerender);
     })();
 
+    
 
     function create_balloons(x, y, num, obj2 = null) {
         let rect_list = [];
@@ -361,7 +384,6 @@ try {
 
     }
 
-    // Create body parts and assemble them into a ragdoll
     function createRagdoll(x, y) {
         // aliases
         const { Bodies, Body, Composite, Constraint } = Matter;
@@ -701,7 +723,7 @@ try {
     
 
     Events.on(iEngine, 'beforeUpdate', function () {
-
+        Body.setSpeed(donation[0].body, 3);
         for (let i = 0; i < balloon_list.length; i++) {
             balloon_list[i].force.y -= balloon_list[i].mass * force;
         }
@@ -733,4 +755,4 @@ try {
 
 
 
-} catch (e) { console.log(e) }//global try catch to see the errors
+} catch (e) { console.log(e) }//global try catch to see the errors on browser console
