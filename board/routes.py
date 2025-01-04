@@ -181,6 +181,11 @@ def donation():
     track_visit("useless_projects/ika")
     return render_template("pages/donation.html")
 
+@app.route("/test_page")
+def test_page():
+    
+    return render_template("test_page/test_page.html")
+
 # ?______________________________________________________________________
 @app.route("/useless_projects")
 def useless_projects():
@@ -418,7 +423,7 @@ def payment_record():
                         resident_surname=resident.surname,
                     )
 
-                return redirect(url_for("payment_record"))
+                #return redirect(url_for("payment_record"))
 
         except Exception as e:
             # ? first payment gives error because last_payment_date is null

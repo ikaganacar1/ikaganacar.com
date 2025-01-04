@@ -1,0 +1,24 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  /* Ensure no margin around the body */
+}
+
+body {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.6;
+  overflow: hidden;
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-image: radial-gradient(#769FCD 1px, #F7FBFC 1px);
+  background-size: 10px 10px;
+}
+@media (hover: none) {
+  body {
+      background-image: radial-gradient(#769fcd8e 3px, #F7FBFC 3px);
+      background-size: 12px 12px;
+
+  }
+}
