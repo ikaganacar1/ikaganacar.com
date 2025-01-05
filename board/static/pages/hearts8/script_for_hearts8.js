@@ -2,7 +2,7 @@ const input_ = document.getElementById("input_");
 
 
 $(document).ready(function(){
-    $.getJSON("./static/hearts8.json", function(data){
+    $.getJSON("./static/pages/hearts8.json", function(data){
 
         if (input_) {
             input_.addEventListener("input", () => {
