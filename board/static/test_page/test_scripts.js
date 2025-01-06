@@ -5,17 +5,16 @@ try {
         else { Matter.use(require('matter-wrap')); }
     } catch (e) { }
 
-    const Engine = Matter.Engine,
-        Render = Matter.Render,
-        Runner = Matter.Runner,
-        Bodies = Matter.Bodies,
-        Body = Matter.Body,
-        Composite = Matter.Composite,
-        Common = Matter.Common,
-        Constraint = Matter.Constraint,
-        Mouse = Matter.Mouse,
-
-        Events = Matter.Events;
+    const   Engine = Matter.Engine,
+            Render = Matter.Render,
+            Runner = Matter.Runner,
+            Bodies = Matter.Bodies,
+            Body = Matter.Body,
+            Composite = Matter.Composite,
+            Common = Matter.Common,
+            Constraint = Matter.Constraint,
+            Mouse = Matter.Mouse,
+            Events = Matter.Events;
 
 
     const iEngine = Engine.create({ gravity: { y: 0 } }),
@@ -68,12 +67,11 @@ try {
     }
     console.log(ratio)
 
-    function create_page_sign(sign_tag, link_tag, link, sign_x, sign_y, link_x, link_y, isLinked = true,sign_ratio=1) {
-
+    function create_apartment_page_sign(sign_tag, link_tag, link, sign_x, sign_y, link_x, link_y) {
 
         if (ratio > 1) {
-            var sign_w = window.innerWidth * 0.7;
-            var sign_h = window.innerHeight * 0.05;
+            var sign_w = window.innerWidth * 0.5;
+            var sign_h = window.innerHeight * 0.07;
 
             var link_w1 = window.innerWidth * 0.15;
             var link_h1 = window.innerHeight * 0.03;
@@ -88,8 +86,8 @@ try {
         }
 
         } else {
-            var sign_w = window.innerWidth * 0.3;
-            var sign_h = window.innerHeight * 0.1;
+            var sign_w = window.innerWidth * 0.1;
+            var sign_h = window.innerHeight * 0.3;
 
             var link_w1 = window.innerWidth * 0.13;
             var link_h1 = window.innerHeight * 0.05;
@@ -101,12 +99,6 @@ try {
 
         }
         
-        sign_w = sign_w*sign_ratio;
-        sign_h = sign_h *sign_ratio;
-        link_w1 = link_w1 *(sign_ratio+0.4);
-        link_h1 =link_h1*(sign_ratio+0.4);
-        link_w2 =link_w2 *(sign_ratio+0.4);
-        link_h2 =link_h2 *(sign_ratio+0.4);
         
         var signElem = document.querySelector(`#${sign_tag}`);
         var linkElem = document.querySelector(`#${link_tag}`);
@@ -130,12 +122,11 @@ try {
                 sign_w,
                 sign_h,
                 {
-                    restitution: 0,
                     //isStatic: true,
                     inertia: Infinity,
                     density: 0.001,
-                    friction: 0.2,
-                    restitution: 1,
+                    friction: 0,
+                    restitution: 0,
                     render: {
                         fillStyle: "#B9D7EA",
                         strokeStyle: 'gray',
@@ -197,32 +188,37 @@ try {
         };
 
         Composite.add(world, [sign.body, link_button.body]);
-        if (isLinked) {
-            Composite.add(world, Constraint.create({
-                bodyA: sign.body,
-                bodyB: link_button.body,
-                stiffness: 0.7,
-                length: length,
-                render: {
-                    lineWidth: 1,
-                    //type: 'line',
-                    anchors: false,
-                    strokeStyle: '#393E46'
-                }
-            }));
-        }
+
 
         return [sign, link_button];
     }
 
+    apartment = create_apartment_page_sign(
+        sign_tag = "apartment_sign",
+        link_tag = "apartment_link",
+        link = "apartmanim",
+        
+        sign_x = (window.innerWidth / 2),
+        sign_y = (window.innerHeight * 0.8),
+        link_x = (window.innerWidth / 2),
+        link_y = (window.innerHeight * 0.83)
+
+    );
+
     (function rerender() {
 
+        apartment[0].render();
+        apartment[1].render();
         
         Matter.Engine.update(iEngine);
         requestAnimationFrame(rerender);
     })();
 
     
+
+    Events.on(iEngine, 'beforeUpdate', function () {
+        apartment[0].body.force.y += 12 * 0.0002;
+    });
 
 
 
