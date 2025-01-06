@@ -327,3 +327,20 @@ body {
   color: #ffffff;
   white-space: nowrap;
 }
+
+#apartment_link {
+  position: absolute;
+
+  color: #272626;
+  font-size: 25px;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+
+  font-style: inherit;
+  transform-origin: center center;
+  background-color: transparent;
+
+}

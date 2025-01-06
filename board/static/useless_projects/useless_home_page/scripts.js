@@ -82,10 +82,11 @@ try {
             var link_h2 = window.innerHeight * 0.03;
 
             var length = 200;
+            
             if (sign_ratio == 1){
-            document.getElementById(`${link_tag}_p`).style.fontSize = "70px";
-            document.getElementById(`${sign_tag}_p`).style.fontSize = "95px";
-        }
+                document.getElementById(`${link_tag}_p`).style.fontSize = "70px";
+                document.getElementById(`${sign_tag}_p`).style.fontSize = "95px";
+        }   
 
         } else {
             var sign_w = window.innerWidth * 0.3;
@@ -211,9 +212,177 @@ try {
                 }
             }));
         }
+        if (sign_tag == "ika_sign" && ratio > 1) {
+            document.getElementById(`${sign_tag}_p`).style.fontSize = "70px";
 
+        }
         return [sign, link_button];
     }
+
+    function create_apartment_page_sign(
+        link_tag,
+        link,
+        link_x,
+        link_y
+      ) {
+        var building = Bodies.rectangle(200, window.innerHeight, 150, 250, {
+          render: {
+            fillStyle: "#00000055",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+  
+        var window1 = Bodies.rectangle(165, window.innerHeight - 90, 50, 50, {
+          render: {
+            fillStyle: "#ffffff55",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+  
+        var window2 = Bodies.rectangle(235, window.innerHeight - 90, 50, 50, {
+          render: {
+            fillStyle: "#ffffff55",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+  
+        var window3 = Bodies.rectangle(165, window.innerHeight - 25, 50, 50, {
+          render: {
+            fillStyle: "#ffffff55",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+  
+        var window4 = Bodies.rectangle(235, window.innerHeight - 25, 50, 50, {
+          render: {
+            fillStyle: "#ffffff55",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+  
+        var window5 = Bodies.rectangle(165, window.innerHeight + 40, 50, 50, {
+          render: {
+            fillStyle: "#ffffff55",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+  
+        var window6 = Bodies.rectangle(235, window.innerHeight + 40, 50, 50, {
+          render: {
+            fillStyle: "#ffffff55",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+  
+        var door = Bodies.rectangle(200, window.innerHeight + 100, 30, 50, {
+          render: {
+            fillStyle: "#74512D",
+            strokeStyle: "gray",
+            lineWidth: 2,
+            opacity: 0.8,
+          },
+        });
+        var sideLength = 175; 
+        var height = Math.sin(Math.PI / 3) * sideLength; 
+  
+        var roofVertices = [
+          { x: 200, y: window.innerHeight - 25 }, 
+          { x: 200 - sideLength / 2, y: window.innerHeight - 125 + height }, 
+          { x: 200 + sideLength / 2, y: window.innerHeight - 125 + height }, 
+        ];
+  
+        var roof = Bodies.polygon(
+          200,
+          window.innerHeight - 140,
+          3,
+          sideLength / Math.sin(Math.PI / 3), 
+          {
+            vertices: roofVertices,
+            render: {
+              fillStyle: "#820000",
+              strokeStyle: "gray",
+              lineWidth: 2,
+              opacity: 1,
+            },
+          }
+        );
+  
+        apartment_body = Body.create({
+          parts: [
+            building,
+            window1,
+            window2,
+            window3,
+            window4,
+            window5,
+            window6,
+            door,
+            roof,
+          ],
+          frictionAir: 0.1,
+        });
+  
+        var link_button = {
+          w: 100,
+          h: 50,
+          body: Bodies.rectangle(link_x, link_y, 100, 50, {
+            restitution: 1,
+            friction: 1,
+  
+            url: link,
+            render: {
+              fillStyle: "#EBB55F",
+              strokeStyle: "#050321",
+              lineWidth: 5,
+              opacity: 0.8,
+            },
+          }),
+          elem: document.querySelector(`#${link_tag}`),
+          render() {
+            const { x, y } = this.body.position;
+            const angle = this.body.angle;
+  
+            this.elem.style.top = `${y - this.h / 2}px`;
+            this.elem.style.left = `${x - this.w / 2}px`;
+  
+            this.elem.style.transform = `rotate(${angle}rad)`;
+  
+            this.elem.style.width = `${this.w}px`;
+            this.elem.style.height = `${this.h}px`;
+          },
+        };
+  
+        Composite.add(world, [apartment_body, link_button.body]);
+
+        if (ratio > 1) {
+            document.getElementById(`${link_tag}_p`).style.fontSize = "50px";
+
+        }
+  
+        return [apartment_body, link_button];
+      }
+  
+    apartment = create_apartment_page_sign(
+        link_tag = "apartment_link",
+        link = "apartmanim",
+        link_x = (300),
+        link_y = (window.innerHeight * 0.8)
+
+    );
 
     money = create_page_sign(//how much money left sign
         sign_tag = "howmuchmoneyleft_sign",
@@ -259,7 +428,7 @@ try {
         
         sign_x = (window.innerWidth -100 ),
         sign_y = (window.innerHeight * 0.5),
-        link_x = (window.innerWidth  -50),
+        link_x = (window.innerWidth  -150),
         link_y = (window.innerHeight * 0.47),
         isLinked = true,
         sign_ratio= 0.4
@@ -279,6 +448,8 @@ try {
 
         donation[0].render();
         donation[1].render();
+
+        apartment[1].render();
 
         Matter.Engine.update(iEngine);
         requestAnimationFrame(rerender);
@@ -373,6 +544,9 @@ try {
     if (ratio > 1) {
         var length_rope = 50;
         var force = 0.00006;
+        Body.scale(apartment[1].body,1.25,1.25)
+        Body.scale(apartment[0],1.25,1.25)
+
     } else {
         var length_rope = 30;
         var force = 0.00004;
@@ -720,13 +894,17 @@ try {
 
     rope_link_to_obj(window.innerWidth / 2, window.innerHeight * 0.5 + 5, 5, ragdoll.bodies[1], ika[0].body);
     rope_link_to_obj(window.innerWidth / 2, window.innerHeight * 0.5 + 5, 1, ragdoll.bodies[4], ika[1].body);
-    
+    rope_link_to_obj(100, window.innerHeight, 10, apartment[0].parts[9], apartment[1].body);
+
 
     Events.on(iEngine, 'beforeUpdate', function () {
         Body.setSpeed(donation[0].body, 3);
         for (let i = 0; i < balloon_list.length; i++) {
             balloon_list[i].force.y -= balloon_list[i].mass * force;
         }
+
+        apartment_body.force.y += 0.05;
+
 
     });
 
