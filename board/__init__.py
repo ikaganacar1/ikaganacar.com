@@ -18,7 +18,13 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
-from board import routes
+from board.routes import (
+    main_routes,
+    admin_routes,
+    useless_projects_routes,
+    error_routes,
+    apartment_routes
+)
 
 from flask_migrate import Migrate
 migrate = Migrate(app, db)
