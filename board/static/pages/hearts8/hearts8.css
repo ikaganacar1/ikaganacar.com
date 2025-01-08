@@ -1,139 +1,137 @@
 .wrapper {
-    height: 20%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+.input {
+  width: 60%;
 
-.input {    
-    
-
-    width: 60%;
-    
-
-    border: none;
-    padding: 1rem;
-    border-radius: 1rem;
-    background: #3fa1f651;
-    /*box-shadow: 20px 20px 60px #c5c5c5,
+  border: none;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: #3fa1f651;
+  /*box-shadow: 20px 20px 60px #c5c5c5,
            -20px -20px 60px #ffffff;*/
-    transition: 0.3s;
-   }
-   
-   .input:focus {
-    outline-color: #e8e8e8;
-    background: #3fa1f651;
-    box-shadow: inset 20px 20px 60px #c5c5c5,
-           inset -20px -20px 60px #ffffff;
-    transition: 0.3s;
-   }
-
-   input[type="text"]
-{
-    font-size:50px;
+  transition: 0.3s;
 }
 
-* 
-{
-    box-sizing: border-box;
+.input:focus {
+  outline-color: #e8e8e8;
+  background: #3fa1f651;
+  box-shadow: inset 20px 20px 60px #c5c5c5, inset -20px -20px 60px #ffffff;
+  transition: 0.3s;
 }
-  html, body
-  {height: 100%;}
 
-  body {
-    font-size: 20px;
-    text-align: center;
-    line-height: 1.6;
-    overflow: hidden;
-    opacity: 0.8;
-    font-family: 'Asap', sans-serif;
-  }
+input[type="text"] {
+  font-size: 50px;
+}
 
-  body {
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    height: 100vh;
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.6;
+  overflow: hidden;
+  opacity: 0.8;
+  font-family: "Asap", sans-serif;
+}
+
+body {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
   }
-  
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+  50% {
+    background-position: 100% 50%;
   }
-  
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.login {
+  display: flex;
+
+  overflow: hidden;
+  text-align: center;
+  background-color: white;
+  padding: 40px 30px 30px 30px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  transform: translate(-50%, -50%);
+  transition: transform 300ms, box-shadow 300ms;
+  box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+}
+
+.login::before,
+.login::after {
+  content: "";
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-top-left-radius: 40%;
+  border-top-right-radius: 45%;
+  border-bottom-left-radius: 35%;
+  border-bottom-right-radius: 40%;
+  z-index: -1;
+}
+
+.login::before {
+  left: 40%;
+  bottom: -130%;
+  background-color: rgba(0, 123, 255, 0.184);
+  animation: wawes 6s infinite linear;
+}
+
+.login::after {
+  left: 35%;
+  bottom: -125%;
+  background-color: rgba(0, 156, 176, 0.338);
+  animation: wawes 7s infinite;
+}
+
+.login > input {
+  font-family: "Asap", sans-serif;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 50px;
+  background: white;
+  width: 100%;
+  border: 0;
+  padding: 10px 10px;
+  margin: 15px -10px;
+}
+
+@keyframes wawes {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1000px) {
   .login {
-    display: flex;
-    
-    overflow: hidden;
-    text-align: center;
-    background-color: white;
-    padding: 40px 30px 30px 30px;
-    border-radius: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 400px;
-    transform: translate(-50%, -50%);
-    transition: transform 300ms, box-shadow 300ms;
-    box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+    width: 60%; /* Adjust width to 90% of the viewport width */
+    height: 10%; /* Adjust height to 80% of the viewport height */
   }
-  
-  .login::before, .login::after {
-    content: '';
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-top-left-radius: 40%;
-    border-top-right-radius: 45%;
-    border-bottom-left-radius: 35%;
-    border-bottom-right-radius: 40%;
-    z-index: -1;
-  }
-  
-  .login::before {
-    left: 40%;
-    bottom: -130%;
-    background-color: rgba(0, 123, 255, 0.184);
-    animation: wawes 6s infinite linear;
-  }
-  
-  .login::after {
-    left: 35%;
-    bottom: -125%;
-    background-color: rgba(0, 156, 176, 0.338);
-    animation: wawes 7s infinite;
-  }
-  
-  .login > input {
-    font-family: 'Asap', sans-serif;
-    display: inline-block;
-    border-radius: 5px;
-    font-size: 50px;
-    background: white;
-    width: 100%;
-    border: 0;
-    padding: 10px 10px;
-    margin: 15px -10px;
-  }
-
-  @keyframes wawes {
-    from { transform: rotate(0); }
-    to { transform: rotate(360deg); }
-  }
-  
-  @media (max-width: 1000px) {
-    .login {
-      width: 60%; /* Adjust width to 90% of the viewport width */
-      height: 10%; /* Adjust height to 80% of the viewport height */
-    }
-  }
-  
-
+}

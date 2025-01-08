@@ -12,14 +12,13 @@ body {
   overflow: hidden;
   background-color: #e5e5f7;
   opacity: 0.8;
-  background-image: radial-gradient(#769FCD 1px, #F7FBFC 1px);
+  background-image: radial-gradient(#769fcd 1px, #f7fbfc 1px);
   background-size: 10px 10px;
 }
 @media (hover: none) {
   body {
-      background-image: radial-gradient(#769fcd8e 3px, #F7FBFC 3px);
-      background-size: 12px 12px;
-
+    background-image: radial-gradient(#769fcd8e 3px, #f7fbfc 3px);
+    background-size: 12px 12px;
   }
 }
 
@@ -31,7 +30,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-style: inherit;
   transform-origin: center center;
   background-color: transparent;
@@ -72,11 +71,11 @@ body {
 }
 
 .monitor p {
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-size: 50px;
   position: absolute;
   animation: move 10s infinite linear;
-  color: #EBB55F;
+  color: #ebb55f;
   white-space: nowrap;
 }
 
@@ -99,11 +98,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-style: inherit;
   transform-origin: center center;
   background-color: transparent;
-
 }
 
 #pull_down_button {
@@ -115,9 +113,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-style: inherit;
   transform-origin: center center;
   background-color: transparent;
-
 }

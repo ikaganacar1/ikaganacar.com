@@ -176,15 +176,18 @@ def favicon():
         mimetype="image/vnd.microsoft.icon",
     )
 
+
 @app.route("/donation")
 def donation():
     track_visit("useless_projects/ika")
     return render_template("pages/donation.html")
 
+
 @app.route("/test_page")
 def test_page():
-    
+
     return render_template("test_page/test_page.html")
+
 
 # ?______________________________________________________________________
 @app.route("/useless_projects")
@@ -209,7 +212,6 @@ def howmuchmoneyleft():
 def ika():
     track_visit("useless_projects/ika")
     return render_template("useless_projects/ika.html")
-
 
 
 # ?______________________________________________________________________
@@ -259,16 +261,15 @@ def logout():
 def admin_panel():
     apartment_id = current_user.apartment_id
     residents = Apartment.query.get(apartment_id).residents
-    dues= Apartment.query.get(apartment_id).dues
+    dues = Apartment.query.get(apartment_id).dues
     if not dues:
         Apartment.query.get(apartment_id).dues = 0
-        
-    
+
     tmp = 0
     try:
         for i in residents:
             tmp += i.debt
-            tmp*=dues
+            tmp *= dues
     except:
         pass
 
@@ -334,7 +335,7 @@ def makbuz(
     apartment_id = current_user.apartment_id
     apartment = Apartment.query.get(apartment_id)
     resident_count = len(apartment.residents)
-    
+
     today = date.today()
     current_month = today.month
     current_year = today.year
@@ -356,8 +357,7 @@ def makbuz(
             the_list.append((f"{ex.name}", f"{int(ex.installments/resident_count)}"))
         else:
             the_list.append((f"{ex.name}", f"{int(ex.amount/resident_count)}"))
-            
-    
+
     create_aidat_makbuzu(
         daire_no=str(door_number),
         ay_yil=f"{month}/{year}",
@@ -423,7 +423,7 @@ def payment_record():
                         resident_surname=resident.surname,
                     )
 
-                #return redirect(url_for("payment_record"))
+                # return redirect(url_for("payment_record"))
 
         except Exception as e:
             # ? first payment gives error because last_payment_date is null

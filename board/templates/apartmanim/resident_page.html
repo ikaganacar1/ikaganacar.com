@@ -56,7 +56,8 @@
                     <a href="{{url_for('logout')}}" class="btn-logout">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
-                </div>            </div>
+                </div>
+            </div>
 
             <div class="row dashboard-stats">
                 <!--
@@ -74,44 +75,48 @@
                     <h3>{{resident.name}} {{resident.surname}}</h3>
                     <br>
                     <h4>Daire No: {{resident.door_number}}</h6>
-                    <h4>Tel: {{resident.phone_number}}</h4>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Miktar</th>
-                                <th>Tarih</th>
-                                <th>Sil</th>
-                                <th>Yazdır</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for payment in resident.payments %}
-                            <tr>
-                                <td>{{payment.id}}</td>
-                                <td>{{payment.amount}}</td>
-                                <td>{{payment.date}}</td>
+                        <h4>Tel: {{resident.phone_number}}</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Miktar</th>
+                                    <th>Tarih</th>
+                                    <th>Sil</th>
+                                    <th>Yazdır</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for payment in resident.payments %}
+                                <tr>
+                                    <td>{{payment.id}}</td>
+                                    <td>{{payment.amount}}</td>
+                                    <td>{{payment.date}}</td>
 
-                                <td>
-                                    <form action="{{ url_for('delete_payment', payment_id = payment.id) }}" method="POST" onsubmit="return confirm('Bu ödeme kalıcı olarak silinecektir. Emin Misiniz?');">
-                                        <button class="delete-btn" type="submit">
-                                            <i class="fas fa-trash"></i> 
-                                        </button>
-                                    </form>
-                                </td>
+                                    <td>
+                                        <form action="{{ url_for('delete_payment', payment_id = payment.id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Bu ödeme kalıcı olarak silinecektir. Emin Misiniz?');">
+                                            <button class="delete-btn" type="submit">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
 
-                                <td>
-                                    <form action="{{ url_for('create_receipt', payment_id = payment.id) }}" method="POST" onsubmit="return confirm('Bu ödeme için makbuz oluşturulacak. Emin Misiniz?');">
-                                        <button class="delete-btn" type="submit">
-                                            <i class="fa-solid fa-print"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                                
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    <td>
+                                        <form action="{{ url_for('create_receipt', payment_id = payment.id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Bu ödeme için makbuz oluşturulacak. Emin Misiniz?');">
+                                            <button class="delete-btn" type="submit">
+                                                <i class="fa-solid fa-print"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                 </div>
             </div>
 

@@ -1,61 +1,59 @@
 html,
 body {
-    height: 100%;
-    margin: 0;
+  height: 100%;
+  margin: 0;
 }
 
 body {
-    font-size: 20px;
-    text-align: center;
-    line-height: 1.6;
-    overflow: hidden;
-    background-color: #e5e5f7;
-    opacity: 0.8;
-    background-image: radial-gradient(#769fcd8e 1px, #F7FBFC 1px);
-    background-size: 10px 10px;
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.6;
+  overflow: hidden;
+  background-color: #e5e5f7;
+  opacity: 0.8;
+  background-image: radial-gradient(#769fcd8e 1px, #f7fbfc 1px);
+  background-size: 10px 10px;
 }
 
 /* For tablets and mobile devices */
 @media (hover: none) {
-    body {
-        background-image: radial-gradient(#769fcd8e 3px, #F7FBFC 3px);
-        background-size: 12px 12px;
-
-    }
-
+  body {
+    background-image: radial-gradient(#769fcd8e 3px, #f7fbfc 3px);
+    background-size: 12px 12px;
+  }
 }
 
 #Error {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: end;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: end;
 }
 
 #Error h1 {
-    color: #450c0c;
-    font-size: 14rem;
-    user-select: none;
-    font-family: 'VT323', monospace;
-    font-style: inherit;
-    background-color: transparent;
+  color: #450c0c;
+  font-size: 14rem;
+  user-select: none;
+  font-family: "VT323", monospace;
+  font-style: inherit;
+  background-color: transparent;
 }
 
 #Error h2 {
-    color: #272626;
-    font-size: 7rem;
-    user-select: none;
-    font-family: 'VT323', monospace;
-    font-style: inherit;
-    background-color: transparent;
+  color: #272626;
+  font-size: 7rem;
+  user-select: none;
+  font-family: "VT323", monospace;
+  font-style: inherit;
+  background-color: transparent;
 }
 
 a {
-    position: relative;
-    color: #272626;
-    font-size: 5rem;
-    user-select: none;
-    font-family: 'VT323', monospace;
-    font-style: inherit;
-    background-color: transparent;
+  position: relative;
+  color: #272626;
+  font-size: 5rem;
+  user-select: none;
+  font-family: "VT323", monospace;
+  font-style: inherit;
+  background-color: transparent;
 }

@@ -16,9 +16,11 @@ def create_aidat_makbuzu(
     masraflar_list,
 ):
 
-    c = canvas.Canvas(f"receipts/receipt_{daire_no}_{makbuz_no}.pdf", pagesize=landscape(A5))
+    c = canvas.Canvas(
+        f"receipts/receipt_{daire_no}_{makbuz_no}.pdf", pagesize=landscape(A5)
+    )
     width, height = landscape(A5)
-    
+
     pdfmetrics.registerFont(TTFont("Vera", "Vera.ttf"))
     pdfmetrics.registerFont(TTFont("VeraBd", "VeraBd.ttf"))
     c.setFont("Vera", 10)
