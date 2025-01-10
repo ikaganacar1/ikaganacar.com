@@ -28,12 +28,6 @@ def ika():
     return render_template("useless_projects/ika.html")
 
 
-@app.route("/useless_projects/movies")
-def movies():
-    track_visit("useless_projects/movies")
-    return render_template("useless_projects/movies.html")
-
-
 #? Lot more Useless:
 @app.route("/hearts8")
 def hearts8():
