@@ -163,13 +163,13 @@
         <div class="codes-display">
 
 
-            {% if usage[0] %}
+            {% if not usage[0] %}
             <div id="code1" class="code-item-1" onclick="copyToClipboard('code1')">
                  <p>Used: {{ invitation_codes[0] }}</p>
             </div>
             <style>
                 .code-item-1 {
-                    background: #0f3b01;
+                    background: #3f1a1a;
                     padding: 1rem 2rem;
                     border-radius: 8px;
                     font-size: 1.2rem;
@@ -188,7 +188,7 @@
             </div>
             {% endif %}
 
-            {% if usage[1] %}
+            {% if not usage[1] %}
             <div id="code2" class="code-item-2" onclick="copyToClipboard('code2')">
                 <p>Used: {{ invitation_codes[1] }}</p>
             </div>
