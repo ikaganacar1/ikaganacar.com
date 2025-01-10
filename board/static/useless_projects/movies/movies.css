@@ -1,132 +1,244 @@
-@import url("https://fonts.googleapis.com/css?family=Karla|Space+Mono");
-
-:root {
-  --contentHeight: 30vh;
-  --sectionWidth: 71%;
+html, body {
+  height: 100%;  /* Ensure the body and html take up the full height */
 }
 
 * {
-  outline: 0;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
-  background-color: #272727;
-  font-family: "Space Mono", monospace;
+  background-color: #181C14;
+  color: #ECDFCC;
+  line-height: 1.6;
+  min-height: 100vh;
+  width: 100%;
 }
 
-h1 {
-  font-size: 5vw; /* Responsive font size based on viewport width */
-}
-
-section {
-  max-width: var(--sectionWidth);
-  margin: 40px auto;
-  width: 97%;
-  color: #ffffff;
-}
-
-summary {
-  display: block;
-  cursor: pointer;
+.container {
+  width: 100%;
+  height: 100%;  /* Full height of the screen */
+  margin: 0 auto;
   padding: 10px;
-  font-family: "Space Mono", monospace;
-  font-size: 5vw; /* Responsive font size based on viewport width */
-  transition: 0.3s;
-  border-bottom: 2px solid;
-  user-select: none;
 }
 
-details > div {
-  display: block;
-  flex-wrap: wrap;
-  overflow: auto;
-  height: 100%;
-
-  user-select: none;
-  padding: 0 20px;
-  font-family: "Karla", sans-serif;
-  line-height: 1.5;
+/* Profile Card */
+.card-client {
+  background: linear-gradient(145deg, #4a4a8f, #363669);
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  border-radius: 0;
 }
 
-details > div > img {
-  align-self: flex-start;
-  max-width: 100%;
-  margin-top: 20px;
+.login-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  padding: 0.5rem;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-details > div > p {
+.login-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.app-logo {
+  min-width: 60px;
+  height: 60px;
+  background: #8888cc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #363669;
+}
+
+.profile-info {
   flex: 1;
-  font-size: 10vw; /* Responsive font size based on viewport width */
-  line-height: 1.5;
 }
 
-details[open] > summary {
-  color: red;
+.app-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #fff, #8888cc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-right: 3rem; /* Space for login button */
 }
 
-@media (min-width: 768px) {
-  details[open] > div > p {
-    opacity: 0;
-    animation-name: showContent;
-    animation-duration: 0.6s;
-    animation-delay: 0.2s;
-    animation-fill-mode: forwards;
-    margin: 0;
-    padding-left: 20px;
-    font-size: 3rem; /* Adjust for larger screens */
+.app-tagline {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.action-buttons {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  flex-wrap: wrap;
+  width: 100%;
+  
+}
+
+.action-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  padding: 0.75rem;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content:center   ;
+  gap: 0.5rem;
+  border-radius: 8px;
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Search Section */
+.search-section {
+  padding: 0.5rem;
+  margin: 0;
+  width: 100%;
+}
+
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 1rem;
+  padding-right: 2.5rem;
+  background: #3C3D37;
+  border: 2px solid #697565;
+  border-radius: 8px;
+  color: #ECDFCC;
+  font-size: 1rem;
+}
+
+.icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #697565;
+}
+
+/* Activity Feed */
+.activities-section {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.activity-card {
+  background: #3C3D37;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.activity-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #4a4a8f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  color: #697565;
+  font-size: 0.9rem;
+}
+
+.rating {
+  color: #8888cc;
+  font-weight: 600;
+}
+
+/* Media Queries */
+@media (min-width: 640px) {
+  .container {
+      padding: 20px;
   }
 
-  details[open] > div {
-    animation-name: slideDown;
-    animation-duration: 0.3s;
-    animation-fill-mode: forwards;
+  .card-client {
+      border-radius: 16px;
+      padding: 1.5rem;
   }
 
-  details[open] > div > img {
-    opacity: 0;
-    height: 100%;
-    margin: 0;
-    animation-name: showImage;
-    animation-duration: 0.3s;
-    animation-delay: 0.15s;
-    animation-fill-mode: forwards;
+  .activity-card {
+      border-radius: 12px;
   }
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    height: 0;
-    padding: 0;
+@media (min-width: 1024px) {
+  .container {
+      max-width: 800px;
+      padding: 40px;
   }
 
-  to {
-    opacity: 1;
-    height: var(--contentHeight);
-    padding: 20px;
+  .card-client {
+      padding: 2rem;
+  }
+
+  .action-buttons {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
-
-@keyframes showImage {
-  from {
-    opacity: 0;
-    clip-path: inset(50% 0 50% 0);
-    transform: scale(0.4);
+@media (max-width: 768px) {
+  .action-buttons {
+      flex-direction: column;
   }
-
-  to {
-    opacity: 1;
-    clip-path: inset(0 0 0 0);
+  
+  .action-btn {
+      width: 100%;
+      max-width: none;
   }
 }
-
-@keyframes showContent {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+a {
+  text-decoration: none !important;
 }
