@@ -29,8 +29,8 @@ def login_required(role="ANY"):
             if not current_user.is_authenticated:
                 return login_manager.unauthorized()
             if (current_user.role != role) and (role != "ANY"):
-                abort(403)
-                return login_manager.unauthorized()
+                
+                return redirect(url_for("login"))
             return fn(*args, **kwargs)
 
         return decorated_view
@@ -44,6 +44,7 @@ tmdb.REQUESTS_TIMEOUT = 5
 
 
 @app.route("/useless_projects/movies", methods=["GET", "POST"])
+@login_required(role="IMC_user")
 def movies():
 
     logged_in = True if current_user.is_authenticated else False
@@ -90,6 +91,7 @@ def movies():
 
 
 @app.route("/movie_page/<movie_id>", methods=["GET", "POST"])
+@login_required(role="IMC_user")
 def movie_page(movie_id):
     movie = tmdb.Movies(movie_id).info()
 
@@ -165,6 +167,7 @@ def add_to_watched(user_id, movie_id, rated):
 
 
 @app.route("/remove_watched/<watched_id>", methods=["GET", "POST"])
+@login_required(role="IMC_user")
 def remove_watched(watched_id):
     the = Watched.query.get(watched_id)
     db.session.delete(the)
@@ -173,6 +176,7 @@ def remove_watched(watched_id):
 
 
 @app.route("/remove_watchlist/<watchlist_id>", methods=["GET", "POST"])
+@login_required(role="IMC_user")
 def remove_watchlist(watchlist_id):
     the = Watchlist.query.get(watchlist_id)
     db.session.delete(the)
@@ -243,10 +247,11 @@ def invite_friend(user_id):
 
 
 @app.route("/search/<search_word>", methods=["GET", "POST"])
+@login_required(role="IMC_user")
 def search(search_word):
     search1 = tmdb.Search()
     response = search1.multi(query=search_word, include_adult=False)["results"]
-
+    
     return render_template(
         "useless_projects/movie_collection/movies_search.html",
         search_word=search_word,
