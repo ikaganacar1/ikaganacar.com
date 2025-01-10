@@ -229,9 +229,16 @@ def invite_friend(user_id):
     user = IMC_user.query.get(user_id)
     ic_1 = user.invitation_code_1
     ic_2 = user.invitation_code_2
+    
+    
+    is_code_1_used = IMC_user.query.filter_by(previous_code=ic_1).first() is None
+    is_code_2_used = IMC_user.query.filter_by(previous_code=ic_2).first() is None
+
+    
     return render_template(
         "useless_projects/movie_collection/movies_invitation.html",
         invitation_codes=(ic_1,ic_2),
+        usage=(is_code_1_used,is_code_2_used)
     )
 
 
@@ -271,21 +278,25 @@ def login():
 
 @app.route("/useless_projects/movies/register", methods=["GET", "POST"])
 def register():
-
     if request.method == "POST":
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password")
         invitation_code = request.form.get("invitation_code")
-
-        try:
-            condition1 = False if IMC_user.query.filter_by(previous_code=invitation_code).first() else True
-            
-            all_users = IMC_user.query.all()
-            condition2 = next((user for user in all_users if user.invitation_code_1 == invitation_code or user.invitation_code_2 == invitation_code), None)
-
         
-            if (not condition1) and condition2:
+        try: 
+            all_users = IMC_user.query.all()
+            inviting_user = next(
+                (user for user in all_users 
+                 if user.invitation_code_1 == invitation_code or 
+                    user.invitation_code_2 == invitation_code),
+                None
+            )
+            
+            is_valid_code = inviting_user is not None
+            is_code_unused = IMC_user.query.filter_by(previous_code=invitation_code).first() is None
+            
+            if is_valid_code and is_code_unused:
                 new_user = IMC_user(
                     username=username,
                     email=email,
@@ -296,12 +307,13 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
                 return redirect(url_for("login"))
-
             else:
-                return redirect(url_for("error_invalid_user"))
-
+                error = "Invalid Invitation" 
+                return redirect(url_for("custom_error",error=error))
+                
         except Exception as e:
             print(e)
-            return redirect(url_for("error_invalid_user"))
-
+            error = "Unknown Error" 
+            return redirect(url_for("custom_error",error=error))
+            
     return render_template("useless_projects/movie_collection/movies_register.html")

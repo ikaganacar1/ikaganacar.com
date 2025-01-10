@@ -23,3 +23,6 @@ def error_401(e):
 def error_invalid_user():
     return render_template("errors/invalid_user.html")
 
+@app.route("/custom_error/<error>")
+def custom_error(error):
+    return render_template("errors/custom_error.html",error=error)
