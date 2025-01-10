@@ -6,4 +6,3 @@ flask-sqlalchemy
 flask-Migrate
 python-dateutil
 reportlab
-tmdbsimple

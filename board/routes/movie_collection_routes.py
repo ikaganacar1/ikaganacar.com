@@ -245,7 +245,7 @@ def invite_friend(user_id):
 @app.route("/search/<search_word>", methods=["GET", "POST"])
 def search(search_word):
     search1 = tmdb.Search()
-    response = search1.multi(query=search_word, include_adult=False)["results"]
+    response = search1.movie(query=search_word)["results"]
 
     return render_template(
         "useless_projects/movie_collection/movies_search.html",
