@@ -1,0 +1,651 @@
+{% extends 'base.html' %}
+{% block header %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ movie.title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+        background-color: #181C14;
+        color: #ECDFCC;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .movie-header {
+        position: relative;
+        height: 500px;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .movie-header {
+            height: auto;
+            min-height: 400px;
+        }
+    }
+
+    .backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(24, 28, 20, 0.7), rgba(24, 28, 20, 0.95));
+        z-index: 2;
+    }
+
+    .movie-info {
+        position: absolute;
+        bottom: 2rem;
+        left: 2rem;
+        right: 2rem;
+        z-index: 3;
+        display: flex;
+        gap: 2rem;
+        align-items: flex-end;
+    }
+
+    @media (max-width: 768px) {
+        .movie-info {
+            position: relative;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    }
+
+    .poster {
+        width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .poster {
+            width: 160px;
+            margin-top: 1rem;
+        }
+    }
+
+    .movie-title-section {
+        flex-grow: 1;
+    }
+
+    .title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .title {
+            font-size: 1.8rem;
+        }
+    }
+
+    .tagline {
+        font-size: 1.2rem;
+        opacity: 0.8;
+        font-style: italic;
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .tagline {
+            font-size: 1rem;
+        }
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .action-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: #697565;
+        border: none;
+        border-radius: 8px;
+        color: #ECDFCC;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .action-btn:hover {
+        background: #7d8a78;
+    }
+
+    .action-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Movie Details */
+    .movie-details {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .movie-details {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+
+    .main-info,
+    .side-info {
+        background: #3C3D37;
+        padding: 2rem;
+        border-radius: 12px;
+    }
+
+    @media (max-width: 768px) {
+
+        .main-info,
+        .side-info {
+            padding: 1rem;
+        }
+    }
+
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+
+    .detail-item {
+        margin-bottom: 1rem;
+    }
+
+    .detail-label {
+        font-weight: 1000;
+        color: #fff2df;
+        opacity: 1;
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-value {
+        font-size: 1.1rem;
+    }
+
+
+
+    .rating {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8888cc;
+        margin-bottom: 0.5rem;
+    }
+
+    .vote-count {
+        color: #ECDFCC;
+        opacity: 0.8;
+        margin-bottom: 2rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .genre-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+
+    .genre-tag {
+        background: #697565;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .production-companies {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .production-companies {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    }
+
+
+    .top-controls {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        right: 1rem;
+        z-index: 4;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    @media (max-width: 768px) {
+        .top-controls {
+            flex-direction: column;
+            align-items: stretch;
+        }
+    }
+
+    .home-btn {
+        background: rgba(60, 61, 55, 0.8);
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem;
+        color: #ECDFCC;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        flex-shrink: 0;
+        z-index: 4;
+    }
+
+    @media (max-width: 768px) {
+        .home-btn {
+            width: fit-content;
+        }
+    }
+
+    .home-btn:hover {
+        background: rgba(60, 61, 55, 1);
+    }
+
+    .home-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .search-container {
+        position: relative;
+        flex-grow: 1;
+        max-width: 500px;
+    }
+
+    @media (max-width: 768px) {
+        .search-container {
+            max-width: 100%;
+        }
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.75rem;
+        padding-right: 2.5rem;
+        background: rgba(60, 61, 55, 0.8);
+        border: none;
+        border-radius: 8px;
+        color: #ECDFCC;
+        font-size: 1rem;
+    }
+
+    .search-input:hover,
+    .search-input:focus {
+        background: rgba(60, 61, 55, 1);
+        outline: none;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ECDFCC;
+        width: 20px;
+        height: 20px;
+    }
+
+    .overview-section {
+        background: rgba(60, 61, 55, 0.7);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border-left: 4px solid #697565;
+    }
+
+    @media (max-width: 768px) {
+        .overview-section {
+            padding: 1rem;
+        }
+    }
+
+    .overview-title {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: #8888cc;
+    }
+
+    .overview {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        letter-spacing: 0.3px;
+        text-align: justify;
+    }
+
+    @media (max-width: 768px) {
+        .search-container {
+            display: none;
+            /* This will hide the search bar on mobile */
+        }
+
+        .top-controls {
+            flex-direction: row;
+            /* Keep the home button aligned properly */
+            justify-content: flex-start;
+            align-items: center;
+        }
+    }
+</style>
+{% endblock header %}
+
+{% block div %}
+<div class="container">
+    <div class="movie-header">
+        <img class="backdrop" src="https://image.tmdb.org/t/p/original{{movie.backdrop_path}}">
+        <div class="overlay"></div>
+        <div class="top-controls">
+            <a href="{{ url_for('movies') }}" class="home-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+            </a>
+            <form action="{{url_for('movies')}}" method="POST" class="search-container">
+                <input name="input_" type="text" class="search-input" placeholder="Search for movies...">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+            </form>
+        </div>
+        <div class="movie-info">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="{{movie.title}}">
+            <div class="movie-title-section">
+                <h1 class="title">{{movie.title}}</h1>
+                <p class="tagline">{{movie.tagline}}</p>
+
+                {% if logged_in == False %}
+                <style>
+                    .action-buttons {
+                        display: none;
+                        visibility: hidden;
+                    }
+                </style>
+                {% endif %}
+
+                <style>
+                    .rating-dialog {
+                        display: none;
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: #3C3D37;
+                        padding: 2rem;
+                        border-radius: 12px;
+                        z-index: 1000;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    }
+
+                    .rating-dialog.active {
+                        display: block;
+                    }
+
+                    .dialog-overlay {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0, 0, 0, 0.7);
+                        z-index: 999;
+                    }
+
+                    .dialog-overlay.active {
+                        display: block;
+                    }
+
+                    .rating-input {
+                        width: 100%;
+                        padding: 0.5rem;
+                        margin: 1rem 0;
+                        background: #697565;
+                        border: none;
+                        border-radius: 4px;
+                        color: #ECDFCC;
+                    }
+
+                    .rating-buttons {
+                        display: flex;
+                        gap: 1rem;
+                        justify-content: flex-end;
+                    }
+
+                    .rating-btn {
+                        padding: 0.5rem 1rem;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        background: #697565;
+                        color: #ECDFCC;
+                    }
+
+                    .rating-btn:hover {
+                        background: #7d8a78;
+                    }
+                </style>
+
+                <div class="action-buttons">
+                    {% if logged_in %}
+                        {% if not in_watchlist %}
+                            <form action="{{(url_for('add_to_watchlist',user_id=current_user.id,movie_id=movie.id))}}" method="POST">
+                                <button class="action-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    Add to Watchlist
+                                </button>
+                            </form>
+                        {% else %}
+                            <form action="#" method="POST">
+                                <button class="action-btn action-btn--active">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    In Watchlist
+                                </button>
+                            </form>
+                        {% endif %}
+                
+                        {% if not in_watched %}
+                            <button class="action-btn" onclick="showRatingDialog()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 3h18v18H3zM8 12h8M12 8v8" />
+                                </svg>
+                                Mark as Watched
+                            </button>
+                        {% else %}
+                            <button class="action-btn action-btn--active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                Watched • {{ user_rating }}/10
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                
+                <style>
+                    .action-btn--active {
+                        background: #8888cc;
+                    }
+                    
+                    .action-btn--active:hover {
+                        background: #7777bb;
+                    }
+                </style>
+
+                <div class="dialog-overlay" id="dialogOverlay"></div>
+                <div class="rating-dialog" id="ratingDialog">
+                    <h3>Rate this movie</h3>
+                    <form action="{{(url_for('add_to_watched',user_id=current_user.id,movie_id=movie.id,rated=''))}}"
+                        method="POST" id="watchedForm">
+                        <input type="number" name="rating" id="ratingInput" min="0" max="10" step="0.1"
+                            class="rating-input" placeholder="Rate from 0 to 10" required>
+                        <div class="rating-buttons">
+                            <button type="button" class="rating-btn" onclick="hideRatingDialog()">Cancel</button>
+                            <button type="submit" class="rating-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <script>
+                    function showRatingDialog() {
+                        document.getElementById('dialogOverlay').classList.add('active');
+                        document.getElementById('ratingDialog').classList.add('active');
+                    }
+
+                    function hideRatingDialog() {
+                        document.getElementById('dialogOverlay').classList.remove('active');
+                        document.getElementById('ratingDialog').classList.remove('active');
+                    }
+
+                    document.getElementById('watchedForm').onsubmit = function (e) {
+                        e.preventDefault();
+                        const rating = document.getElementById('ratingInput').value;
+                        const form = e.target;
+                        form.action = form.action + rating;  // Simply append the rating to the URL
+                        form.submit();
+                    }
+                </script>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="movie-details">
+        <div class="main-info">
+            <p class="overview">{{movie.overview}}</p>
+            <br>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <div class="detail-label">Release Date</div>
+                    <div class="detail-value">{{movie.release_date}}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Runtime</div>
+                    <div class="detail-value">{{movie.runtime}} minutes</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Budget</div>
+                    <div class="detail-value">${{"{:,.0f}".format(movie.budget)}}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Revenue</div>
+                    <div class="detail-value">${{"{:,.0f}".format(movie.revenue)}}</div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Production Countries</div>
+                    <div class="detail-value">
+                        {% for country in movie.production_countries %}
+                        {{country.name}}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">Languages</div>
+                    <div class="detail-value">
+                        {% for lang in movie.spoken_languages %}
+                        {{lang.english_name}}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="side-info">
+            <div class="rating">{{movie.vote_average}}/10</div>
+            <div class="vote-count">{{"{:,}".format(movie.vote_count)}} votes</div>
+
+            <div class="detail-label">Genres</div>
+            <div class="genre-tags">
+                {% for genre in movie.genres %}
+                <span class="genre-tag">{{genre.name}}</span>
+                {% endfor %}
+            </div>
+
+            <div class="detail-label">Production Companies</div>
+            <div class="production-companies">
+                {% for company in movie.production_companies %}
+                <div class="detail-value">{{company.name}}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock div %}

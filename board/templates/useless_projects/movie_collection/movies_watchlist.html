@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block header %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        background-color: #181C14;
+        color: #ECDFCC;
+        line-height: 1.6;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Page Title */
+    .page-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 2rem 0;
+        color: #ECDFCC;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .page-subtitle {
+        text-align: center;
+        font-size: 1.1rem;
+        color: rgba(236, 223, 204, 0.8);
+        margin-bottom: 2rem;
+    }
+
+    /* Top Bar */
+    .top-bar {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        width: 100%;
+    }
+
+    /* Home Button */
+    .home-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #3C3D37;
+        border: 2px solid #697565;
+        border-radius: 8px;
+        color: #ECDFCC;
+        padding: 0.85rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .home-btn:hover {
+        background-color: #4C4D47;
+    }
+
+    .home-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Results Section */
+    .results-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .movie-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .result-card {
+        background: #3C3D37;
+        border-radius: 12px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+        position: relative;
+    }
+
+    .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .result-card img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .result-card .title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #ECDFCC;
+        text-align: center;
+    }
+
+    .result-card .release_date {
+        font-size: 0.9rem;
+        color: rgba(236, 223, 204, 0.8);
+    }
+
+    .result-card .vote {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #8888cc;
+    }
+
+    /* Remove Button */
+    .remove-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 87, 87, 0.9);
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        z-index: 2;
+    }
+
+    .remove-btn:hover {
+        background: rgb(255, 87, 87);
+    }
+
+    .remove-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: white;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: rgba(236, 223, 204, 0.8);
+        grid-column: 1 / -1;
+    }
+</style>
+{% endblock header %}
+
+{% block div %}
+<div class="container">
+    <h1 class="page-title">My Watching List</h1>
+
+    <div class="top-bar">
+        <a href="{{ url_for('movies') }}" class="home-btn" title="Home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+        </a>
+    </div>
+
+    <div class="results-section">
+        {% if response %}
+        {% for i in response %}
+        <div class="result-card">
+            <a href="{{ url_for('movie_page', movie_id=i[0].id) }}" class="movie-link">
+                <img src="https://image.tmdb.org/t/p/w1280{{i[0].poster_path}}" alt="Image for {{ i[0].title }}">
+                <div class="title">{{ i[0].title }}</div>
+                <div class="release_date">{{ i[0].release_date[:4] }}</div>
+                <div class="vote">Vote Avarage: {{ i[0].vote_average }}</div>
+            </a>
+            <form action="{{ url_for('remove_watchlist',watchlist_id=i[1])}}">
+                <button class="remove-btn" onclick="removeMovie('{{ i[0].id }}')" title="Remove from watched list">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="empty-state">
+            <h2>No movies in your watch list yet</h2>
+            <p>Start adding movies to remember what you will watch next time!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock div %}

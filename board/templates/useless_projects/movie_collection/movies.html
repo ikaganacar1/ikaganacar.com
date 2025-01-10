@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h2>{% block title %}{% endblock title %}</h2>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock header %}
+
+{% block div %}
+<link rel="stylesheet" href="{{ url_for('static', filename='useless_projects/movies/movies.css')}}">
+<div class="container">
+    <!-- Profile Card -->
+    <div class="card-client">
+
+        {% if logged_in == True %}
+        <style>
+            .login-btn {
+                display: none;
+                visibility: hidden;
+            }
+        </style>
+        {% endif %}
+
+
+        <a href="{{url_for('login')}}">
+            <button class="login-btn" title="Login">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                    <polyline points="10 17 15 12 10 7" />
+                    <line x1="15" y1="12" x2="3" y2="12" />
+                </svg>
+            </button>
+        </a>
+
+        <div class="profile-header">
+            <div class="app-logo">
+                IMC
+            </div>
+            <div class="profile-info">
+                <h1 class="app-name">{{username}}</h1>
+
+                <p onclick="copyToClipboard('app-tagline')" id="app-tagline" class="app-tagline">{{email}}</p>
+            </div>
+        </div>
+        <div class="action-buttons">
+            <a href="{{url_for('watchlist', user_id = current_user.id)}}">
+                <button class="action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 4v16m8-8H4" />
+                    </svg>
+                    Watchlist
+                </button>
+            </a>
+
+            <a href="{{url_for('watched', user_id = current_user.id)}}">
+                <button class="action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3h18v18H3zM8 12h8M12 8v8" />
+                    </svg>
+                    Watched
+                </button>
+            </a>
+
+            <a href="{{url_for('follow_page', user_id = current_user.id)}}">
+                <button class="action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="8.5" cy="7" r="4" />
+                        <path d="M20 8v6M23 11h-6" />
+                    </svg>
+                    Follow a Friend
+                </button>
+            </a>
+
+            <a href="{{url_for('invite_friend', user_id = current_user.id)}}">
+                <button class="action-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13" />
+                        <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                    </svg>
+                    Invite Friend
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Search Section -->
+    <div class="search-section">
+        <div class="input-container">
+            <form action="{{url_for('movies')}}" method="POST">
+                <input name="input_" type="text" class="input" placeholder="Search for movies...">
+            </form>
+
+            <span class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+            </span>
+        </div>
+    </div>
+
+    <div class="activities-section">
+        
+        {% for element in watched_list %}
+            
+        <div class="activity-card">
+            <div class="activity-header">
+                <div class="user-avatar">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                </div>
+                <strong>{{element[1].username}}</strong>
+                <span>watched</span>
+                <strong>{{element[0].title}}</strong>
+            </div>
+            <div class="activity-meta">
+                <span>Avarage Rating: {{element[0].vote_average}}</span>
+                <span class="rating">Rated: {{element[2]}}</span>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+</div>
+<script>
+    function copyToClipboard(elementId) {
+        const textToCopy = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert('Copied to clipboard: ' + textToCopy);
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+</script>
+
+
+<script type="module" src="{{ url_for('static', filename='useless_projects/movies/movies.js')}}"></script>
+
+{% endblock div %}

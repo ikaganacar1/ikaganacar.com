@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        background-color: #181C14;
+        color: #ECDFCC;
+        line-height: 1.6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 500px;
+        background-color: #2C2F26;
+        border-radius: 8px;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .app-logo {
+        min-width: 60px;
+        height: 60px;
+        background: #8888cc;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #363669;
+    }
+
+    h1 {
+        color: #ECDFCC;
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    /* Apply width to the form */
+    form {
+        width: 100%;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .input-container {
+        width: 100%;
+    }
+
+    .input {
+        width: 100%;
+        padding: 1.2rem;
+        background: #3C3D37;
+        border: 2px solid #697565;
+        border-radius: 8px;
+        color: #ECDFCC;
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(145deg, #4a4a8f, #363669);
+        border: none;
+        border-radius: 8px;
+        color: #ECDFCC;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+        background: linear-gradient(145deg, #363669, #4a4a8f);
+    }
+
+    .alt-action {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+
+    .alt-action a {
+        color: #8888cc;
+        text-decoration: none;
+    }
+
+    .alt-action a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock header %}
+
+{% block div %}
+
+<div class="container">
+    <div class="app-logo">
+        <span>IMC</span>
+    </div>
+    <h1>Register</h1>
+
+    <!-- Register Form -->
+    <form id="registerForm" action="{{ url_for('register')}}" method="POST">
+        <div class="input-container">
+            <input name="username" class="input" type="text" placeholder="Username" required>
+        </div>
+        <div class="input-container">
+            <input name="email" class="input" type="email" placeholder="Email" required>
+        </div>
+        <div class="input-container">
+            <input name="password" id="password" class="input" type="password" placeholder="Password" required>
+        </div>
+
+        <div class="input-container">
+            <input name="confirm_password" id="confirm_password" class="input" type="password" placeholder="Confirm Password" required>
+        </div>
+
+        <div class="input-container">
+            <input name="invitation_code" class="input" type="text" placeholder="Invitation Code" required>
+        </div>
+        <button type="submit" class="btn">Register</button>
+    </form>
+
+    <div class="alt-action">
+        <p>Already have an account? <a href="{{url_for('login')}}">Login</a></p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm_password').value;
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            event.preventDefault(); 
+        }
+    });
+</script>
+
+{% endblock div %}
