@@ -93,7 +93,18 @@ class IMC_user(User):
     @property
     def invitation_code_2(self):
         return str(sha256((self.previous_code+"zsk").encode('utf-8')).hexdigest())
-        
+    
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
         
     def __repr__(self) -> str:
         return f"User('{self.role}','{self.username}','{self.email}')"

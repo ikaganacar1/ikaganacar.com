@@ -10,6 +10,7 @@ from flask import (
     abort,
     current_app,
     send_file,
+    session
 )
 from board.routes.main_routes import track_visit
 import tmdbsimple as tmdb
@@ -18,8 +19,13 @@ from functools import wraps
 
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def IMC_load_user(user_id):
+    if user_id is None:
+        return None
+    try:
+        return IMC_user.query.get(int(user_id))  
+    except (ValueError, TypeError):
+        return None
 
 
 def IMC_login_required(role="ANY"):
@@ -29,18 +35,21 @@ def IMC_login_required(role="ANY"):
             if not current_user.is_authenticated:
                 return redirect(url_for("movies_login"))
             
+            db.session.refresh(current_user)
+
             if (current_user.role != role) and (role != "ANY"):
                 return redirect(url_for("movies_login"))
             return fn(*args, **kwargs)
-
         return decorated_view
-
     return wrapper
 
 @app.route("/useless_projects/movies/logout")
 def movies_logout():
     logout_user()
-    return redirect(url_for("movies_login"))
+    session.clear()
+    response = redirect(url_for("movies_login"))
+    response.delete_cookie(app.config['SESSION_COOKIE_NAME'])
+    return response
 
 key = open("board/secret_key.txt", "r").readlines()[1]
 tmdb.API_KEY = key
@@ -143,7 +152,7 @@ def tv_page(tv_id):
     
     tv_show = tmdb.TV(tv_id).info()  
 
-
+    
     logged_in = current_user.is_authenticated
     in_watched = Watched.query.filter_by(movie_id=tv_id, user_id=current_user.id).first() is not None
     in_watchlist = Watchlist.query.filter_by(movie_id=tv_id, user_id=current_user.id).first() is not None
@@ -329,10 +338,15 @@ def search(search_word):
         response=response,
     )
 
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        db.session.refresh(current_user)
+        session.modified = True
 
 @app.route("/useless_projects/movies/login", methods=["GET", "POST"])
 def movies_login():
-
+    logout_user()
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
@@ -341,7 +355,9 @@ def movies_login():
         try:
             if user.role == "IMC_user":
                 if user and bcrypt.check_password_hash(user.password, password):
-                    login_user(user)
+                    login_user(user, remember=True, force=True) 
+                    session['_user_id'] = str(user.id)
+                    session.permanent = True
                     return redirect(url_for("movies"))
                 else:
                     return redirect(url_for("error_invalid_user"))

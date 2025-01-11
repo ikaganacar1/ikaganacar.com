@@ -4,6 +4,7 @@ flask-bcrypt
 flask-login
 flask-sqlalchemy
 flask-Migrate
+flask-session
 python-dateutil
 reportlab
 tmdbsimple
