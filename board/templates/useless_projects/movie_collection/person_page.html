@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% block header %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ person.name }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+        background-color: #181C14;
+        color: #ECDFCC;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .person-header {
+        position: relative;
+        height: 500px;
+        margin-bottom: 2rem;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .person-header {
+            height: auto;
+            min-height: 400px;
+        }
+    }
+
+    .backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(24, 28, 20, 0.7), rgba(24, 28, 20, 0.95));
+        z-index: 2;
+    }
+
+    .person-info {
+        position: absolute;
+        bottom: 2rem;
+        left: 2rem;
+        right: 2rem;
+        z-index: 3;
+        display: flex;
+        gap: 2rem;
+        align-items: flex-end;
+    }
+
+    @media (max-width: 768px) {
+        .person-info {
+            position: relative;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    }
+
+    .profile-pic {
+        width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .profile-pic {
+            width: 160px;
+            margin-top: 1rem;
+        }
+    }
+
+    .person-title-section {
+        flex-grow: 1;
+    }
+
+    .name {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .name {
+            font-size: 1.8rem;
+        }
+    }
+
+    .biography-section {
+        background: rgba(60, 61, 55, 0.7);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border-left: 4px solid #697565;
+    }
+
+    @media (max-width: 768px) {
+        .biography-section {
+            padding: 1rem;
+        }
+    }
+
+    .biography-title {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: #8888cc;
+    }
+
+    .biography {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        letter-spacing: 0.3px;
+        text-align: justify;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .details-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+
+    .detail-item {
+        margin-bottom: 1rem;
+    }
+
+    .detail-label {
+        font-weight: 1000;
+        color: #fff2df;
+        opacity: 1;
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-value {
+        font-size: 1.1rem;
+    }
+
+</style>
+{% endblock header %}
+
+{% block div %}
+<div class="container">
+    <div class="person-header">
+        <img class="backdrop" src="https://image.tmdb.org/t/p/original{{person.backdrop_path}}">
+        <div class="overlay"></div>
+        <div class="top-controls">
+            <a href="{{ url_for('movies') }}" class="home-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+            </a>
+            <form action="{{url_for('movies')}}" method="POST" class="search-container">
+                <input name="input_" type="text" class="search-input" placeholder="Search for people...">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+            </form>
+        </div>
+        <div class="person-info">
+            <img class="profile-pic" src="https://image.tmdb.org/t/p/w500{{person.profile_path}}">
+            <div class="person-title-section">
+                <h1 class="name">{{person.name}}</h1>
+                <p class="tagline">{{person.tagline}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="biography-section">
+        <h2 class="biography-title">Biography</h2>
+        <p class="biography">{{person.biography}}</p>
+    </div>
+
+    <div class="details-grid">
+        <div class="detail-item">
+            <div class="detail-label">Known For</div>
+            <div class="detail-value">{{person.known_for_department}}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Birthday</div>
+            <div class="detail-value">{{person.birthday}}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Place of Birth</div>
+            <div class="detail-value">{{person.place_of_birth}}</div>
+        </div>
+        <div class="detail-item">
+            <div class="detail-label">Also Known As</div>
+            <div class="detail-value">
+                {% for alias in person.also_known_as %}
+                    {{alias}}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock div %}

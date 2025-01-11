@@ -128,7 +128,7 @@
     <h1>Register</h1>
 
     <!-- Register Form -->
-    <form id="registerForm" action="{{ url_for('register')}}" method="POST">
+    <form id="registerForm" action="{{ url_for('movies_register')}}" method="POST">
         <div class="input-container">
             <input name="username" class="input" type="text" placeholder="Username" required>
         </div>
@@ -150,7 +150,7 @@
     </form>
 
     <div class="alt-action">
-        <p>Already have an account? <a href="{{url_for('login')}}">Login</a></p>
+        <p>Already have an account? <a href="{{url_for('movies_login')}}">Login</a></p>
     </div>
 </div>
 

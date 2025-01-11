@@ -2,7 +2,7 @@
 {% block header %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ movie.title }}</title>
+<title>{{ tv_show.name }}</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
     * {
@@ -405,7 +405,7 @@
 {% block div %}
 <div class="container">
     <div class="movie-header">
-        <img class="backdrop" src="https://image.tmdb.org/t/p/original{{movie.backdrop_path}}">
+        <img class="backdrop" src="https://image.tmdb.org/t/p/original{{tv_show.backdrop_path}}">
         <div class="overlay"></div>
         <div class="top-controls">
             <a href="{{ url_for('movies') }}" class="home-btn">
@@ -423,10 +423,10 @@
             </form>
         </div>
         <div class="movie-info">
-            <img class="poster" src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}" alt="{{movie.title}}">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500{{tv_show.poster_path}}">
             <div class="movie-title-section">
-                <h1 class="title">{{movie.title}}</h1>
-                <p class="tagline">{{movie.tagline}}</p>
+                <h1 class="title">{{tv_show.name}}</h1>
+                <p class="tagline">{{tv_show.tagline}}</p>
 
                 {% if logged_in == False %}
                 <style>
@@ -502,49 +502,51 @@
 
                 <div class="action-buttons">
                     {% if logged_in %}
-                        {% if not in_watchlist %}
-                            <form action="{{(url_for('add_to_watchlist',user_id=current_user.id,movie_id=movie.id,media_type='movie'))}}" method="POST">
-                                <button class="action-btn">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 4v16m8-8H4" />
-                                    </svg>
-                                    Add to Watchlist
-                                </button>
-                            </form>
-                        {% else %}
-                            <form action="#" method="POST">
-                                <button class="action-btn action-btn--active">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    In Watchlist
-                                </button>
-                            </form>
-                        {% endif %}
-                
-                        {% if not in_watched %}
-                            <button class="action-btn" onclick="showRatingDialog()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 3h18v18H3zM8 12h8M12 8v8" />
-                                </svg>
-                                Mark as Watched
-                            </button>
-                        {% else %}
-                            <button class="action-btn action-btn--active">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 6L9 17l-5-5" />
-                                </svg>
-                                Watched • {{ rate }}/10
-                            </button>
-                        {% endif %}
+                    {% if not in_watchlist %}
+                    <form
+                        action="{{(url_for('add_to_watchlist',user_id=current_user.id,movie_id=tv_show.id,media_type='tv'))}}"
+                        method="POST">
+                        <button class="action-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add to Watchlist
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="#" method="POST">
+                        <button class="action-btn action-btn--active">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>
+                            In Watchlist
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    {% if not in_watched %}
+                    <button class="action-btn" onclick="showRatingDialog()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3h18v18H3zM8 12h8M12 8v8" />
+                        </svg>
+                        Mark as Watched
+                    </button>
+                    {% else %}
+                    <button class="action-btn action-btn--active">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                        Watched • {{ rate }}/10
+                    </button>
+                    {% endif %}
                     {% endif %}
                 </div>
-                
+
                 <style>
                     .action-btn--active {
                         background: #8888cc;
                     }
-                    
+
                     .action-btn--active:hover {
                         background: #7777bb;
                     }
@@ -553,7 +555,8 @@
                 <div class="dialog-overlay" id="dialogOverlay"></div>
                 <div class="rating-dialog" id="ratingDialog">
                     <h3>Rate this movie</h3>
-                    <form action="{{(url_for('add_to_watched',user_id=current_user.id,movie_id=movie.id,rated='',media_type='movie'))}}"
+                    <form
+                        action="{{(url_for('add_to_watched',user_id=current_user.id,movie_id=tv_show.id,media_type='tv',rated=''))}}"
                         method="POST" id="watchedForm">
                         <input type="number" name="rating" id="ratingInput" min="0" max="10" step="0.1"
                             class="rating-input" placeholder="Rate from 0 to 10" required>
@@ -590,62 +593,47 @@
 
     <div class="movie-details">
         <div class="main-info">
-            <p class="overview">{{movie.overview}}</p>
-            <br>
+            <p class="overview">{{ tv_show.overview }}</p>
             <div class="details-grid">
                 <div class="detail-item">
-                    <div class="detail-label">Release Date</div>
-                    <div class="detail-value">{{movie.release_date}}</div>
+                    <div class="detail-label">First Air Date</div>
+                    <div class="detail-value">{{ tv_show.first_air_date }}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Runtime</div>
-                    <div class="detail-value">{{movie.runtime}} minutes</div>
+                    <div class="detail-label">Last Air Date</div>
+                    <div class="detail-value">{{ tv_show.last_air_date }}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Budget</div>
-                    <div class="detail-value">${{"{:,.0f}".format(movie.budget)}}</div>
+                    <div class="detail-label">Number of Seasons</div>
+                    <div class="detail-value">{{ tv_show.number_of_seasons }}</div>
                 </div>
                 <div class="detail-item">
-                    <div class="detail-label">Revenue</div>
-                    <div class="detail-value">${{"{:,.0f}".format(movie.revenue)}}</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Production Countries</div>
-                    <div class="detail-value">
-                        {% for country in movie.production_countries %}
-                        {{country.name}}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Languages</div>
-                    <div class="detail-value">
-                        {% for lang in movie.spoken_languages %}
-                        {{lang.english_name}}{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </div>
+                    <div class="detail-label">Number of Episodes</div>
+                    <div class="detail-value">{{ tv_show.number_of_episodes }}</div>
                 </div>
             </div>
         </div>
 
         <div class="side-info">
-            <div class="rating">{{movie.vote_average}}/10</div>
-            <div class="vote-count">{{"{:,}".format(movie.vote_count)}} votes</div>
+            <div class="rating">{{ tv_show.vote_average }}/10</div>
+            <div class="vote-count">{{ "{:,}".format(tv_show.vote_count) }} votes</div>
 
             <div class="detail-label">Genres</div>
             <div class="genre-tags">
-                {% for genre in movie.genres %}
-                <span class="genre-tag">{{genre.name}}</span>
+                {% for genre in tv_show.genres %}
+                <span class="genre-tag">{{ genre.name }}</span>
                 {% endfor %}
             </div>
 
             <div class="detail-label">Production Companies</div>
             <div class="production-companies">
-                {% for company in movie.production_companies %}
-                <div class="detail-value">{{company.name}}</div>
+                {% for company in tv_show.production_companies %}
+                <div class="detail-value">{{ company.name }}</div>
                 {% endfor %}
             </div>
         </div>
     </div>
+
 </div>
+
 {% endblock div %}

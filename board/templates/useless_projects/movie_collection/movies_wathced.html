@@ -192,8 +192,19 @@
         <div class="result-card">
             <a href="{{ url_for('movie_page', movie_id=i[0].id) }}" class="movie-link">
                 <img src="https://image.tmdb.org/t/p/w1280{{i[0].poster_path}}" alt="Image for {{ i[0].title }}">
-                <div class="title">{{ i[0].title }}</div>
-                <div class="release_date">{{ i[0].release_date[:4] }}</div>
+                
+
+                {% if i[3] == 'tv' %}
+                    <div class="title">{{ i[0].name }}</div>
+                    <div class="release_date">{{i[0].first_air_date[:4]}}-{{ i[0].last_air_date[:4]}}</div>
+                {% else %}
+                    <div class="title">{{ i[0].title }}</div>
+                    <div class="release_date">{{ i[0]['release_date'][:4]}}</div>
+                {% endif %}
+                
+
+
+                
                 <div class="vote">Your rating: {{ i[1] }}</div>
             </a>
             <form action="{{ url_for('remove_watched',watched_id=i[2])}}">

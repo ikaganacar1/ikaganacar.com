@@ -192,9 +192,18 @@
         <div class="result-card">
             <a href="{{ url_for('movie_page', movie_id=i[0].id) }}" class="movie-link">
                 <img src="https://image.tmdb.org/t/p/w1280{{i[0].poster_path}}" alt="Image for {{ i[0].title }}">
-                <div class="title">{{ i[0].title }}</div>
-                <div class="release_date">{{ i[0].release_date[:4] }}</div>
-                <div class="vote">Vote Avarage: {{ i[0].vote_average }}</div>
+
+                {% if i[2] == 'tv' %}
+                    <div class="title">{{ i[0].name }}</div>
+                    <div class="release_date">{{i[0].first_air_date[:4]}}-{{ i[0].last_air_date[:4]}}</div>
+                    <div class="vote">Vote Avarage: {{ i[0].vote_average }}</div>
+                {% else %}
+                    <div class="title">{{ i[0].title }}</div>
+                    <div class="release_date">{{ i[0]['release_date'][:4]}}</div>
+                    <div class="vote">Vote Avarage: {{ i[0].vote_average }}</div>
+                {% endif %}
+
+                
             </a>
             <form action="{{ url_for('remove_watchlist',watchlist_id=i[1])}}">
                 <button class="remove-btn" onclick="removeMovie('{{ i[0].id }}')" title="Remove from watched list">
