@@ -109,12 +109,14 @@ class Followed(db.Model):
 class Watchlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("imc_user.id"), nullable=False, index=True)
+    media_type = db.Column(db.String(10), nullable=False)
     movie_id = db.Column(db.Integer, nullable=False)
     __table_args__ = (db.UniqueConstraint('user_id', 'movie_id'),)
 
 class Watched(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("imc_user.id"), nullable=False, index=True)
+    media_type = db.Column(db.String(10), nullable=False)
     movie_id = db.Column(db.Integer, nullable=False)
     rated = db.Column(db.Float, nullable=False)
     __table_args__ = (db.UniqueConstraint('user_id', 'movie_id'),)
